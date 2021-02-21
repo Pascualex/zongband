@@ -49,14 +49,16 @@ namespace Zongband.Game.Actions
 
         private Agent Spawn(AgentSO agentSO)
         {
-            var agent = GameObject.Instantiate(context.agentPrefab, context.board.transform);
+            var parent = context.turnManager.transform;
+            var agent = GameObject.Instantiate(context.agentPrefab, parent);
             agent.ApplySO(agentSO);
             return agent;
         }
 
         private Entity Spawn(EntitySO entitySO)
         {
-            var entity = GameObject.Instantiate(context.entityPrefab, context.board.transform);
+            var parent = context.board.transform;
+            var entity = GameObject.Instantiate(context.entityPrefab, parent);
             entity.ApplySO(entitySO);
             return entity;
         }

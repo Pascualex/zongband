@@ -8,17 +8,21 @@ namespace Zongband.Game.Entities
 {
     public class Entity : MonoBehaviour
     {
-        public GameObject? defaultGameModel;
         public Tile tile = Tile.MinusOne;
         public bool removed = false;
 
-        private GameObject? gameModel;
+        public Transform? GameModelContainer;
+        [SerializeField] private GameObject? defaultGameModel;
+        [SerializeField] private GameObject? gameModel;
 
         private void Awake()
         {
+            if (GameModelContainer == null) return;
             if (defaultGameModel == null) return;
 
-            gameModel = Instantiate(defaultGameModel, transform);
+            if (gameModel != null) Destroy(gameModel);
+
+            gameModel = Instantiate(defaultGameModel, GameModelContainer);
             gameModel.name = "GameModel";
         }
 
@@ -26,10 +30,12 @@ namespace Zongband.Game.Entities
         {
             name = entitySO.name;
 
+            if (GameModelContainer == null) return;
             if (gameModel != null) Destroy(gameModel);
 
-            if (entitySO.gameModel != null) gameModel = Instantiate(entitySO.gameModel, transform);
-            else if (defaultGameModel != null) gameModel = Instantiate(defaultGameModel, transform);
+            var parent = GameModelContainer;
+            if (entitySO.gameModel != null) gameModel = Instantiate(entitySO.gameModel, parent);
+            else if (defaultGameModel != null) gameModel = Instantiate(defaultGameModel, parent);
 
             if (gameModel != null) gameModel.name = "GameModel";
         }
