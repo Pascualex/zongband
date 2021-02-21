@@ -13,6 +13,7 @@ namespace Zongband.Game.Entities
         public int TurnPriority { get; private set; } = 0;
         public int MaxHealth { get; private set; } = 100;
         public bool IsGhost { get; private set; } = false;
+        public bool IsRoamer { get; private set; } = true;
         public int CurrentHealth { get; private set; }
 
         public Agent()
@@ -28,6 +29,7 @@ namespace Zongband.Game.Entities
             TurnPriority = agentSO.turnPriority;
             MaxHealth = agentSO.maxHealth;
             IsGhost = agentSO.isGhost;
+            IsRoamer = agentSO.isRoamer;
 
             CurrentHealth = MaxHealth;
         }

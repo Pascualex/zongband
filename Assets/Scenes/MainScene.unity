@@ -1454,6 +1454,7 @@ MonoBehaviour:
   fastAgentSO: {fileID: 11400000, guid: 9ed1371c0fcf228409094b6d03a6473e, type: 2}
   normalAgentSO: {fileID: 11400000, guid: 8eda823a2b4c4b1448897a7ec2aea3d9, type: 2}
   slowAgentSO: {fileID: 11400000, guid: d4e3689ea1285d34e8d2bf0c3e324800, type: 2}
+  notRoamerAgentSO: {fileID: 11400000, guid: 78bf7d3ab23af4b4a88f64f8f86b9d55, type: 2}
   boxEntitySO: {fileID: 11400000, guid: 0c048d90f6057844d8beefc3a49a025e, type: 2}
   playerController: {fileID: 1190358108}
   aiController: {fileID: 470883251}

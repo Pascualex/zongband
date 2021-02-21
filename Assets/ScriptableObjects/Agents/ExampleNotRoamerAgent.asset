@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65755f9dc1bb2cd429011fab999aaa4e, type: 3}
-  m_Name: ExampleNormalAgent
+  m_Name: ExampleNotRoamerAgent
   m_EditorClassIdentifier: 
-  gameModel: {fileID: 4644097584919031478, guid: 09fb2cc6317f02340a0aef7cd65e0de0,
+  gameModel: {fileID: 4644097584919031478, guid: 199a0ab347590da4f9d75d2fe888f781,
     type: 3}
   turnCooldown: 100
   turnPriority: 0
   maxHealth: 100
   isGhost: 0
-  isRoamer: 1
+  isRoamer: 0

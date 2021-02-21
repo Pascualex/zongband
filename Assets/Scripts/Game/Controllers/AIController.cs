@@ -39,6 +39,8 @@ namespace Zongband.Game.Controllers
 
         private Action ProduceRandomMovement(Agent agent, Action.Context context)
         {
+            if (!agent.IsRoamer) return new NullAction();
+
             var directions = Tile.RandomizedDirections();
             var selectedDirection = Tile.Zero;
             foreach (var direction in directions)

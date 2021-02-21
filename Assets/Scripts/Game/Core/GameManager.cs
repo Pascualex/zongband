@@ -21,6 +21,7 @@ namespace Zongband.Game.Core
         [SerializeField] private AgentSO? fastAgentSO;
         [SerializeField] private AgentSO? normalAgentSO;
         [SerializeField] private AgentSO? slowAgentSO;
+        [SerializeField] private AgentSO? notRoamerAgentSO;
         [SerializeField] private EntitySO? boxEntitySO;
 
         public PlayerController? playerController;
@@ -43,6 +44,7 @@ namespace Zongband.Game.Core
             if (fastAgentSO == null) return;
             if (normalAgentSO == null) return;
             if (slowAgentSO == null) return;
+            if (notRoamerAgentSO == null) return;
             if (boxEntitySO == null) return;
 
             if (playerController == null) return;
@@ -65,7 +67,10 @@ namespace Zongband.Game.Core
             newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), context));
             newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), context));
             newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), context));
-            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 3), context));
+            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), context));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(9, 5), context));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), context));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), context));
             newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), context));
 
             currentAction = newAction;

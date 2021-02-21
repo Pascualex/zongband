@@ -11,6 +11,7 @@ namespace Zongband.Game.Entities
         public int turnPriority = 0;
         public int maxHealth = 100;
         public bool isGhost = false;
+        public bool isRoamer = true;
 
         private void OnValidate()
         {
