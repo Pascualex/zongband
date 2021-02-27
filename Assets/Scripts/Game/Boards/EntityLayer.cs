@@ -67,7 +67,6 @@ namespace Zongband.Game.Boards
         {
             if (IsTileEmpty(at)) throw new EmptyTileException(at);
 
-            entities[at.y][at.x]!.removed = true;
             entities[at.y][at.x] = null;
         }
 

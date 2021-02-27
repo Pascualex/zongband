@@ -33,6 +33,17 @@ namespace Zongband.Game.Turns
             turns.AddFirst(turn);
         }
 
+        public void Remove(Agent agent)
+        {
+            var node = turns.First;
+            while (node != null)
+            {
+                var next = node.Next;
+                if (node.Value.agent == agent) turns.Remove(node);
+                node = next;
+            }
+        }
+
         public void Next()
         {
             if (turns.Count == 0) return;

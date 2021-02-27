@@ -64,7 +64,7 @@ namespace Zongband.Game.Core
             playerAction.Add(new MakePlayerAction(spawnPlayerAction));
             newAction.Add(playerAction);
 
-            newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), context));
+            // newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), context));
             newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), context));
             newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), context));
             newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), context));

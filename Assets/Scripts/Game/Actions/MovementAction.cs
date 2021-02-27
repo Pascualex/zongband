@@ -33,22 +33,26 @@ namespace Zongband.Game.Actions
 
         protected override bool ProcessStart()
         {
+            if (!entity) return true;
+
             var oldTile = entity.tile;
 
             if (!MoveInBoard()) return true;
+            if (relative || !instant) FaceTowardsDirection(oldTile);
 
             if (instant)
             {
                 MoveToTargetInWorld();
                 return true;
             }
-            else FaceTowardsDirection(oldTile);
-            
+
             return false;
         }
 
         protected override bool ProcessUpdate()
         {
+            if (!entity) return true;
+
             return MoveTowardsTarget();
         }
 

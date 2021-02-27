@@ -39,7 +39,7 @@ namespace Zongband.Game.Controllers
             var targetAgent = context.board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {
-                return new AttackAction(agent, targetAgent, agent.Attack);
+                return new AttackAction(agent, targetAgent, context);
             }
 
             return null;

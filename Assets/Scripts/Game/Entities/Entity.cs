@@ -9,7 +9,6 @@ namespace Zongband.Game.Entities
     public class Entity : MonoBehaviour
     {
         public Tile tile = Tile.MinusOne;
-        public bool removed = false;
 
         public Transform? GameModelContainer;
         [SerializeField] private GameObject? defaultGameModel;

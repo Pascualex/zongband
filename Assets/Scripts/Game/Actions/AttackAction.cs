@@ -10,19 +10,21 @@ namespace Zongband.Game.Actions
     {
         private readonly Agent attacker;
         private readonly Agent target;
-        private readonly int damage;
+        private readonly Context context;
         private EntityAnimator.AnimationState? animationState;
         private bool isDamageDealt = false;
 
-        public AttackAction(Agent attacker, Agent target, int damage)
+        public AttackAction(Agent attacker, Agent target, Context context)
         {
             this.attacker = attacker;
             this.target = target;
-            this.damage = damage;
+            this.context = context;
         }
 
         protected override bool ProcessStart()
         {
+            if (!attacker || !target) return true;
+
             var tileDirection = target.tile - attacker.tile;
             var direction = tileDirection.ToWorldVector3();
             attacker.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -30,7 +32,7 @@ namespace Zongband.Game.Actions
             var animatorComponent = attacker.GetComponent<EntityAnimator>();
             if (animatorComponent == null)
             {
-                target.Damage(damage);
+                Damage();
                 return true;
             }
 
@@ -41,19 +43,32 @@ namespace Zongband.Game.Actions
 
         protected override bool ProcessUpdate()
         {
+            if (!attacker || !target) return true;
+
             if (animationState == null || animationState.isCompleted)
             {
-                if (!isDamageDealt) target.Damage(damage);
+                if (!isDamageDealt) Damage();
                 return true;
             }
 
             if (animationState.isReady && !isDamageDealt)
             {
-                target.Damage(damage);
+                Damage();
                 isDamageDealt = true;
             }
-            
+
             return false;
+        }
+
+        private void Damage()
+        {
+            target.Damage(attacker.Attack);
+            if (target.CurrentHealth == 0)
+            {
+                context.board.Remove(target);
+                context.turnManager.Remove(target);
+                GameObject.Destroy(target.gameObject);
+            }
         }
     }
 }

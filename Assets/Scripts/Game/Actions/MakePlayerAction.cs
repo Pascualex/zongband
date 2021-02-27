@@ -34,7 +34,7 @@ namespace Zongband.Game.Actions
         {
             var agent = this.agent;
             if (agent == null) agent = InheritAgent();
-            if (agent == null) return true;
+            if (agent == null || !agent) return true;
             agent.isPlayer = makePlayer;
             return true;
         }
@@ -43,7 +43,6 @@ namespace Zongband.Game.Actions
         {
             if (spawnAction == null) return null;
             if (!spawnAction.IsCompleted) return null;
-            if (spawnAction.Entity == null) return null;
             if (spawnAction.Entity is Agent agent) return agent;
             return null;
         }

@@ -33,8 +33,7 @@ namespace Zongband.Game.Controllers
 
             if (selectedTarget == null) return null;
 
-            // TODO: change damage calculation
-            return new AttackAction(agent, selectedTarget, agent.Attack);
+            return new AttackAction(agent, selectedTarget, context);
         }
 
         private Action ProduceRandomMovement(Agent agent, Action.Context context)

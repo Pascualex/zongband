@@ -58,7 +58,7 @@ namespace Zongband.UI
             var inspect = false;
 
             var agent = fixedAgent;
-            if (agent == null) agent = board.GetAgent(MouseTile);
+            if (agent == null || !agent) agent = board.GetAgent(MouseTile);
             if (agent != null)
             {
                 healthBar.maxValue = agent.MaxHealth;
