@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Zongband.Game.Actions;
 using Zongband.Game.Entities;
+using Zongband.Utils;
 
 namespace Zongband.Game.Controllers
 {
@@ -34,8 +35,11 @@ namespace Zongband.Game.Controllers
             var relative = PlayerAction.relative;
             var canAttack = PlayerAction.canAttack;
 
+            var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.tile);
+            var instant = distance > 1;
             var isTileAvailable = context.board.IsTileAvailable(agent, tile, relative);
-            if (isTileAvailable) return new MovementAction(agent, tile, relative, context);
+            if (isTileAvailable) return new MovementAction(agent, tile, relative, context, instant);
+
             var targetAgent = context.board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {

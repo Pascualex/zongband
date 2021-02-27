@@ -8,6 +8,7 @@ namespace Zongband.UI
 {
     public class UIManager : MonoBehaviour
     {
+        public Tile MouseTile { get; private set; } = Tile.MinusOne;
         [SerializeField] private Camera? mainCamera;
         [SerializeField] private TileHighlighter? tileHighlighter;
         [SerializeField] private PlayerHighlighter? playerHighlighter;
@@ -27,15 +28,15 @@ namespace Zongband.UI
             var ray = mainCamera.ScreenPointToRay(mousePosition);
             var plane = new Plane(Vector3.up, Vector3.zero);
             
-            var mouseTile = Tile.MinusOne;
+            MouseTile = Tile.MinusOne;
             if (plane.Raycast(ray, out var distance))
             {
                 var position = ray.GetPoint(distance);
-                mouseTile = new Tile((int)position.x, (int)position.z);
+                MouseTile = new Tile((int)position.x, (int)position.z);
             }
 
-            if (tileHighlighter != null) tileHighlighter.MouseTile = mouseTile;
-            if (agentInspector != null) agentInspector.MouseTile = mouseTile;
+            if (tileHighlighter != null) tileHighlighter.MouseTile = MouseTile;
+            if (agentInspector != null) agentInspector.MouseTile = MouseTile;
         }
 
         public void HandleMouseClick()

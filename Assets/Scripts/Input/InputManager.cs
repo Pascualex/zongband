@@ -48,7 +48,12 @@ namespace Zongband.Input
 
         private void OnMouseClick()
         {
-            uiManager?.HandleMouseClick();
+            if (uiManager == null) return;
+            uiManager.HandleMouseClick();
+
+            if (playerController == null) return;
+            var mouseTile = uiManager.MouseTile;
+            playerController.PlayerAction = new PlayerAction(mouseTile, false, true);
         }
     }
 }

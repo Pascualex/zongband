@@ -13,6 +13,10 @@ namespace Zongband.Utils
         public static Tile Right { get; } = new Tile(1, 0);
         public static Tile Down { get; } = new Tile(0, -1);
         public static Tile Left { get; } = new Tile(-1, 0);
+        public static Tile UpRight { get; } = new Tile(1, 1);
+        public static Tile DownRight { get; } = new Tile(1, -1);
+        public static Tile DownLeft { get; } = new Tile(-1, -1);
+        public static Tile UpLeft { get; } = new Tile(-1, 1);
 
         public int x;
         public int y;
@@ -21,6 +25,16 @@ namespace Zongband.Utils
         {
             this.x = x;
             this.y = y;
+        }
+
+        public int GetDistance()
+        {
+            return GetDistance(Zero);
+        }
+
+        public int GetDistance(Tile tile)
+        {
+            return Mathf.Max(Mathf.Abs(x - tile.x), Mathf.Abs(y - tile.y));
         }
 
         public Vector3Int ToVector3Int()
@@ -74,11 +88,16 @@ namespace Zongband.Utils
 
         public static Tile[] RandomizedDirections()
         {
-            var directions = new Tile[4];
-            directions[0] = Up;
-            directions[1] = Right;
-            directions[2] = Down;
-            directions[3] = Left;
+            var directions = new Tile[] {
+                Up,
+                Right,
+                Down,
+                Left,
+                UpRight,
+                DownRight,
+                DownLeft,
+                UpLeft
+            };
 
             Shuffler.Shuffle(directions);
 

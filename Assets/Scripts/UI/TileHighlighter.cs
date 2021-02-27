@@ -12,8 +12,8 @@ namespace Zongband.UI
         public Tile MouseTile { private get; set; } = Tile.MinusOne;
 
         [SerializeField] private GameManager? gameManager;
-        [SerializeField] private GameObject? initialCursorPrefab;
-        private GameObject? cursor;
+        [SerializeField] private TileHighlighterCursor? initialCursorPrefab;
+        private TileHighlighterCursor? cursor;
 
         private void Awake()
         {
@@ -25,11 +25,11 @@ namespace Zongband.UI
             HighlightTile();
         }
 
-        public void ChangeCursor(GameObject cursorPrefab)
+        public void ChangeCursor(TileHighlighterCursor cursorPrefab)
         {
             if (cursor != null) Destroy(cursor);
             cursor = Instantiate(cursorPrefab, transform);
-            cursor.SetActive(false);
+            cursor.SetNone();
         }
 
         private void HighlightTile()
@@ -40,17 +40,16 @@ namespace Zongband.UI
             var board = gameManager.board;
             if (board == null) return;
 
-            var highlight = false;
-
             var lastPlayer = gameManager.LastPlayer;
             if (lastPlayer != null && board.IsTileAvailable(lastPlayer, MouseTile, false))
             {
                 var position = MouseTile.ToWorld(board.Scale, board.transform.position);
                 cursor.transform.position = position;
-                highlight = true;
+                var distance = MouseTile.GetDistance(lastPlayer.tile);
+                if (distance > 1) cursor.SetNormal();
+                else cursor.SetWarning();
             }
-
-            cursor.SetActive(highlight);
+            else cursor.SetNone();
         }
     }
 }

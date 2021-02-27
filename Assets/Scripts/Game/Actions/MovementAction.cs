@@ -38,7 +38,7 @@ namespace Zongband.Game.Actions
             var oldTile = entity.tile;
 
             if (!MoveInBoard()) return true;
-            if (relative || !instant) FaceTowardsDirection(oldTile);
+            FaceTowardsDirection(oldTile);
 
             if (instant)
             {

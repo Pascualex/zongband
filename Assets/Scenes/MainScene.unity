@@ -1678,7 +1678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1379493068}
-  initialCursorPrefab: {fileID: 5770532021267404179, guid: b613f723b0e3be740bfa35e9837e4ac9,
+  initialCursorPrefab: {fileID: 7914889181307283872, guid: b613f723b0e3be740bfa35e9837e4ac9,
     type: 3}
 --- !u!4 &1668387687
 Transform:
