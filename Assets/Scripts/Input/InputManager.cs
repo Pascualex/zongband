@@ -30,7 +30,7 @@ namespace Zongband.Input
             if (playerController == null) return;
             var vector = value.Get<Vector2>();
             var direction = new Tile((int)vector.x, (int)vector.y);
-            playerController.PlayerAction = new PlayerAction(direction, true);
+            playerController.PlayerAction = new PlayerAction(direction, true, true);
         }
 
         private void OnSkipTurn(InputValue value)

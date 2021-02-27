@@ -23,7 +23,7 @@ namespace Zongband.Game.Controllers
             Agent? selectedTarget = null;
             foreach (var direction in directions)
             {
-                var target = context.board.GetAgent(agent, direction);
+                var target = context.board.GetAgent(agent, direction, true);
                 if (target != null && target.isPlayer != agent.isPlayer)
                 {
                     selectedTarget = target;
@@ -34,7 +34,7 @@ namespace Zongband.Game.Controllers
             if (selectedTarget == null) return null;
 
             // TODO: change damage calculation
-            return new AttackAction(agent, selectedTarget, 10);
+            return new AttackAction(agent, selectedTarget, agent.Attack);
         }
 
         private Action ProduceRandomMovement(Agent agent, Action.Context context)

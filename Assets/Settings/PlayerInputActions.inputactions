@@ -11,7 +11,7 @@
                     "id": "e0b9f710-1dda-46cb-b44e-3ba9349a7157",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "SkipTurn",

@@ -84,5 +84,10 @@ namespace Zongband.Utils
 
             return directions;
         }
+
+        public override string ToString()
+        {
+            return "(" + x + ", " + y + ")";
+        }
     }
 }

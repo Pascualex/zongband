@@ -78,9 +78,10 @@ namespace Zongband.Game.Boards
             }
         }
 
-        public Agent? GetAgent(Entity entity, Tile delta)
+        public Agent? GetAgent(Entity entity, Tile at, bool relative)
         {
-            return agentLayer.Get(entity.tile + delta);
+            if (relative) at += entity.tile;
+            return GetAgent(at);
         }
 
         public Agent? GetAgent(Tile at)
