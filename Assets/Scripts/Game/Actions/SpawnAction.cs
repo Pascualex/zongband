@@ -15,16 +15,16 @@ namespace Zongband.Game.Actions
 
         private readonly EntitySO entitySO;
         private readonly Tile tile;
-        private readonly Context context;
+        private readonly Context ctx;
         private readonly bool priority;
 
-        public SpawnAction(EntitySO entitySO, Tile tile, Context context)
-        : this(entitySO, tile, context, false) { }
+        public SpawnAction(EntitySO entitySO, Tile tile, Context ctx)
+        : this(entitySO, tile, ctx, false) { }
 
-        public SpawnAction(EntitySO entitySO, Tile tile, Context context, bool priority)
+        public SpawnAction(EntitySO entitySO, Tile tile, Context ctx, bool priority)
         {
             this.entitySO = entitySO;
-            this.context = context;
+            this.ctx = ctx;
             this.tile = tile;
             this.priority = priority;
         }
@@ -49,36 +49,35 @@ namespace Zongband.Game.Actions
 
         private Agent Spawn(AgentSO agentSO)
         {
-            var parent = context.turnManager.transform;
-            var agent = GameObject.Instantiate(context.agentPrefab, parent);
+            var parent = ctx.turnManager.transform;
+            var agent = GameObject.Instantiate(ctx.agentPrefab, parent);
             agent.ApplySO(agentSO);
             return agent;
         }
 
         private Entity Spawn(EntitySO entitySO)
         {
-            var parent = context.board.transform;
-            var entity = GameObject.Instantiate(context.entityPrefab, parent);
+            var parent = ctx.board.transform;
+            var entity = GameObject.Instantiate(ctx.entityPrefab, parent);
             entity.ApplySO(entitySO);
             return entity;
         }
 
         private bool AddToBoard(Entity entity)
         {
-            if (!context.board.IsTileAvailable(entity, tile, false)) return false;
-            context.board.Add(entity, tile);
+            if (!ctx.board.IsTileAvailable(entity, tile, false)) return false;
+            ctx.board.Add(entity, tile);
             return true;
         }
 
         private void AddToTurnManager(Agent agent)
         {
-            context.turnManager.Add(agent, priority);
+            ctx.turnManager.Add(agent, priority);
         }
 
         private void MoveToSpawnInWorld(Entity entity)
         {
-            var board = context.board;
-            var spawnPosition = entity.tile.ToWorld(board.Scale, board.transform.position);
+            var spawnPosition = entity.tile.ToWorld(ctx.board.Scale, ctx.board.transform.position);
             entity.transform.position = spawnPosition;
         }
     }

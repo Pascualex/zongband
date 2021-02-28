@@ -10,20 +10,20 @@ namespace Zongband.Game.Controllers
 {
     public class AIController : Controller
     {
-        public override Action? ProduceAction(Agent agent, Action.Context context)
+        public override Action? ProduceAction(Agent agent, Action.Context ctx)
         {
-            var action = AttackAdjacent(agent, context);
+            var action = AttackAdjacent(agent, ctx);
             if (action != null) return action;
-            return ProduceRandomMovement(agent, context);
+            return ProduceRandomMovement(agent, ctx);
         }
 
-        private Action? AttackAdjacent(Agent agent, Action.Context context)
+        private Action? AttackAdjacent(Agent agent, Action.Context ctx)
         {
             var directions = Tile.RandomizedDirections();
             Agent? selectedTarget = null;
             foreach (var direction in directions)
             {
-                var target = context.board.GetAgent(agent, direction, true);
+                var target = ctx.board.GetAgent(agent, direction, true);
                 if (target != null && target.isPlayer != agent.isPlayer)
                 {
                     selectedTarget = target;
@@ -33,10 +33,10 @@ namespace Zongband.Game.Controllers
 
             if (selectedTarget == null) return null;
 
-            return new AttackAction(agent, selectedTarget, context);
+            return new AttackAction(agent, selectedTarget, ctx);
         }
 
-        private Action ProduceRandomMovement(Agent agent, Action.Context context)
+        private Action ProduceRandomMovement(Agent agent, Action.Context ctx)
         {
             if (!agent.IsRoamer) return new NullAction();
 
@@ -44,7 +44,7 @@ namespace Zongband.Game.Controllers
             var selectedDirection = Tile.Zero;
             foreach (var direction in directions)
             {
-                if (context.board.IsTileAvailable(agent, direction, true))
+                if (ctx.board.IsTileAvailable(agent, direction, true))
                 {
                     selectedDirection = direction;
                     break;
@@ -53,7 +53,7 @@ namespace Zongband.Game.Controllers
 
             if (selectedDirection == Tile.Zero) return new NullAction();
 
-            return new MovementAction(agent, selectedDirection, true, context);
+            return new MovementAction(agent, selectedDirection, true, ctx);
         }
     }
 }

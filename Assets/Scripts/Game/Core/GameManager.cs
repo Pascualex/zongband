@@ -54,24 +54,24 @@ namespace Zongband.Game.Core
             if (agentPrefab == null) return;
             if (entityPrefab == null) return;
 
-            var context = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
 
             var newAction = new ParallelAction();
 
             var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(playerAgentSO, new Tile(3, 3), context, true);
+            var spawnPlayerAction = new SpawnAction(playerAgentSO, new Tile(3, 3), ctx, true);
             playerAction.Add(spawnPlayerAction);
             playerAction.Add(new MakePlayerAction(spawnPlayerAction));
             newAction.Add(playerAction);
 
-            // newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), context));
-            newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), context));
-            newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), context));
-            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), context));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(9, 5), context));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), context));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), context));
-            newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), context));
+            // newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), ctx));
+            newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), ctx));
+            newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), ctx));
+            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), ctx));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(9, 5), ctx));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), ctx));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), ctx));
+            newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), ctx));
 
             currentAction = newAction;
 
@@ -102,7 +102,7 @@ namespace Zongband.Game.Core
             if (agentPrefab == null) return new NullAction();
             if (entityPrefab == null) return new NullAction();
 
-            var context = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
 
             var turnAction = new ParallelAction();
             var processedAgents = new HashSet<Agent>();
@@ -113,9 +113,9 @@ namespace Zongband.Game.Core
                 if (agent.isPlayer)
                 {
                     LastPlayer = agent;
-                    agentAction = playerController.ProduceAction(agent, context);
+                    agentAction = playerController.ProduceAction(agent, ctx);
                 }
-                else agentAction = aiController.ProduceAction(agent, context);
+                else agentAction = aiController.ProduceAction(agent, ctx);
 
                 if (agentAction == null) break;
 

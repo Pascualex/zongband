@@ -10,15 +10,15 @@ namespace Zongband.Game.Actions
     {
         private readonly Agent attacker;
         private readonly Agent target;
-        private readonly Context context;
+        private readonly Context ctx;
         private EntityAnimator.AnimationState? animationState;
         private bool isDamageDealt = false;
 
-        public AttackAction(Agent attacker, Agent target, Context context)
+        public AttackAction(Agent attacker, Agent target, Context ctx)
         {
             this.attacker = attacker;
             this.target = target;
-            this.context = context;
+            this.ctx = ctx;
         }
 
         protected override bool ProcessStart()
@@ -65,8 +65,8 @@ namespace Zongband.Game.Actions
             target.Damage(attacker.Attack);
             if (target.CurrentHealth == 0)
             {
-                context.board.Remove(target);
-                context.turnManager.Remove(target);
+                ctx.board.Remove(target);
+                ctx.turnManager.Remove(target);
                 GameObject.Destroy(target.gameObject);
             }
         }

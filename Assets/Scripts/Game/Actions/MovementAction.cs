@@ -16,18 +16,18 @@ namespace Zongband.Game.Actions
         private readonly Entity entity;
         private readonly Tile tile;
         private readonly bool relative;
-        private readonly Context context;
+        private readonly Context ctx;
         private readonly bool instant;
 
-        public MovementAction(Entity entity, Tile tile, bool relative, Context context)
-        : this(entity, tile, relative, context, false) { }
+        public MovementAction(Entity entity, Tile tile, bool relative, Context ctx)
+        : this(entity, tile, relative, ctx, false) { }
 
-        public MovementAction(Entity entity, Tile tile, bool relative, Context context, bool instant)
+        public MovementAction(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
         {
             this.entity = entity;
             this.tile = tile;
             this.relative = relative;
-            this.context = context;
+            this.ctx = ctx;
             this.instant = instant;
         }
 
@@ -65,22 +65,20 @@ namespace Zongband.Game.Actions
 
         private bool MoveInBoard()
         {
-            if (!context.board.IsTileAvailable(entity, tile, relative)) return false;
-            context.board.Move(entity, tile, relative);
+            if (!ctx.board.IsTileAvailable(entity, tile, relative)) return false;
+            ctx.board.Move(entity, tile, relative);
             return true;
         }
 
         private void MoveToTargetInWorld()
         {
-            var board = context.board;
-            var targetPosition = entity.tile.ToWorld(board.Scale, board.transform.position);
+            var targetPosition = entity.tile.ToWorld(ctx.board.Scale, ctx.board.transform.position);
             entity.transform.position = targetPosition;
         }
 
         private bool MoveTowardsTarget()
         {
-            var board = context.board;
-            var targetPosition = entity.tile.ToWorld(board.Scale, board.transform.position);
+            var targetPosition = entity.tile.ToWorld(ctx.board.Scale, ctx.board.transform.position);
 
             var transform = entity.transform;
             var remainingDistance = Vector3.Distance(transform.position, targetPosition);

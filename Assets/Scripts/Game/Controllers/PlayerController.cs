@@ -13,9 +13,9 @@ namespace Zongband.Game.Controllers
         public PlayerAction? PlayerAction { private get; set; }
         public bool SkipTurn { private get; set; } = false;
 
-        public override Action? ProduceAction(Agent agent, Action.Context context)
+        public override Action? ProduceAction(Agent agent, Action.Context ctx)
         {
-            var agentAction = ProduceMovementOrAttack(agent, context);
+            var agentAction = ProduceMovementOrAttack(agent, ctx);
             if (agentAction == null && SkipTurn) agentAction = new NullAction();
 
             Clear();
@@ -27,7 +27,7 @@ namespace Zongband.Game.Controllers
             PlayerAction = null;
         }
 
-        private Action? ProduceMovementOrAttack(Agent agent, Action.Context context)
+        private Action? ProduceMovementOrAttack(Agent agent, Action.Context ctx)
         {
             if (PlayerAction == null) return null;
 
@@ -37,13 +37,13 @@ namespace Zongband.Game.Controllers
 
             var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.tile);
             var instant = distance > 1;
-            var isTileAvailable = context.board.IsTileAvailable(agent, tile, relative);
-            if (isTileAvailable) return new MovementAction(agent, tile, relative, context, instant);
+            var isTileAvailable = ctx.board.IsTileAvailable(agent, tile, relative);
+            if (isTileAvailable) return new MovementAction(agent, tile, relative, ctx, instant);
 
-            var targetAgent = context.board.GetAgent(agent, tile, relative);
+            var targetAgent = ctx.board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {
-                return new AttackAction(agent, targetAgent, context);
+                return new AttackAction(agent, targetAgent, ctx);
             }
 
             return null;
