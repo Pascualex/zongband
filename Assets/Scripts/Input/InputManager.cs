@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 using Zongband.UI;
 using Zongband.Game.Controllers;
@@ -27,7 +28,7 @@ namespace Zongband.Input
 
         private void OnMove(InputValue value)
         {
-            if (playerController == null) return;
+            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
             var vector = value.Get<Vector2>();
             var direction = new Tile((int)vector.x, (int)vector.y);
             playerController.PlayerAction = new PlayerAction(direction, true, true);
@@ -35,7 +36,7 @@ namespace Zongband.Input
 
         private void OnSkipTurn(InputValue value)
         {
-            if (playerController == null) return;
+            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
             var skipTurn = value.Get<float>() >= 0.5f;
             playerController.SkipTurn = skipTurn;
         }
@@ -48,10 +49,10 @@ namespace Zongband.Input
 
         private void OnMouseClick()
         {
-            if (uiManager == null) return;
-            uiManager.HandleMouseClick();
+            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
+            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
 
-            if (playerController == null) return;
+            uiManager.HandleMouseClick();
             var mouseTile = uiManager.MouseTile;
             playerController.PlayerAction = new PlayerAction(mouseTile, false, true);
         }

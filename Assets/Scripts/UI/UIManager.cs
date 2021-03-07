@@ -1,6 +1,7 @@
 #nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Utils;
 
@@ -23,7 +24,7 @@ namespace Zongband.UI
 
         public void SetMousePosition(Vector2 mousePosition)
         {
-            if (mainCamera == null) return;
+            if (mainCamera == null) throw new ArgumentNullException(nameof(mainCamera));
 
             var ray = mainCamera.ScreenPointToRay(mousePosition);
             var plane = new Plane(Vector3.up, Vector3.zero);

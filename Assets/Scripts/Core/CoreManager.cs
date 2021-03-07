@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Input;
 using Zongband.UI;
@@ -21,9 +22,9 @@ namespace Zongband.Core
 
         private void Update()
         {
-            if (inputManager == null) return;
-            if (gameManager == null) return;
-            if (uiManager == null) return;
+            if (inputManager == null) throw new ArgumentNullException(nameof(inputManager));
+            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
+            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
             
             inputManager.ProcessInput();
             gameManager.GameLoop();

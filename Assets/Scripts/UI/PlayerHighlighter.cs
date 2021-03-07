@@ -1,6 +1,7 @@
 #nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Game.Core;
 
@@ -32,19 +33,15 @@ namespace Zongband.UI
 
         private void HighlightPlayer()
         {
-            if (gameManager == null) return;
-            if (cursor == null) return;
-
-            var board = gameManager.board;
-            if (board == null) return;
+            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
+            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
             var highlight = false;
-
             var lastPlayer = gameManager.LastPlayer;
             // TODO: check if dead
             if (lastPlayer != null && lastPlayer.isPlayer)
             {
-                var parent = lastPlayer.GameModelContainer?.transform ?? lastPlayer.transform;
+                var parent = lastPlayer.gameModelContainer?.transform ?? lastPlayer.transform;
                 cursor.transform.parent = parent;
                 cursor.transform.localPosition = Vector3.zero;
                 highlight = true;

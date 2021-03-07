@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Utils;
 
@@ -10,33 +11,34 @@ namespace Zongband.Game.Entities
     {
         public Tile tile = Tile.MinusOne;
 
-        public Transform? GameModelContainer;
+        public Transform? gameModelContainer;
         [SerializeField] private GameObject? defaultGameModel;
         [SerializeField] private GameObject? gameModel;
 
         private void Awake()
         {
-            if (GameModelContainer == null) return;
-            if (defaultGameModel == null) return;
+            if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
+            if (defaultGameModel == null) throw new ArgumentNullException(nameof(defaultGameModel));
 
             if (gameModel != null) Destroy(gameModel);
 
-            gameModel = Instantiate(defaultGameModel, GameModelContainer);
+            gameModel = Instantiate(defaultGameModel, gameModelContainer);
             gameModel.name = "GameModel";
         }
 
         public void ApplySO(EntitySO entitySO)
         {
-            name = entitySO.name;
+            if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
+            if (defaultGameModel == null) throw new ArgumentNullException(nameof(defaultGameModel));
 
-            if (GameModelContainer == null) return;
             if (gameModel != null) Destroy(gameModel);
 
-            var parent = GameModelContainer;
+            var parent = gameModelContainer;
             if (entitySO.gameModel != null) gameModel = Instantiate(entitySO.gameModel, parent);
-            else if (defaultGameModel != null) gameModel = Instantiate(defaultGameModel, parent);
+            else gameModel = Instantiate(defaultGameModel, parent);
 
-            if (gameModel != null) gameModel.name = "GameModel";
+            name = entitySO.name;
+            gameModel.name = "GameModel";
         }
     }
 }

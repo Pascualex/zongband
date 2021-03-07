@@ -1,14 +1,15 @@
 ﻿#nullable enable
 
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 using Zongband.Game.Controllers;
 using Zongband.Game.Actions;
+using Zongband.Game.Generation;
 using Zongband.Game.Turns;
 using Zongband.Game.Boards;
 using Zongband.Game.Entities;
-using Zongband.Utils;
 
 namespace Zongband.Game.Core
 {
@@ -26,6 +27,7 @@ namespace Zongband.Game.Core
 
         public PlayerController? playerController;
         public AIController? aiController;
+        public DungeonGenerator? dungeonGenerator;
         public TurnManager? turnManager;
         public Board? board;
         public Agent? agentPrefab;
@@ -33,28 +35,32 @@ namespace Zongband.Game.Core
 
         public Agent? LastPlayer { get; private set; }
 
-        private Action currentAction = new NullAction();
+        private Actions.Action currentAction = new NullAction();
 
         public void SetupExample()
         {
-            if (boardSO == null) return;
-            if (floorTerrainSO == null) return;
-            if (wallTerrainSO == null) return;
-            if (playerAgentSO == null) return;
-            if (fastAgentSO == null) return;
-            if (normalAgentSO == null) return;
-            if (slowAgentSO == null) return;
-            if (notRoamerAgentSO == null) return;
-            if (boxEntitySO == null) return;
+            if (boardSO == null) throw new ArgumentNullException(nameof(boardSO));
+            if (floorTerrainSO == null) throw new ArgumentNullException(nameof(floorTerrainSO));
+            if (wallTerrainSO == null) throw new ArgumentNullException(nameof(wallTerrainSO));
+            if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
+            if (fastAgentSO == null) throw new ArgumentNullException(nameof(fastAgentSO));
+            if (normalAgentSO == null) throw new ArgumentNullException(nameof(normalAgentSO));
+            if (slowAgentSO == null) throw new ArgumentNullException(nameof(slowAgentSO));
+            if (notRoamerAgentSO == null) throw new ArgumentNullException(nameof(notRoamerAgentSO));
+            if (boxEntitySO == null) throw new ArgumentNullException(nameof(boxEntitySO));
 
-            if (playerController == null) return;
-            if (aiController == null) return;
-            if (turnManager == null) return;
-            if (board == null) return;
-            if (agentPrefab == null) return;
-            if (entityPrefab == null) return;
+            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+            if (dungeonGenerator == null) throw new ArgumentNullException(nameof(dungeonGenerator));
+            if (aiController == null) throw new ArgumentNullException(nameof(aiController));
+            if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
+            if (board == null) throw new ArgumentNullException(nameof(board));
+            if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
+            if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
 
-            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var boardData = dungeonGenerator.GenerateDungeon(board.Size);
+            if (boardData != null) board.Apply(boardData);
+
+            /*var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
 
             var newAction = new ParallelAction();
 
@@ -84,7 +90,7 @@ namespace Zongband.Game.Core
             board.ModifyBoxTerrain(upLeft, upRight + new Tile(0, -1), wallTerrainSO);
             board.ModifyBoxTerrain(upRight, downRight + new Tile(-1, 0), wallTerrainSO);
             board.ModifyBoxTerrain(downRight, downLeft + new Tile(0, 1), wallTerrainSO);
-            board.ModifyBoxTerrain(downLeft, upLeft + new Tile(1, 0), wallTerrainSO);
+            board.ModifyBoxTerrain(downLeft, upLeft + new Tile(1, 0), wallTerrainSO);*/
         }
 
         public void GameLoop()
@@ -93,23 +99,23 @@ namespace Zongband.Game.Core
             else currentAction.Process();
         }
 
-        public Action ProcessTurns()
+        public Actions.Action ProcessTurns()
         {
-            if (playerController == null) return new NullAction();
-            if (aiController == null) return new NullAction();
-            if (turnManager == null) return new NullAction();
-            if (board == null) return new NullAction();
-            if (agentPrefab == null) return new NullAction();
-            if (entityPrefab == null) return new NullAction();
+            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+            if (aiController == null) throw new ArgumentNullException(nameof(aiController));
+            if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
+            if (board == null) throw new ArgumentNullException(nameof(board));
+            if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
+            if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
 
-            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Actions.Action.Context(turnManager, board, agentPrefab, entityPrefab);
 
             var turnAction = new ParallelAction();
             var processedAgents = new HashSet<Agent>();
             Agent? agent;
             while (((agent = turnManager.GetCurrent()) != null) && !processedAgents.Contains(agent))
             {
-                Action? agentAction;
+                Actions.Action? agentAction;
                 if (agent.isPlayer)
                 {
                     LastPlayer = agent;

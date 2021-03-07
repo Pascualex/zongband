@@ -57,7 +57,7 @@ namespace Zongband.Game.Boards
             else entityLayer.Remove(entity);
         }
 
-        public void ModifyTerrain(Tile at, TerrainSO terrainSO)
+        public void Modify(Tile at, TerrainSO terrainSO)
         {
             if (!IsTileAvailable(terrainSO, at)) throw new NotEmptyTileException(at);
 
@@ -65,7 +65,7 @@ namespace Zongband.Game.Boards
             terrainTilemap?.SetTile(at.ToVector3Int(), terrainSO.tileBase);
         }
 
-        public void ModifyBoxTerrain(Tile from, Tile to, TerrainSO terrainSO)
+        public void Box(Tile from, Tile to, TerrainSO terrainSO)
         {
             var lower = new Tile(Mathf.Min(from.x, to.x), Mathf.Min(from.y, to.y));
             var higher = new Tile(Mathf.Max(from.x, to.x), Mathf.Max(from.y, to.y));
@@ -73,7 +73,24 @@ namespace Zongband.Game.Boards
             {
                 for (var j = lower.x; j <= higher.x; j++)
                 {
-                    ModifyTerrain(new Tile(j, i), terrainSO);
+                    Modify(new Tile(j, i), terrainSO);
+                }
+            }
+        }
+
+        public void Apply(BoardData boardData)
+        {
+            Apply(boardData, Tile.Zero);
+        }
+
+        public void Apply(BoardData boardData, Tile origin)
+        {
+            for (var i = 0; i < boardData.size.y; i++)
+            {
+                for (var j = 0; j < boardData.size.x; j++)
+                {
+                    var tile = new Tile(j, i);
+                    Modify(origin + tile, boardData.GetTerrain(tile));
                 }
             }
         }

@@ -1,6 +1,7 @@
 #nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Game.Core;
 using Zongband.Utils;
@@ -34,12 +35,11 @@ namespace Zongband.UI
 
         private void HighlightTile()
         {
-            if (gameManager == null) return;
-            if (cursor == null) return;
+            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
+            if (gameManager.board == null) throw new ArgumentNullException(nameof(gameManager.board));
+            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
             var board = gameManager.board;
-            if (board == null) return;
-
             var lastPlayer = gameManager.LastPlayer;
             if (lastPlayer != null && board.IsTileAvailable(lastPlayer, MouseTile, false))
             {

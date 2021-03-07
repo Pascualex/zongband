@@ -7,9 +7,10 @@ namespace Zongband.Utils
     public static class Warnings
     {
         public const string missingEntityTransformer =
-            "Entity was moved but doesn't have an EntityTransformer attached";
+            "Entity was moved but doesn't have an  EntityTransformer attached";
 
-        public static string TileWarning(Tile tile) {
+        public static string TileWarning(Tile tile)
+        {
             return "In tile at tile " + tile;
         }
     }
