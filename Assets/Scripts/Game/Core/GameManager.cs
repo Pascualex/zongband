@@ -57,10 +57,23 @@ namespace Zongband.Game.Core
             if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
             if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
 
-            var boardData = dungeonGenerator.GenerateDungeon(board.Size);
-            if (boardData != null) board.Apply(boardData);
+            var ctx = new Actions.Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var newAction = new ParallelAction();
 
-            /*var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var boardData = dungeonGenerator.GenerateDungeon(board.Size);
+            if (boardData == null) throw new NullReferenceException();
+
+            board.Apply(boardData);
+
+            var playerAction = new SequentialAction();
+            var spawnPlayerAction = new SpawnAction(playerAgentSO, boardData.PlayerSpawn, ctx, true);
+            playerAction.Add(spawnPlayerAction);
+            playerAction.Add(new MakePlayerAction(spawnPlayerAction));
+            newAction.Add(playerAction);
+
+            currentAction = newAction;
+
+            /*
 
             var newAction = new ParallelAction();
 
@@ -78,8 +91,6 @@ namespace Zongband.Game.Core
             newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), ctx));
             newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), ctx));
             newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), ctx));
-
-            currentAction = newAction;
 
             // TODO: maybe terrain modification should also be done through actions
             var upRight = new Tile(board.Size.x - 1, board.Size.y - 1);

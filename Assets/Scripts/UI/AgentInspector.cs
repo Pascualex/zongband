@@ -34,7 +34,7 @@ namespace Zongband.UI
             InspectAgent();
         }
 
-        public void HandleMouseClick()
+        public void LockAgent()
         {
             if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
             if (gameManager.board == null) throw new ArgumentNullException(nameof(gameManager.board));

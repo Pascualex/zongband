@@ -1,6 +1,7 @@
 #nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Game.Entities;
 using Zongband.Utils;
@@ -13,7 +14,7 @@ namespace Zongband.Game.Boards
         [SerializeField] private UnityEngine.Tilemaps.Tilemap? terrainTilemap;
 
         public Size Size { get; private set; } = Size.Zero;
-        public float Scale { get; private set; } = 1.0f;
+        public float Scale { get; private set; } = 1f;
 
         private readonly EntityLayer<Agent> agentLayer = new EntityLayer<Agent>();
         private readonly EntityLayer<Entity> entityLayer = new EntityLayer<Entity>();
@@ -59,10 +60,11 @@ namespace Zongband.Game.Boards
 
         public void Modify(Tile at, TerrainSO terrainSO)
         {
+            if (terrainTilemap == null) throw new ArgumentNullException(nameof(terrainTilemap));
             if (!IsTileAvailable(terrainSO, at)) throw new NotEmptyTileException(at);
 
             terrainLayer.Modify(at, terrainSO);
-            terrainTilemap?.SetTile(at.ToVector3Int(), terrainSO.tileBase);
+            terrainTilemap.SetTile(at.ToVector3Int(), terrainSO.tileBase);
         }
 
         public void Box(Tile from, Tile to, TerrainSO terrainSO)

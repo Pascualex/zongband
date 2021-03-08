@@ -23,7 +23,9 @@ namespace Zongband.Input
 
         public void ClearInput()
         {
-            playerController?.Clear();
+            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+
+            playerController.Clear();
         }
 
         private void OnMove(InputValue value)
@@ -43,8 +45,10 @@ namespace Zongband.Input
 
         private void OnMouseMove(InputValue value)
         {
+            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
+
             var mousePosition = value.Get<Vector2>();
-            uiManager?.SetMousePosition(mousePosition);
+            uiManager.SetMousePosition(mousePosition);
         }
 
         private void OnMouseClick()
@@ -55,6 +59,13 @@ namespace Zongband.Input
             uiManager.HandleMouseClick();
             var mouseTile = uiManager.MouseTile;
             playerController.PlayerAction = new PlayerAction(mouseTile, false, true);
+        }
+
+        private void OnCtrlMouseClick()
+        {
+            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
+
+            uiManager.HandleCtrlMouseClick();
         }
     }
 }

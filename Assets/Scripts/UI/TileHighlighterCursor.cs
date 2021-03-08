@@ -1,16 +1,14 @@
 #nullable enable
 
 using UnityEngine;
-
-using Zongband.Game.Core;
-using Zongband.Utils;
+using System;
 
 namespace Zongband.UI
 {
     public class TileHighlighterCursor : MonoBehaviour
     {
         [SerializeField] private GameObject? normalCursor;
-        [SerializeField] private GameObject? warnignCursor;
+        [SerializeField] private GameObject? warningCursor;
 
         private void Awake()
         {
@@ -19,20 +17,29 @@ namespace Zongband.UI
 
         public void SetNormal()
         {
-            normalCursor?.SetActive(true);
-            warnignCursor?.SetActive(false);
+            if (normalCursor == null) throw new ArgumentNullException(nameof(normalCursor));
+            if (warningCursor == null) throw new ArgumentNullException(nameof(warningCursor));
+
+            normalCursor.SetActive(true);
+            warningCursor.SetActive(false);
         }
 
         public void SetWarning()
         {
-            normalCursor?.SetActive(false);
-            warnignCursor?.SetActive(true);
+            if (normalCursor == null) throw new ArgumentNullException(nameof(normalCursor));
+            if (warningCursor == null) throw new ArgumentNullException(nameof(warningCursor));
+
+            normalCursor.SetActive(false);
+            warningCursor.SetActive(true);
         }
 
         public void SetNone()
         {
-            normalCursor?.SetActive(false);
-            warnignCursor?.SetActive(false);
+            if (normalCursor == null) throw new ArgumentNullException(nameof(normalCursor));
+            if (warningCursor == null) throw new ArgumentNullException(nameof(warningCursor));
+
+            normalCursor.SetActive(false);
+            warningCursor.SetActive(false);
         }
     }
 }

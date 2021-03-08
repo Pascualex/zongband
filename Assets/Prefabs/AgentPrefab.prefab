@@ -46,8 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e13adcdc34bc704d9fd82ece0bccb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  removed: 0
-  GameModelContainer: {fileID: 5130364486255211039}
+  gameModelContainer: {fileID: 5130364486255211039}
   defaultGameModel: {fileID: 4644097584919031478, guid: 9a81a00bf1b8dc84bba1f94cf680f62f,
     type: 3}
   gameModel: {fileID: 6023534435422770819}

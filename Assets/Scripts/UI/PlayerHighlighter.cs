@@ -41,7 +41,10 @@ namespace Zongband.UI
             // TODO: check if dead
             if (lastPlayer != null && lastPlayer.isPlayer)
             {
-                var parent = lastPlayer.gameModelContainer?.transform ?? lastPlayer.transform;
+                var gameModelContainer = lastPlayer.gameModelContainer;
+                if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
+
+                var parent = gameModelContainer.transform;
                 cursor.transform.parent = parent;
                 cursor.transform.localPosition = Vector3.zero;
                 highlight = true;

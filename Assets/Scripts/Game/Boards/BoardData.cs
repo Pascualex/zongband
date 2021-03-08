@@ -10,8 +10,9 @@ namespace Zongband.Game.Boards
     public class BoardData
     {
         public readonly Size size;
+        private Tile playerSpawn = Tile.Zero;
 
-        public readonly TerrainSO[][] terrainsSOs;
+        private readonly TerrainSO[][] terrainsSOs;
 
         public BoardData(Size size, TerrainSO defaultSO)
         {
@@ -75,6 +76,16 @@ namespace Zongband.Game.Boards
 
                 lower += Tile.One;
                 higher -= Tile.One;
+            }
+        }
+
+        public Tile PlayerSpawn
+        {
+            get => playerSpawn;
+            set
+            {
+                if (!size.Contains(value)) throw new ArgumentOutOfRangeException();
+                playerSpawn = value;
             }
         }
     }

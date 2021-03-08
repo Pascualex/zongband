@@ -10,8 +10,8 @@ namespace Zongband.Game.Actions
 {
     public class MovementAction : Action
     {
-        private const float animationFixedSpeed = 1.0f;
-        private const float animationVariableSpeed = 15.0f;
+        private const float animationFixedSpeed = 1f;
+        private const float animationVariableSpeed = 15f;
 
         private readonly Entity entity;
         private readonly Tile tile;

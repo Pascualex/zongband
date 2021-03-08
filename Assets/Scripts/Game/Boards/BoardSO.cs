@@ -10,13 +10,13 @@ namespace Zongband.Game.Boards
     public class BoardSO : ScriptableObject
     {
         public Size size = new Size(10, 10);
-        public float scale = 1.0f;
+        public float scale = 1f;
 
         private void OnValidate()
         {
             size.x = Mathf.Max(size.x, 0);
             size.y = Mathf.Max(size.y, 0);
-            if (scale <= 0) scale = 1.0f;
+            if (scale <= 0) scale = 1f;
         }
     }
 }

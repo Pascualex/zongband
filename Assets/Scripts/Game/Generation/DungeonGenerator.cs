@@ -19,7 +19,10 @@ namespace Zongband.Game.Generation
             if (wall == null) throw new ArgumentNullException(nameof(wall));
 
             var boardData = new BoardData(size, floor);
+
             boardData.Box(Tile.Zero, new Tile(size.x - 1, size.y - 1), wall, 2);
+            boardData.PlayerSpawn = new Tile(5, 5);
+
             return boardData;
         }
     }

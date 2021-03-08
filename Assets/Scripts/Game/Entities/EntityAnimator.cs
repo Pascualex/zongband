@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 namespace Zongband.Game.Entities
@@ -13,7 +14,9 @@ namespace Zongband.Game.Entities
 
         public AnimationState Attack()
         {
-            animator?.SetTrigger("Attack");
+            if (animator == null) throw new ArgumentNullException(nameof(animator));
+
+            animator.SetTrigger("Attack");
             var state = new AnimationState();
             attackStates.AddLast(state);
             return state;
@@ -21,7 +24,9 @@ namespace Zongband.Game.Entities
 
         public void ReadyAttack()
         {
-            animator?.ResetTrigger("Attack");
+            if (animator == null) throw new ArgumentNullException(nameof(animator));
+
+            animator.ResetTrigger("Attack");
             foreach (var state in attackStates) state.isReady = true;
         }
 

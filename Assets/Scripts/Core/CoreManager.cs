@@ -17,7 +17,9 @@ namespace Zongband.Core
 
         private void Start()
         {
-            gameManager?.SetupExample();
+            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
+
+            gameManager.SetupExample();
         }
 
         private void Update()
@@ -25,7 +27,7 @@ namespace Zongband.Core
             if (inputManager == null) throw new ArgumentNullException(nameof(inputManager));
             if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
             if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
-            
+
             inputManager.ProcessInput();
             gameManager.GameLoop();
             uiManager.Refresh();
