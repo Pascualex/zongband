@@ -39,33 +39,31 @@ namespace Zongband.Game.Boards
             terrainsSOs[at.y][at.x] = terrainSO;
         }
 
-        public void Fill(Tile from, Tile to, TerrainSO terrainSO)
+        public void Fill(Tile origin, Size size, TerrainSO terrainSO)
         {
-            var lower = new Tile(Mathf.Min(from.x, to.x), Mathf.Min(from.y, to.y));
-            var higher = new Tile(Mathf.Max(from.x, to.x), Mathf.Max(from.y, to.y));
-            for (var i = lower.y; i <= higher.y; i++)
+            for (var i = origin.y; i < (origin.y + size.y); i++)
             {
-                for (var j = lower.x; j <= higher.x; j++)
+                for (var j = origin.x; j < (origin.x + size.x); j++)
                 {
-                    terrainsSOs[i][i] = terrainSO;
+                    terrainsSOs[i][j] = terrainSO;
                 }
             }
         }
 
-        public void Box(Tile from, Tile to, TerrainSO terrainSO)
+        public void Box(Tile origin, Size size, TerrainSO terrainSO)
         {
-            Box(from, to, terrainSO, 1);
+            Box(origin, size, terrainSO, 1);
         }
 
-        public void Box(Tile from, Tile to, TerrainSO terrainSO, int width)
+        public void Box(Tile origin, Size size, TerrainSO terrainSO, int width)
         {
             if (width <= 0) throw new ArgumentOutOfRangeException();
 
-            var lower = new Tile(Mathf.Min(from.x, to.x), Mathf.Min(from.y, to.y));
-            var higher = new Tile(Mathf.Max(from.x, to.x), Mathf.Max(from.y, to.y));
+            if (width > (size.x / 2)) throw new ArgumentOutOfRangeException();
+            if (width > (size.y / 2)) throw new ArgumentOutOfRangeException();
 
-            if (width > (higher.x - lower.x + 1)) throw new ArgumentOutOfRangeException();
-            if (width > (higher.y - lower.y + 1)) throw new ArgumentOutOfRangeException();
+            var lower = origin;
+            var higher = origin + new Tile(size.x - 1, size.y - 1);
 
             for (var i = 0; i < width; i++)
             {

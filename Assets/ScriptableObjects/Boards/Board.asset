@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Board
   m_EditorClassIdentifier: 
   size:
-    x: 100
-    y: 100
+    x: 256
+    y: 256
   scale: 1

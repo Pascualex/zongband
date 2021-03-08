@@ -12,6 +12,8 @@ using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
+using Action=Zongband.Game.Actions.Action;
+
 namespace Zongband.Game.Core
 {
     public class GameManager : MonoBehaviour
@@ -33,7 +35,7 @@ namespace Zongband.Game.Core
 
         public Agent? LastPlayer { get; private set; }
 
-        private Actions.Action currentAction = new NullAction();
+        private Action currentAction = new NullAction();
 
         public void SetupExample1()
         {
@@ -52,10 +54,10 @@ namespace Zongband.Game.Core
             if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
             if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
 
-            var ctx = new Actions.Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
             var newAction = new ParallelAction();
 
-            var boardData = dungeonGenerator.GenerateRoom(board.Size, 2);
+            var boardData = dungeonGenerator.GenerateTestDungeon(board.Size, 2);
             if (boardData == null) throw new NullReferenceException();
             board.Apply(boardData);
 
@@ -87,10 +89,10 @@ namespace Zongband.Game.Core
             if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
             if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
 
-            var ctx = new Actions.Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
             var newAction = new ParallelAction();
 
-            var boardData = dungeonGenerator.GenerateDungeon(board.Size);
+            var boardData = dungeonGenerator.GenerateDungeon(board.Size, 200, 4, 20, 2);
             if (boardData == null) throw new NullReferenceException();
 
             board.Apply(boardData);
@@ -110,7 +112,7 @@ namespace Zongband.Game.Core
             else currentAction.Process();
         }
 
-        public Actions.Action ProcessTurns()
+        public Action ProcessTurns()
         {
             if (playerController == null) throw new ArgumentNullException(nameof(playerController));
             if (aiController == null) throw new ArgumentNullException(nameof(aiController));
@@ -119,14 +121,14 @@ namespace Zongband.Game.Core
             if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
             if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
 
-            var ctx = new Actions.Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
 
             var turnAction = new ParallelAction();
             var processedAgents = new HashSet<Agent>();
             Agent? agent;
             while (((agent = turnManager.GetCurrent()) != null) && !processedAgents.Contains(agent))
             {
-                Actions.Action? agentAction;
+                Action? agentAction;
                 if (agent.isPlayer)
                 {
                     LastPlayer = agent;
