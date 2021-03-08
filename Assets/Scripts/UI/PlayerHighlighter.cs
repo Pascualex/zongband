@@ -44,13 +44,10 @@ namespace Zongband.UI
                 var gameModelContainer = lastPlayer.gameModelContainer;
                 if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
 
-                var parent = gameModelContainer.transform;
-                cursor.transform.parent = parent;
-                cursor.transform.localPosition = Vector3.zero;
+                cursor.transform.position = gameModelContainer.transform.position;
                 highlight = true;
             }
 
-            if (!highlight) cursor.transform.parent = transform;
             cursor.gameObject.SetActive(highlight);
         }
     }

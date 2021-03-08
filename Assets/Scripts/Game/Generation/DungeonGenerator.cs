@@ -15,12 +15,17 @@ namespace Zongband.Game.Generation
 
         public BoardData? GenerateDungeon(Size size)
         {
+            return GenerateRoom(size, 2);
+        }
+
+        public BoardData? GenerateRoom(Size size, int wallWidth)
+        {
             if (floor == null) throw new ArgumentNullException(nameof(floor));
             if (wall == null) throw new ArgumentNullException(nameof(wall));
 
             var boardData = new BoardData(size, floor);
 
-            boardData.Box(Tile.Zero, new Tile(size.x - 1, size.y - 1), wall, 2);
+            boardData.Box(Tile.Zero, new Tile(size.x - 1, size.y - 1), wall, wallWidth);
             boardData.PlayerSpawn = new Tile(5, 5);
 
             return boardData;

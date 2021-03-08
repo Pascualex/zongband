@@ -10,14 +10,12 @@ using Zongband.Game.Generation;
 using Zongband.Game.Turns;
 using Zongband.Game.Boards;
 using Zongband.Game.Entities;
+using Zongband.Utils;
 
 namespace Zongband.Game.Core
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private BoardSO? boardSO;
-        [SerializeField] private TerrainSO? floorTerrainSO;
-        [SerializeField] private TerrainSO? wallTerrainSO;
         [SerializeField] private AgentSO? playerAgentSO;
         [SerializeField] private AgentSO? fastAgentSO;
         [SerializeField] private AgentSO? normalAgentSO;
@@ -37,11 +35,8 @@ namespace Zongband.Game.Core
 
         private Actions.Action currentAction = new NullAction();
 
-        public void SetupExample()
+        public void SetupExample1()
         {
-            if (boardSO == null) throw new ArgumentNullException(nameof(boardSO));
-            if (floorTerrainSO == null) throw new ArgumentNullException(nameof(floorTerrainSO));
-            if (wallTerrainSO == null) throw new ArgumentNullException(nameof(wallTerrainSO));
             if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
             if (fastAgentSO == null) throw new ArgumentNullException(nameof(fastAgentSO));
             if (normalAgentSO == null) throw new ArgumentNullException(nameof(normalAgentSO));
@@ -52,6 +47,41 @@ namespace Zongband.Game.Core
             if (playerController == null) throw new ArgumentNullException(nameof(playerController));
             if (dungeonGenerator == null) throw new ArgumentNullException(nameof(dungeonGenerator));
             if (aiController == null) throw new ArgumentNullException(nameof(aiController));
+            if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
+            if (board == null) throw new ArgumentNullException(nameof(board));
+            if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
+            if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
+
+            var ctx = new Actions.Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var newAction = new ParallelAction();
+
+            var boardData = dungeonGenerator.GenerateRoom(board.Size, 2);
+            if (boardData == null) throw new NullReferenceException();
+            board.Apply(boardData);
+
+            var playerAction = new SequentialAction();
+            var spawnPlayerAction = new SpawnAction(playerAgentSO, new Tile(3, 3), ctx, true);
+            playerAction.Add(spawnPlayerAction);
+            playerAction.Add(new MakePlayerAction(spawnPlayerAction));
+            newAction.Add(playerAction);
+
+            // newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), ctx));
+            newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), ctx));
+            newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), ctx));
+            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), ctx));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(9, 5), ctx));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), ctx));
+            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), ctx));
+            newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), ctx));
+
+            currentAction = newAction;
+        }
+
+        public void SetupExample2()
+        {
+            if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
+
+            if (dungeonGenerator == null) throw new ArgumentNullException(nameof(dungeonGenerator));
             if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
             if (board == null) throw new ArgumentNullException(nameof(board));
             if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
@@ -72,36 +102,6 @@ namespace Zongband.Game.Core
             newAction.Add(playerAction);
 
             currentAction = newAction;
-
-            /*
-
-            var newAction = new ParallelAction();
-
-            var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(playerAgentSO, new Tile(3, 3), ctx, true);
-            playerAction.Add(spawnPlayerAction);
-            playerAction.Add(new MakePlayerAction(spawnPlayerAction));
-            newAction.Add(playerAction);
-
-            // newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), ctx));
-            newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), ctx));
-            newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), ctx));
-            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), ctx));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(9, 5), ctx));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), ctx));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), ctx));
-            newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), ctx));
-
-            // TODO: maybe terrain modification should also be done through actions
-            var upRight = new Tile(board.Size.x - 1, board.Size.y - 1);
-            var downRight = new Tile(board.Size.x - 1, 0);
-            var downLeft = Tile.Zero;
-            var upLeft = new Tile(0, board.Size.y - 1);
-            board.ModifyBoxTerrain(downLeft, upRight, floorTerrainSO);
-            board.ModifyBoxTerrain(upLeft, upRight + new Tile(0, -1), wallTerrainSO);
-            board.ModifyBoxTerrain(upRight, downRight + new Tile(-1, 0), wallTerrainSO);
-            board.ModifyBoxTerrain(downRight, downLeft + new Tile(0, 1), wallTerrainSO);
-            board.ModifyBoxTerrain(downLeft, upLeft + new Tile(1, 0), wallTerrainSO);*/
         }
 
         public void GameLoop()
