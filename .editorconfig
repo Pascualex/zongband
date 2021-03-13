@@ -204,3 +204,13 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix =
 dotnet_naming_style.begins_with_i.word_separator =
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+# Pascal Case for attributes
+
+dotnet_naming_symbols.public_symbols.applicable_kinds = property,method,field,event,delegate
+
+dotnet_naming_style.first_word_upper_case_style.capitalization = first_word_upper
+
+dotnet_naming_rule.public_members_must_be_capitalized.symbols = public_symbols
+dotnet_naming_rule.public_members_must_be_capitalized.style = first_word_upper_case_style
+dotnet_naming_rule.public_members_must_be_capitalized.severity = warning

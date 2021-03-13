@@ -11,32 +11,32 @@ namespace Zongband.UI
     {
         public Tile MouseTile { get; private set; } = Tile.MinusOne;
 
-        [SerializeField] private Camera? mainCamera;
-        [SerializeField] private CameraController? cameraController;
-        [SerializeField] private TileHighlighter? tileHighlighter;
-        [SerializeField] private PlayerHighlighter? playerHighlighter;
-        [SerializeField] private AgentInspector? agentInspector;
+        [SerializeField] private Camera? MainCamera;
+        [SerializeField] private CameraController? CameraController;
+        [SerializeField] private TileHighlighter? TileHighlighter;
+        [SerializeField] private PlayerHighlighter? PlayerHighlighter;
+        [SerializeField] private AgentInspector? AgentInspector;
 
-        private Vector2 mousePosition = new Vector2(-1, -1);
+        private Vector2 MousePosition = new Vector2(-1, -1);
 
         public void Refresh()
         {
-            if (cameraController == null) throw new ArgumentNullException(nameof(cameraController));
-            if (tileHighlighter == null) throw new ArgumentNullException(nameof(tileHighlighter));
-            if (playerHighlighter == null) throw new ArgumentNullException(nameof(playerHighlighter));
-            if (agentInspector == null) throw new ArgumentNullException(nameof(agentInspector));
+            if (CameraController == null) throw new ArgumentNullException(nameof(CameraController));
+            if (TileHighlighter == null) throw new ArgumentNullException(nameof(TileHighlighter));
+            if (PlayerHighlighter == null) throw new ArgumentNullException(nameof(PlayerHighlighter));
+            if (AgentInspector == null) throw new ArgumentNullException(nameof(AgentInspector));
 
-            tileHighlighter.Refresh();
-            playerHighlighter.Refresh();
-            agentInspector.Refresh();
+            TileHighlighter.Refresh();
+            PlayerHighlighter.Refresh();
+            AgentInspector.Refresh();
 
-            cameraController.Refresh();
+            CameraController.Refresh();
             UpdateMouseTile();
         }
 
         public void SetMousePosition(Vector2 mousePosition)
         {
-            this.mousePosition = mousePosition;
+            MousePosition = mousePosition;
             UpdateMouseTile();
         }
 
@@ -47,16 +47,16 @@ namespace Zongband.UI
 
         public void HandleCtrlMouseClick()
         {
-            if (agentInspector == null) throw new ArgumentNullException(nameof(agentInspector));
+            if (AgentInspector == null) throw new ArgumentNullException(nameof(AgentInspector));
 
-            agentInspector.LockAgent();
+            AgentInspector.LockAgent();
         }
 
         private void UpdateMouseTile()
         {
-            if (mainCamera == null) throw new ArgumentNullException(nameof(mainCamera));
+            if (MainCamera == null) throw new ArgumentNullException(nameof(MainCamera));
 
-            var ray = mainCamera.ScreenPointToRay(mousePosition);
+            var ray = MainCamera.ScreenPointToRay(MousePosition);
             var plane = new Plane(Vector3.up, Vector3.zero);
 
             MouseTile = Tile.MinusOne;
@@ -66,8 +66,8 @@ namespace Zongband.UI
                 MouseTile = new Tile((int)position.x, (int)position.z);
             }
 
-            if (tileHighlighter != null) tileHighlighter.MouseTile = MouseTile;
-            if (agentInspector != null) agentInspector.MouseTile = MouseTile;
+            if (TileHighlighter != null) TileHighlighter.MouseTile = MouseTile;
+            if (AgentInspector != null) AgentInspector.MouseTile = MouseTile;
         }
     }
 }

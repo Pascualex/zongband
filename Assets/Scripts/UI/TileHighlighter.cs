@@ -12,13 +12,13 @@ namespace Zongband.UI
     {
         public Tile MouseTile { private get; set; } = Tile.MinusOne;
 
-        [SerializeField] private GameManager? gameManager;
-        [SerializeField] private TileHighlighterCursor? initialCursorPrefab;
-        private TileHighlighterCursor? cursor;
+        [SerializeField] private GameManager? GameManager;
+        [SerializeField] private TileHighlighterCursor? InitialCursorPrefab;
+        private TileHighlighterCursor? Cursor;
 
         private void Awake()
         {
-            if (initialCursorPrefab != null) ChangeCursor(initialCursorPrefab);
+            if (InitialCursorPrefab != null) ChangeCursor(InitialCursorPrefab);
         }
 
         public void Refresh()
@@ -28,28 +28,28 @@ namespace Zongband.UI
 
         public void ChangeCursor(TileHighlighterCursor cursorPrefab)
         {
-            if (cursor != null) Destroy(cursor);
-            cursor = Instantiate(cursorPrefab, transform);
-            cursor.SetNone();
+            if (Cursor != null) Destroy(Cursor);
+            Cursor = Instantiate(cursorPrefab, transform);
+            Cursor.SetNone();
         }
 
         private void HighlightTile()
         {
-            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
-            if (gameManager.board == null) throw new ArgumentNullException(nameof(gameManager.board));
-            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
+            if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
+            if (GameManager.Board == null) throw new ArgumentNullException(nameof(GameManager.Board));
+            if (Cursor == null) throw new ArgumentNullException(nameof(Cursor));
 
-            var board = gameManager.board;
-            var lastPlayer = gameManager.LastPlayer;
+            var board = GameManager.Board;
+            var lastPlayer = GameManager.LastPlayer;
             if (lastPlayer != null && board.IsTileAvailable(lastPlayer, MouseTile, false))
             {
                 var position = MouseTile.ToWorld(board.Scale, board.transform.position);
-                cursor.transform.position = position;
-                var distance = MouseTile.GetDistance(lastPlayer.tile);
-                if (distance > 1) cursor.SetNormal();
-                else cursor.SetWarning();
+                Cursor.transform.position = position;
+                var distance = MouseTile.GetDistance(lastPlayer.Tile);
+                if (distance > 1) Cursor.SetNormal();
+                else Cursor.SetWarning();
             }
-            else cursor.SetNone();
+            else Cursor.SetNone();
         }
     }
 }

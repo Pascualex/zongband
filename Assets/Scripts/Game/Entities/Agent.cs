@@ -7,7 +7,7 @@ namespace Zongband.Game.Entities
 {
     public class Agent : Entity
     {
-        public bool isPlayer = false;
+        public bool IsPlayer = false;
         
         public int TurnCooldown { get; private set; } = 100;
         public int TurnPriority { get; private set; } = 0;
@@ -26,12 +26,12 @@ namespace Zongband.Game.Entities
         {
             base.ApplySO(agentSO);
 
-            TurnCooldown = agentSO.turnCooldown;
-            TurnPriority = agentSO.turnPriority;
-            MaxHealth = agentSO.maxHealth;
-            Attack = agentSO.attack;
-            IsGhost = agentSO.isGhost;
-            IsRoamer = agentSO.isRoamer;
+            TurnCooldown = agentSO.TurnCooldown;
+            TurnPriority = agentSO.TurnPriority;
+            MaxHealth = agentSO.MaxHealth;
+            Attack = agentSO.Attack;
+            IsGhost = agentSO.IsGhost;
+            IsRoamer = agentSO.IsRoamer;
 
             CurrentHealth = MaxHealth;
         }

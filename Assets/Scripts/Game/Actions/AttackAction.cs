@@ -8,53 +8,53 @@ namespace Zongband.Game.Actions
 {
     public class AttackAction : Action
     {
-        private readonly Agent attacker;
-        private readonly Agent target;
-        private readonly Context ctx;
-        private EntityAnimator.AnimationState? animationState;
-        private bool isDamageDealt = false;
+        private readonly Agent Attacker;
+        private readonly Agent Target;
+        private readonly Context Ctx;
+        private EntityAnimator.AnimationState? AnimationState;
+        private bool IsDamageDealt = false;
 
         public AttackAction(Agent attacker, Agent target, Context ctx)
         {
-            this.attacker = attacker;
-            this.target = target;
-            this.ctx = ctx;
+            Attacker = attacker;
+            Target = target;
+            Ctx = ctx;
         }
 
         protected override bool ProcessStart()
         {
-            if (!attacker || !target) return true;
+            if (!Attacker || !Target) return true;
 
-            var tileDirection = target.tile - attacker.tile;
+            var tileDirection = Target.Tile - Attacker.Tile;
             var direction = tileDirection.ToWorldVector3();
-            attacker.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            Attacker.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
 
-            var animatorComponent = attacker.GetComponent<EntityAnimator>();
+            var animatorComponent = Attacker.GetComponent<EntityAnimator>();
             if (animatorComponent == null)
             {
                 Damage();
                 return true;
             }
 
-            animationState = animatorComponent.Attack();
+            AnimationState = animatorComponent.Attack();
 
             return false;
         }
 
         protected override bool ProcessUpdate()
         {
-            if (!attacker || !target) return true;
+            if (!Attacker || !Target) return true;
 
-            if (animationState == null || animationState.isCompleted)
+            if (AnimationState == null || AnimationState.IsCompleted)
             {
-                if (!isDamageDealt) Damage();
+                if (!IsDamageDealt) Damage();
                 return true;
             }
 
-            if (animationState.isReady && !isDamageDealt)
+            if (AnimationState.IsReady && !IsDamageDealt)
             {
                 Damage();
-                isDamageDealt = true;
+                IsDamageDealt = true;
             }
 
             return false;
@@ -62,12 +62,12 @@ namespace Zongband.Game.Actions
 
         private void Damage()
         {
-            target.Damage(attacker.Attack);
-            if (target.CurrentHealth == 0)
+            Target.Damage(Attacker.Attack);
+            if (Target.CurrentHealth == 0)
             {
-                ctx.board.Remove(target);
-                ctx.turnManager.Remove(target);
-                GameObject.Destroy(target.gameObject);
+                Ctx.Board.Remove(Target);
+                Ctx.TurnManager.Remove(Target);
+                GameObject.Destroy(Target.gameObject);
             }
         }
     }

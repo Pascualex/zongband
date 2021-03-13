@@ -7,7 +7,7 @@ namespace Zongband.Game.Actions
 {
     public class SequentialAction : CombinedAction
     {
-        private readonly Queue<Action> actions = new Queue<Action>();
+        private readonly Queue<Action> Actions = new Queue<Action>();
 
         protected override bool ProcessStart()
         {
@@ -21,11 +21,11 @@ namespace Zongband.Game.Actions
 
         private bool ProcessUntilNotCompleted()
         {
-            while (actions.Count != 0)
+            while (Actions.Count != 0)
             {
-                actions.Peek().Process();
-                if (!actions.Peek().IsCompleted) return false;
-                actions.Dequeue();
+                Actions.Peek().Process();
+                if (!Actions.Peek().IsCompleted) return false;
+                Actions.Dequeue();
             }
             return true;
         }
@@ -33,7 +33,7 @@ namespace Zongband.Game.Actions
         public override void Add(Action action)
         {
             base.Add(action);
-            if (!action.IsCompleted) actions.Enqueue(action);
+            if (!action.IsCompleted) Actions.Enqueue(action);
         }
     }
 }

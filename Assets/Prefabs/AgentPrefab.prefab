@@ -46,11 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e13adcdc34bc704d9fd82ece0bccb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameModelContainer: {fileID: 5130364486255211039}
-  defaultGameModel: {fileID: 4644097584919031478, guid: 9a81a00bf1b8dc84bba1f94cf680f62f,
+  GameModelContainer: {fileID: 5130364486255211039}
+  DefaultGameModel: {fileID: 4644097584919031478, guid: 9a81a00bf1b8dc84bba1f94cf680f62f,
     type: 3}
-  gameModel: {fileID: 6023534435422770819}
-  isPlayer: 0
+  GameModel: {fileID: 6023534435422770819}
+  IsPlayer: 0
 --- !u!114 &8564894734393390156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dffb473371bda5458af6c7f4f00633d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 6181462266324178582}
+  Animator: {fileID: 6181462266324178582}
 --- !u!95 &6181462266324178582
 Animator:
   serializedVersion: 3

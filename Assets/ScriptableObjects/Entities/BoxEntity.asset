@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 374fb3f55da16d74fb8c284fefb0fd3a, type: 3}
   m_Name: BoxEntity
   m_EditorClassIdentifier: 
-  gameModel: {fileID: 4644097584919031478, guid: c94917070f7eaf54ba6d8acf1f6a3023,
+  GameModel: {fileID: 4644097584919031478, guid: c94917070f7eaf54ba6d8acf1f6a3023,
     type: 3}

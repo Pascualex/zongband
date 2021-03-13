@@ -1255,8 +1255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6495cce5a0fb08648ac9fe0b78eae3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalCursor: {fileID: 828085177517043595}
-  warningCursor: {fileID: 2666622391167622398}
+  NormalCursor: {fileID: 828085177517043595}
+  WarningCursor: {fileID: 2666622391167622398}
 --- !u!1 &7155123628540000262
 GameObject:
   m_ObjectHideFlags: 0

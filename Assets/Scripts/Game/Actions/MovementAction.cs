@@ -10,37 +10,37 @@ namespace Zongband.Game.Actions
 {
     public class MovementAction : Action
     {
-        private const float animationFixedSpeed = 1f;
-        private const float animationVariableSpeed = 15f;
+        private const float AnimationFixedSpeed = 1f;
+        private const float AnimationVariableSpeed = 15f;
 
-        private readonly Entity entity;
-        private readonly Tile tile;
-        private readonly bool relative;
-        private readonly Context ctx;
-        private readonly bool instant;
+        private readonly Entity Entity;
+        private readonly Tile Tile;
+        private readonly bool Relative;
+        private readonly Context Ctx;
+        private readonly bool Instant;
 
         public MovementAction(Entity entity, Tile tile, bool relative, Context ctx)
         : this(entity, tile, relative, ctx, false) { }
 
         public MovementAction(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
         {
-            this.entity = entity;
-            this.tile = tile;
-            this.relative = relative;
-            this.ctx = ctx;
-            this.instant = instant;
+            Entity = entity;
+            Tile = tile;
+            Relative = relative;
+            Ctx = ctx;
+            Instant = instant;
         }
 
         protected override bool ProcessStart()
         {
-            if (!entity) return true;
+            if (!Entity) return true;
 
-            var oldTile = entity.tile;
+            var oldTile = Entity.Tile;
 
             if (!MoveInBoard()) return true;
             FaceTowardsDirection(oldTile);
 
-            if (instant)
+            if (Instant)
             {
                 MoveToTargetInWorld();
                 return true;
@@ -51,39 +51,39 @@ namespace Zongband.Game.Actions
 
         protected override bool ProcessUpdate()
         {
-            if (!entity) return true;
+            if (!Entity) return true;
 
             return MoveTowardsTarget();
         }
 
         private void FaceTowardsDirection(Tile oldTile)
         {
-            var tileDirection = entity.tile - oldTile;
+            var tileDirection = Entity.Tile - oldTile;
             var direction = tileDirection.ToWorldVector3();
-            entity.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            Entity.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         private bool MoveInBoard()
         {
-            if (!ctx.board.IsTileAvailable(entity, tile, relative)) return false;
-            ctx.board.Move(entity, tile, relative);
+            if (!Ctx.Board.IsTileAvailable(Entity, Tile, Relative)) return false;
+            Ctx.Board.Move(Entity, Tile, Relative);
             return true;
         }
 
         private void MoveToTargetInWorld()
         {
-            var targetPosition = entity.tile.ToWorld(ctx.board.Scale, ctx.board.transform.position);
-            entity.transform.position = targetPosition;
+            var targetPosition = Entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
+            Entity.transform.position = targetPosition;
         }
 
         private bool MoveTowardsTarget()
         {
-            var targetPosition = entity.tile.ToWorld(ctx.board.Scale, ctx.board.transform.position);
+            var targetPosition = Entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
 
-            var transform = entity.transform;
+            var transform = Entity.transform;
             var remainingDistance = Vector3.Distance(transform.position, targetPosition);
-            var variableDistance = remainingDistance * animationVariableSpeed;
-            var distance = (variableDistance + animationFixedSpeed) * Time.deltaTime;
+            var variableDistance = remainingDistance * AnimationVariableSpeed;
+            var distance = (variableDistance + AnimationFixedSpeed) * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, distance);
 
             return transform.position == targetPosition;

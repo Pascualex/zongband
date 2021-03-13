@@ -8,42 +8,42 @@ namespace Zongband.Game.Entities
 {
     public class EntityAnimator : MonoBehaviour
     {
-        [SerializeField] private Animator? animator;
+        [SerializeField] private Animator? Animator;
 
-        private readonly LinkedList<AnimationState> attackStates = new LinkedList<AnimationState>();
+        private readonly LinkedList<AnimationState> AttackStates = new LinkedList<AnimationState>();
 
         public AnimationState Attack()
         {
-            if (animator == null) throw new ArgumentNullException(nameof(animator));
+            if (Animator == null) throw new ArgumentNullException(nameof(Animator));
 
-            animator.SetTrigger("Attack");
+            Animator.SetTrigger("Attack");
             var state = new AnimationState();
-            attackStates.AddLast(state);
+            AttackStates.AddLast(state);
             return state;
         }
 
         public void ReadyAttack()
         {
-            if (animator == null) throw new ArgumentNullException(nameof(animator));
+            if (Animator == null) throw new ArgumentNullException(nameof(Animator));
 
-            animator.ResetTrigger("Attack");
-            foreach (var state in attackStates) state.isReady = true;
+            Animator.ResetTrigger("Attack");
+            foreach (var state in AttackStates) state.IsReady = true;
         }
 
         public void CompleteAttack()
         {
-            while (attackStates.Count > 0)
+            while (AttackStates.Count > 0)
             {
-                if (!attackStates.First.Value.isReady) break;
-                attackStates.First.Value.isCompleted = true;
-                attackStates.RemoveFirst();
+                if (!AttackStates.First.Value.IsReady) break;
+                AttackStates.First.Value.IsCompleted = true;
+                AttackStates.RemoveFirst();
             }
         }
 
         public class AnimationState
         {
-            public bool isReady = false;
-            public bool isCompleted = false;
+            public bool IsReady = false;
+            public bool IsCompleted = false;
         }
     }
 }

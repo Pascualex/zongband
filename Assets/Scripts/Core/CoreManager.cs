@@ -11,28 +11,28 @@ namespace Zongband.Core
 {
     public class CoreManager : MonoBehaviour
     {
-        [SerializeField] private InputManager? inputManager;
-        [SerializeField] private UIManager? uiManager;
-        [SerializeField] private GameManager? gameManager;
+        [SerializeField] private InputManager? InputManager;
+        [SerializeField] private UIManager? UIManager;
+        [SerializeField] private GameManager? GameManager;
 
         private void Start()
         {
-            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
+            if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
 
             //gameManager.SetupExample1();
-            gameManager.SetupExample2();
+            GameManager.SetupExample2();
         }
 
         private void Update()
         {
-            if (inputManager == null) throw new ArgumentNullException(nameof(inputManager));
-            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
-            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
+            if (InputManager == null) throw new ArgumentNullException(nameof(InputManager));
+            if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
+            if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
 
-            inputManager.ProcessInput();
-            gameManager.GameLoop();
-            uiManager.Refresh();
-            inputManager.ClearInput();
+            InputManager.ProcessInput();
+            GameManager.GameLoop();
+            UIManager.Refresh();
+            InputManager.ClearInput();
         }
     }
 }

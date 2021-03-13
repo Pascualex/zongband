@@ -10,70 +10,70 @@ namespace Zongband.Game.Boards
 {
     public class Board : MonoBehaviour
     {
-        [SerializeField] private BoardSO? initialBoardSO;
-        [SerializeField] private UnityEngine.Tilemaps.Tilemap? terrainTilemap;
+        [SerializeField] private BoardSO? InitialBoardSO;
+        [SerializeField] private UnityEngine.Tilemaps.Tilemap? TerrainTilemap;
 
         public Size Size { get; private set; } = Size.Zero;
         public float Scale { get; private set; } = 1f;
 
-        private readonly EntityLayer<Agent> agentLayer = new EntityLayer<Agent>();
-        private readonly EntityLayer<Entity> entityLayer = new EntityLayer<Entity>();
-        private readonly TerrainLayer terrainLayer = new TerrainLayer();
+        private readonly EntityLayer<Agent> AgentLayer = new EntityLayer<Agent>();
+        private readonly EntityLayer<Entity> EntityLayer = new EntityLayer<Entity>();
+        private readonly TerrainLayer TerrainLayer = new TerrainLayer();
 
         private void Awake()
         {
-            if (initialBoardSO != null) ApplySO(initialBoardSO);
+            if (InitialBoardSO != null) ApplySO(InitialBoardSO);
         }
 
         public void ApplySO(BoardSO boardSO)
         {
-            Size = boardSO.size;
-            Scale = boardSO.scale;
-            agentLayer.ChangeSize(Size);
-            entityLayer.ChangeSize(Size);
-            terrainLayer.ChangeSize(Size);
+            Size = boardSO.Size;
+            Scale = boardSO.Scale;
+            AgentLayer.ChangeSize(Size);
+            EntityLayer.ChangeSize(Size);
+            TerrainLayer.ChangeSize(Size);
         }
 
         public void Add(Entity entity, Tile at)
         {
             if (!IsTileAvailable(entity, at, false)) throw new NotEmptyTileException(at);
 
-            if (entity is Agent agent) agentLayer.Add(agent, at);
-            else entityLayer.Add(entity, at);
+            if (entity is Agent agent) AgentLayer.Add(agent, at);
+            else EntityLayer.Add(entity, at);
         }
 
         public void Move(Entity entity, Tile to, bool relative)
         {
-            if (relative) to += entity.tile;
+            if (relative) to += entity.Tile;
 
             if (!IsTileAvailable(entity, to, false)) throw new NotEmptyTileException(to);
 
-            if (entity is Agent agent) agentLayer.Move(agent, to);
-            else entityLayer.Move(entity, to);
+            if (entity is Agent agent) AgentLayer.Move(agent, to);
+            else EntityLayer.Move(entity, to);
         }
 
         public void Remove(Entity entity)
         {
-            if (entity is Agent agent) agentLayer.Remove(agent);
-            else entityLayer.Remove(entity);
+            if (entity is Agent agent) AgentLayer.Remove(agent);
+            else EntityLayer.Remove(entity);
         }
 
         public void Modify(Tile at, TerrainSO terrainSO)
         {
-            if (terrainTilemap == null) throw new ArgumentNullException(nameof(terrainTilemap));
+            if (TerrainTilemap == null) throw new ArgumentNullException(nameof(TerrainTilemap));
             if (!IsTileAvailable(terrainSO, at)) throw new NotEmptyTileException(at);
 
-            terrainLayer.Modify(at, terrainSO);
-            terrainTilemap.SetTile(at.ToVector3Int(), terrainSO.tileBase);
+            TerrainLayer.Modify(at, terrainSO);
+            TerrainTilemap.SetTile(at.ToVector3Int(), terrainSO.TileBase);
         }
 
         public void Box(Tile from, Tile to, TerrainSO terrainSO)
         {
-            var lower = new Tile(Mathf.Min(from.x, to.x), Mathf.Min(from.y, to.y));
-            var higher = new Tile(Mathf.Max(from.x, to.x), Mathf.Max(from.y, to.y));
-            for (var i = lower.y; i <= higher.y; i++)
+            var lower = new Tile(Mathf.Min(from.X, to.X), Mathf.Min(from.Y, to.Y));
+            var higher = new Tile(Mathf.Max(from.X, to.X), Mathf.Max(from.Y, to.Y));
+            for (var i = lower.Y; i <= higher.Y; i++)
             {
-                for (var j = lower.x; j <= higher.x; j++)
+                for (var j = lower.X; j <= higher.X; j++)
                 {
                     Modify(new Tile(j, i), terrainSO);
                 }
@@ -87,9 +87,9 @@ namespace Zongband.Game.Boards
 
         public void Apply(BoardData boardData, Tile origin)
         {
-            for (var i = 0; i < boardData.size.y; i++)
+            for (var i = 0; i < boardData.Size.Y; i++)
             {
-                for (var j = 0; j < boardData.size.x; j++)
+                for (var j = 0; j < boardData.Size.X; j++)
                 {
                     var tile = new Tile(j, i);
                     Modify(origin + tile, boardData.GetTerrain(tile));
@@ -99,33 +99,33 @@ namespace Zongband.Game.Boards
 
         public Agent? GetAgent(Entity entity, Tile at, bool relative)
         {
-            if (relative) at += entity.tile;
+            if (relative) at += entity.Tile;
             return GetAgent(at);
         }
 
         public Agent? GetAgent(Tile at)
         {
             if (!Size.Contains(at)) return null;
-            return agentLayer.Get(at);
+            return AgentLayer.Get(at);
         }
 
         public bool IsTileEmpty(Tile tile)
         {
             if (!Size.Contains(tile)) return false;
-            if (!agentLayer.IsTileEmpty(tile)) return false;
-            if (!entityLayer.IsTileEmpty(tile)) return false;
+            if (!AgentLayer.IsTileEmpty(tile)) return false;
+            if (!EntityLayer.IsTileEmpty(tile)) return false;
             return true;
         }
 
         public bool IsTileAvailable(Entity entity, Tile tile, bool relative)
         {
-            if (relative) tile += entity.tile;
+            if (relative) tile += entity.Tile;
             if (!Size.Contains(tile)) return false;
             /* Add here special interactions in the future */
-            if (!agentLayer.IsTileEmpty(tile)) return false;
+            if (!AgentLayer.IsTileEmpty(tile)) return false;
             var isGhost = (entity is Agent agent) && agent.IsGhost;
-            if (!isGhost && !entityLayer.IsTileEmpty(tile)) return false;
-            if (!isGhost && terrainLayer.GetTile(tile).BlocksGround) return false;
+            if (!isGhost && !EntityLayer.IsTileEmpty(tile)) return false;
+            if (!isGhost && TerrainLayer.GetTile(tile).BlocksGround) return false;
             return true;
         }
 
@@ -133,8 +133,8 @@ namespace Zongband.Game.Boards
         {
             if (!Size.Contains(tile)) return false;
             /* Add here special interactions in the future */
-            if (terrainSO.blocksGround && !agentLayer.IsTileEmpty(tile)) return false;
-            if (terrainSO.blocksGround && !entityLayer.IsTileEmpty(tile)) return false;
+            if (terrainSO.BlocksGround && !AgentLayer.IsTileEmpty(tile)) return false;
+            if (terrainSO.BlocksGround && !EntityLayer.IsTileEmpty(tile)) return false;
             return true;
         }
     }

@@ -7,8 +7,8 @@ namespace Zongband.UI
 {
     public class TileHighlighterCursor : MonoBehaviour
     {
-        [SerializeField] private GameObject? normalCursor;
-        [SerializeField] private GameObject? warningCursor;
+        [SerializeField] private GameObject? NormalCursor;
+        [SerializeField] private GameObject? WarningCursor;
 
         private void Awake()
         {
@@ -17,29 +17,29 @@ namespace Zongband.UI
 
         public void SetNormal()
         {
-            if (normalCursor == null) throw new ArgumentNullException(nameof(normalCursor));
-            if (warningCursor == null) throw new ArgumentNullException(nameof(warningCursor));
+            if (NormalCursor == null) throw new ArgumentNullException(nameof(NormalCursor));
+            if (WarningCursor == null) throw new ArgumentNullException(nameof(WarningCursor));
 
-            normalCursor.SetActive(true);
-            warningCursor.SetActive(false);
+            NormalCursor.SetActive(true);
+            WarningCursor.SetActive(false);
         }
 
         public void SetWarning()
         {
-            if (normalCursor == null) throw new ArgumentNullException(nameof(normalCursor));
-            if (warningCursor == null) throw new ArgumentNullException(nameof(warningCursor));
+            if (NormalCursor == null) throw new ArgumentNullException(nameof(NormalCursor));
+            if (WarningCursor == null) throw new ArgumentNullException(nameof(WarningCursor));
 
-            normalCursor.SetActive(false);
-            warningCursor.SetActive(true);
+            NormalCursor.SetActive(false);
+            WarningCursor.SetActive(true);
         }
 
         public void SetNone()
         {
-            if (normalCursor == null) throw new ArgumentNullException(nameof(normalCursor));
-            if (warningCursor == null) throw new ArgumentNullException(nameof(warningCursor));
+            if (NormalCursor == null) throw new ArgumentNullException(nameof(NormalCursor));
+            if (WarningCursor == null) throw new ArgumentNullException(nameof(WarningCursor));
 
-            normalCursor.SetActive(false);
-            warningCursor.SetActive(false);
+            NormalCursor.SetActive(false);
+            WarningCursor.SetActive(false);
         }
     }
 }

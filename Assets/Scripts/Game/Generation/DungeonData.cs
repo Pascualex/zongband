@@ -14,9 +14,10 @@ namespace Zongband.Game.Generation
     public class DungeonData
     {
         public readonly Size Size;
-        public Tile playerSpawn = Tile.Zero;
-        public readonly List<Tile> enemiesSpawn = new List<Tile>();
         public readonly List<Room> Rooms = new List<Room>();
+        public readonly List<Tuple<Room, Room>> Connections = new List<Tuple<Room, Room>>();
+        public Tile PlayerSpawn = Tile.Zero;
+        public readonly List<Tile> EnemiesSpawn = new List<Tile>();
 
         private readonly TerrainSO Floor;
         private readonly TerrainSO Wall;
@@ -31,7 +32,7 @@ namespace Zongband.Game.Generation
         public BoardData ToBoardData()
         {
             var boardData = new BoardData(Size, Wall);
-            foreach (var room in Rooms) boardData.Fill(room.origin, room.size, Floor);
+            foreach (var room in Rooms) boardData.Fill(room.Origin, room.Size, Floor);
             return boardData;
         }
     }

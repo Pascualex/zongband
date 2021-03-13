@@ -12,6 +12,7 @@ namespace Zongband.Game.Generation
         public Board? Board;
         public DungeonData? DungeonData;
         public float RoomSphereRadius = 1f;
+        public float Height = 1f;
 
         private void OnDrawGizmosSelected()
         {
@@ -20,9 +21,10 @@ namespace Zongband.Game.Generation
 
             foreach (var room in DungeonData.Rooms)
             {
-                var origin = room.origin.ToWorld(Board.Scale, Board.transform.position);
-                var center = origin + (new Vector3(room.size.x - 1, 0, room.size.y - 1) * Board.Scale / 2f);
-                Gizmos.color = Color.green;
+                var origin = room.Origin.ToWorld(Board.Scale, Board.transform.position);
+                var center = origin + (new Vector3(room.Size.X - 1, 0, room.Size.Y - 1) * Board.Scale / 2f);
+                center.y += Height;
+                Gizmos.color = Color.cyan;
                 Gizmos.DrawSphere(center, RoomSphereRadius);
             }
         }

@@ -10,42 +10,42 @@ namespace Zongband.Game.Boards
 {
     public class BoardData
     {
-        public readonly Size size;
+        public readonly Size Size;
 
-        private readonly TerrainSO[][] terrainsSOs;
+        private readonly TerrainSO[][] TerrainsSOs;
 
         public BoardData(Size size, TerrainSO defaultSO)
         {
-            this.size = size;
-            terrainsSOs = new TerrainSO[size.y][];
-            for (var i = 0; i < size.y; i++)
+            Size = size;
+            TerrainsSOs = new TerrainSO[size.Y][];
+            for (var i = 0; i < size.Y; i++)
             {
-                terrainsSOs[i] = new TerrainSO[size.x];
-                for (var j = 0; j < size.x; j++) terrainsSOs[i][j] = defaultSO;
+                TerrainsSOs[i] = new TerrainSO[size.X];
+                for (var j = 0; j < size.X; j++) TerrainsSOs[i][j] = defaultSO;
             }
         }
 
         public TerrainSO GetTerrain(Tile at)
         {
-            if (!size.Contains(at)) throw new ArgumentOutOfRangeException();
+            if (!Size.Contains(at)) throw new ArgumentOutOfRangeException();
 
-            return terrainsSOs[at.y][at.x];
+            return TerrainsSOs[at.Y][at.X];
         }
 
         public void Modify(Tile at, TerrainSO terrainSO)
         {
-            if (!size.Contains(at)) throw new ArgumentOutOfRangeException();
+            if (!Size.Contains(at)) throw new ArgumentOutOfRangeException();
 
-            terrainsSOs[at.y][at.x] = terrainSO;
+            TerrainsSOs[at.Y][at.X] = terrainSO;
         }
 
         public void Fill(Tile origin, Size size, TerrainSO terrainSO)
         {
-            for (var i = origin.y; i < (origin.y + size.y); i++)
+            for (var i = origin.Y; i < (origin.Y + size.Y); i++)
             {
-                for (var j = origin.x; j < (origin.x + size.x); j++)
+                for (var j = origin.X; j < (origin.X + size.X); j++)
                 {
-                    terrainsSOs[i][j] = terrainSO;
+                    TerrainsSOs[i][j] = terrainSO;
                 }
             }
         }
@@ -59,18 +59,18 @@ namespace Zongband.Game.Boards
         {
             if (width <= 0) throw new ArgumentOutOfRangeException();
 
-            if (width > (size.x / 2)) throw new ArgumentOutOfRangeException();
-            if (width > (size.y / 2)) throw new ArgumentOutOfRangeException();
+            if (width > (size.X / 2)) throw new ArgumentOutOfRangeException();
+            if (width > (size.Y / 2)) throw new ArgumentOutOfRangeException();
 
             var lower = origin;
-            var higher = origin + new Tile(size.x - 1, size.y - 1);
+            var higher = origin + new Tile(size.X - 1, size.Y - 1);
 
             for (var i = 0; i < width; i++)
             {
-                for (var j = lower.y; j < higher.y; j++) Modify(new Tile(lower.x, j), terrainSO);
-                for (var j = lower.x; j < higher.x; j++) Modify(new Tile(j, higher.y), terrainSO);
-                for (var j = higher.y; j > lower.y; j--) Modify(new Tile(higher.x, j), terrainSO);
-                for (var j = higher.x; j > lower.x; j--) Modify(new Tile(j, lower.y), terrainSO);
+                for (var j = lower.Y; j < higher.Y; j++) Modify(new Tile(lower.X, j), terrainSO);
+                for (var j = lower.X; j < higher.X; j++) Modify(new Tile(j, higher.Y), terrainSO);
+                for (var j = higher.Y; j > lower.Y; j--) Modify(new Tile(higher.X, j), terrainSO);
+                for (var j = higher.X; j > lower.X; j--) Modify(new Tile(j, lower.Y), terrainSO);
 
                 lower += Tile.One;
                 higher -= Tile.One;

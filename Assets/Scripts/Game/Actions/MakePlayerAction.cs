@@ -8,17 +8,17 @@ namespace Zongband.Game.Actions
 {
     public class MakePlayerAction : Action
     {
-        private readonly Agent? agent;
-        private readonly SpawnAction? spawnAction;
-        private readonly bool makePlayer;
+        private readonly Agent? Agent;
+        private readonly SpawnAction? SpawnAction;
+        private readonly bool MakePlayer;
 
         public MakePlayerAction(Agent agent)
         : this(agent, true) { }
 
         public MakePlayerAction(Agent agent, bool makePlayer)
         {
-            this.agent = agent;
-            this.makePlayer = makePlayer;
+            Agent = agent;
+            MakePlayer = makePlayer;
         }
 
         public MakePlayerAction(SpawnAction spawnAction)
@@ -26,24 +26,24 @@ namespace Zongband.Game.Actions
 
         public MakePlayerAction(SpawnAction spawnAction, bool makePlayer)
         {
-            this.spawnAction = spawnAction;
-            this.makePlayer = makePlayer;
+            SpawnAction = spawnAction;
+            MakePlayer = makePlayer;
         }
 
         protected override bool ProcessStart()
         {
-            var agent = this.agent;
+            var agent = Agent;
             if (agent == null) agent = InheritAgent();
             if (agent == null || !agent) return true;
-            agent.isPlayer = makePlayer;
+            agent.IsPlayer = MakePlayer;
             return true;
         }
 
         private Agent? InheritAgent()
         {
-            if (spawnAction == null) return null;
-            if (!spawnAction.IsCompleted) return null;
-            if (spawnAction.Entity is Agent agent) return agent;
+            if (SpawnAction == null) return null;
+            if (!SpawnAction.IsCompleted) return null;
+            if (SpawnAction.Entity is Agent agent) return agent;
             return null;
         }
     }

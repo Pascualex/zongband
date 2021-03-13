@@ -12,15 +12,15 @@ namespace Zongband.Game.Actions
     {
         public bool IsCompleted { get; protected set; } = false;
         
-        private bool hasStarted = false;
+        private bool HasStarted = false;
 
         public void Process()
         {
             if (IsCompleted) return;
-            if (!hasStarted) 
+            if (!HasStarted) 
             {
                 IsCompleted = ProcessStart();
-                hasStarted = true;
+                HasStarted = true;
             }
             else IsCompleted = ProcessUpdate();
         }
@@ -37,17 +37,17 @@ namespace Zongband.Game.Actions
 
         public class Context
         {
-            public readonly TurnManager turnManager;
-            public readonly Board board;
-            public readonly Agent agentPrefab;
-            public readonly Entity entityPrefab;
+            public readonly TurnManager TurnManager;
+            public readonly Board Board;
+            public readonly Agent AgentPrefab;
+            public readonly Entity EntityPrefab;
 
             public Context(TurnManager turnManager, Board board, Agent agentPrefab, Entity entityPrefab)
             {
-                this.turnManager = turnManager;
-                this.board = board;
-                this.agentPrefab = agentPrefab;
-                this.entityPrefab = entityPrefab;
+                TurnManager = turnManager;
+                Board = board;
+                AgentPrefab = agentPrefab;
+                EntityPrefab = entityPrefab;
             }
         }
     }

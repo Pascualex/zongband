@@ -31,16 +31,16 @@ namespace Zongband.Game.Controllers
         {
             if (PlayerAction == null) return null;
 
-            var tile = PlayerAction.tile;
-            var relative = PlayerAction.relative;
-            var canAttack = PlayerAction.canAttack;
+            var tile = PlayerAction.Tile;
+            var relative = PlayerAction.Relative;
+            var canAttack = PlayerAction.CanAttack;
 
-            var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.tile);
+            var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.Tile);
             var instant = distance > 1;
-            var isTileAvailable = ctx.board.IsTileAvailable(agent, tile, relative);
+            var isTileAvailable = ctx.Board.IsTileAvailable(agent, tile, relative);
             if (isTileAvailable) return new MovementAction(agent, tile, relative, ctx, instant);
 
-            var targetAgent = ctx.board.GetAgent(agent, tile, relative);
+            var targetAgent = ctx.Board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {
                 return new AttackAction(agent, targetAgent, ctx);

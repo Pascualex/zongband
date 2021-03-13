@@ -9,36 +9,36 @@ namespace Zongband.Game.Entities
 {
     public class Entity : MonoBehaviour
     {
-        public Tile tile = Tile.MinusOne;
+        public Tile Tile = Tile.MinusOne;
 
-        public Transform? gameModelContainer;
-        [SerializeField] private GameObject? defaultGameModel;
-        [SerializeField] private GameObject? gameModel;
+        public Transform? GameModelContainer;
+        [SerializeField] private GameObject? DefaultGameModel;
+        [SerializeField] private GameObject? GameModel;
 
         private void Awake()
         {
-            if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
-            if (defaultGameModel == null) throw new ArgumentNullException(nameof(defaultGameModel));
+            if (GameModelContainer == null) throw new ArgumentNullException(nameof(GameModelContainer));
+            if (DefaultGameModel == null) throw new ArgumentNullException(nameof(DefaultGameModel));
 
-            if (gameModel != null) Destroy(gameModel);
+            if (GameModel != null) Destroy(GameModel);
 
-            gameModel = Instantiate(defaultGameModel, gameModelContainer);
-            gameModel.name = "GameModel";
+            GameModel = Instantiate(DefaultGameModel, GameModelContainer);
+            GameModel.name = "GameModel";
         }
 
         public void ApplySO(EntitySO entitySO)
         {
-            if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
-            if (defaultGameModel == null) throw new ArgumentNullException(nameof(defaultGameModel));
+            if (GameModelContainer == null) throw new ArgumentNullException(nameof(GameModelContainer));
+            if (DefaultGameModel == null) throw new ArgumentNullException(nameof(DefaultGameModel));
 
-            if (gameModel != null) Destroy(gameModel);
+            if (GameModel != null) Destroy(GameModel);
 
-            var parent = gameModelContainer;
-            if (entitySO.gameModel != null) gameModel = Instantiate(entitySO.gameModel, parent);
-            else gameModel = Instantiate(defaultGameModel, parent);
+            var parent = GameModelContainer;
+            if (entitySO.GameModel != null) GameModel = Instantiate(entitySO.GameModel, parent);
+            else GameModel = Instantiate(DefaultGameModel, parent);
 
             name = entitySO.name;
-            gameModel.name = "GameModel";
+            GameModel.name = "GameModel";
         }
     }
 }

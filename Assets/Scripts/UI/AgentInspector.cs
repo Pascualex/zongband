@@ -15,18 +15,18 @@ namespace Zongband.UI
     {
         public Tile MouseTile { private get; set; } = Tile.MinusOne;
 
-        [SerializeField] private GameManager? gameManager;
-        [SerializeField] private Image? inspectorMenu;
-        [SerializeField] private Slider? healthBar;
-        [SerializeField] private TextMeshProUGUI? healthStat;
-        [SerializeField] private TextMeshProUGUI? turnCDStat;
-        [SerializeField] private TextMeshProUGUI? hostileTag;
+        [SerializeField] private GameManager? GameManager;
+        [SerializeField] private Image? InspectorMenu;
+        [SerializeField] private Slider? HealthBar;
+        [SerializeField] private TextMeshProUGUI? HealthStat;
+        [SerializeField] private TextMeshProUGUI? TurnCDStat;
+        [SerializeField] private TextMeshProUGUI? HostileTag;
 
-        private Agent? fixedAgent;
+        private Agent? FixedAgent;
 
         private void Awake()
         {
-            if (inspectorMenu != null) inspectorMenu.gameObject.SetActive(false);
+            if (InspectorMenu != null) InspectorMenu.gameObject.SetActive(false);
         }
 
         public void Refresh()
@@ -36,36 +36,36 @@ namespace Zongband.UI
 
         public void LockAgent()
         {
-            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
-            if (gameManager.board == null) throw new ArgumentNullException(nameof(gameManager.board));
+            if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
+            if (GameManager.Board == null) throw new ArgumentNullException(nameof(GameManager.Board));
 
-            fixedAgent = gameManager.board.GetAgent(MouseTile);
+            FixedAgent = GameManager.Board.GetAgent(MouseTile);
         }
 
         private void InspectAgent()
         {
-            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
-            if (gameManager.board == null) throw new ArgumentNullException(nameof(gameManager.board));
-            if (inspectorMenu == null) throw new ArgumentNullException(nameof(inspectorMenu));
-            if (healthBar == null) throw new ArgumentNullException(nameof(healthBar));
-            if (healthStat == null) throw new ArgumentNullException(nameof(healthStat));
-            if (turnCDStat == null) throw new ArgumentNullException(nameof(turnCDStat));
-            if (hostileTag == null) throw new ArgumentNullException(nameof(hostileTag));
+            if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
+            if (GameManager.Board == null) throw new ArgumentNullException(nameof(GameManager.Board));
+            if (InspectorMenu == null) throw new ArgumentNullException(nameof(InspectorMenu));
+            if (HealthBar == null) throw new ArgumentNullException(nameof(HealthBar));
+            if (HealthStat == null) throw new ArgumentNullException(nameof(HealthStat));
+            if (TurnCDStat == null) throw new ArgumentNullException(nameof(TurnCDStat));
+            if (HostileTag == null) throw new ArgumentNullException(nameof(HostileTag));
 
             var inspect = false;
-            var agent = fixedAgent;
-            if (agent == null || !agent) agent = gameManager.board.GetAgent(MouseTile);
+            var agent = FixedAgent;
+            if (agent == null || !agent) agent = GameManager.Board.GetAgent(MouseTile);
             if (agent != null)
             {
-                healthBar.maxValue = agent.MaxHealth;
-                healthBar.value = agent.CurrentHealth;
-                healthStat.text = agent.CurrentHealth + " / " + agent.MaxHealth;
-                turnCDStat.text = agent.TurnCooldown.ToString();
-                hostileTag.gameObject.SetActive(!agent.isPlayer);
+                HealthBar.maxValue = agent.MaxHealth;
+                HealthBar.value = agent.CurrentHealth;
+                HealthStat.text = agent.CurrentHealth + " / " + agent.MaxHealth;
+                TurnCDStat.text = agent.TurnCooldown.ToString();
+                HostileTag.gameObject.SetActive(!agent.IsPlayer);
                 inspect = true;
             }
 
-            inspectorMenu.gameObject.SetActive(inspect);
+            InspectorMenu.gameObject.SetActive(inspect);
         }
     }
 }

@@ -23,8 +23,8 @@ namespace Zongband.Game.Controllers
             Agent? selectedTarget = null;
             foreach (var direction in directions)
             {
-                var target = ctx.board.GetAgent(agent, direction, true);
-                if (target != null && target.isPlayer != agent.isPlayer)
+                var target = ctx.Board.GetAgent(agent, direction, true);
+                if (target != null && target.IsPlayer != agent.IsPlayer)
                 {
                     selectedTarget = target;
                     break;
@@ -44,7 +44,7 @@ namespace Zongband.Game.Controllers
             var selectedDirection = Tile.Zero;
             foreach (var direction in directions)
             {
-                if (ctx.board.IsTileAvailable(agent, direction, true))
+                if (ctx.Board.IsTileAvailable(agent, direction, true))
                 {
                     selectedDirection = direction;
                     break;

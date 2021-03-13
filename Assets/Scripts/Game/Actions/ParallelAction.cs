@@ -7,7 +7,7 @@ namespace Zongband.Game.Actions
 {
     public class ParallelAction : CombinedAction
     {
-        private readonly LinkedList<Action> actions = new LinkedList<Action>();
+        private readonly LinkedList<Action> Actions = new LinkedList<Action>();
 
         protected override bool ProcessStart()
         {
@@ -21,21 +21,21 @@ namespace Zongband.Game.Actions
 
         private bool ProcessAll()
         {
-            var node = actions.First;
+            var node = Actions.First;
             while (node != null)
             {
                 var next = node.Next;
                 node.Value.Process();
-                if (node.Value.IsCompleted) actions.Remove(node);
+                if (node.Value.IsCompleted) Actions.Remove(node);
                 node = next;
             }
-            return actions.Count == 0;
+            return Actions.Count == 0;
         }
 
         public override void Add(Action action)
         {
             base.Add(action);
-            if (!action.IsCompleted) actions.AddLast(action);
+            if (!action.IsCompleted) Actions.AddLast(action);
         }
     }
 }

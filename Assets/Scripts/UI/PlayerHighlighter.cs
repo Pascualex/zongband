@@ -9,14 +9,14 @@ namespace Zongband.UI
 {
     public class PlayerHighlighter : MonoBehaviour
     {
-        [SerializeField] private GameManager? gameManager;
-        [SerializeField] private GameObject? initialCursorPrefab;
+        [SerializeField] private GameManager? GameManager;
+        [SerializeField] private GameObject? InitialCursorPrefab;
 
-        private GameObject? cursor;
+        private GameObject? Cursor;
 
         public void Awake()
         {
-            if (initialCursorPrefab != null) ChangeCursor(initialCursorPrefab);
+            if (InitialCursorPrefab != null) ChangeCursor(InitialCursorPrefab);
         }
 
         public void Refresh()
@@ -26,29 +26,29 @@ namespace Zongband.UI
 
         public void ChangeCursor(GameObject cursorPrefab)
         {
-            if (cursor != null) Destroy(cursor);
-            cursor = Instantiate(cursorPrefab, transform);
-            cursor.gameObject.SetActive(false);
+            if (Cursor != null) Destroy(Cursor);
+            Cursor = Instantiate(cursorPrefab, transform);
+            Cursor.gameObject.SetActive(false);
         }
 
         private void HighlightPlayer()
         {
-            if (gameManager == null) throw new ArgumentNullException(nameof(gameManager));
-            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
+            if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
+            if (Cursor == null) throw new ArgumentNullException(nameof(Cursor));
 
             var highlight = false;
-            var lastPlayer = gameManager.LastPlayer;
+            var lastPlayer = GameManager.LastPlayer;
             // TODO: check if dead
-            if (lastPlayer != null && lastPlayer.isPlayer)
+            if (lastPlayer != null && lastPlayer.IsPlayer)
             {
-                var gameModelContainer = lastPlayer.gameModelContainer;
+                var gameModelContainer = lastPlayer.GameModelContainer;
                 if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));
 
-                cursor.transform.position = gameModelContainer.transform.position;
+                Cursor.transform.position = gameModelContainer.transform.position;
                 highlight = true;
             }
 
-            cursor.gameObject.SetActive(highlight);
+            Cursor.gameObject.SetActive(highlight);
         }
     }
 }

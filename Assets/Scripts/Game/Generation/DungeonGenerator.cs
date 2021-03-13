@@ -12,33 +12,33 @@ namespace Zongband.Game.Generation
 {
     public class DungeonGenerator : MonoBehaviour
     {
-        [SerializeField] private TerrainSO? floor;
-        [SerializeField] private TerrainSO? wall;
-        [SerializeField] private int maxIterations;
+        [SerializeField] private TerrainSO? Floor;
+        [SerializeField] private TerrainSO? Wall;
+        [SerializeField] private int MaxIterations;
 
         public DungeonData? GenerateDungeon(Size size, int rooms, int minSide, int maxSide, int padding)
         {
-            if (floor == null) throw new ArgumentNullException(nameof(floor));
-            if (wall == null) throw new ArgumentNullException(nameof(wall));
+            if (Floor == null) throw new ArgumentNullException(nameof(Floor));
+            if (Wall == null) throw new ArgumentNullException(nameof(Wall));
 
             var roomList = GenerateRooms(rooms, size, minSide, maxSide);
             var iterations = 0;
-            while (iterations < maxIterations && ExpandRooms(roomList, size, padding)) iterations++;
+            while (iterations < MaxIterations && ExpandRooms(roomList, size, padding)) iterations++;
             Debug.Log("Dungeon generated in " + (iterations + 1) + " iterations");
-            if (iterations >= maxIterations) Debug.LogWarning("Iteration limit reached");
+            if (iterations >= MaxIterations) Debug.LogWarning("Iteration limit reached");
 
-            var dungeonData = new DungeonData(size, floor, wall);
+            var dungeonData = new DungeonData(size, Floor, Wall);
             var playerSpawnPlaced = false;
             foreach (var room in roomList)
             {
-                if (room.discarded) continue;
+                if (room.Discarded) continue;
                 dungeonData.Rooms.Add(room);
                 if (!playerSpawnPlaced)
                 {
-                    dungeonData.playerSpawn = room.origin;
+                    dungeonData.PlayerSpawn = room.Origin;
                     playerSpawnPlaced = true;
                 }
-                else dungeonData.enemiesSpawn.Add(room.origin);
+                else dungeonData.EnemiesSpawn.Add(room.Origin);
             }
 
             return dungeonData;
@@ -46,13 +46,13 @@ namespace Zongband.Game.Generation
 
         public DungeonData GenerateTestDungeon(Size size, int wallWidth)
         {
-            if (floor == null) throw new ArgumentNullException(nameof(floor));
-            if (wall == null) throw new ArgumentNullException(nameof(wall));
+            if (Floor == null) throw new ArgumentNullException(nameof(Floor));
+            if (Wall == null) throw new ArgumentNullException(nameof(Wall));
 
-            var dungeonData = new DungeonData(size, floor, wall);
+            var dungeonData = new DungeonData(size, Floor, Wall);
 
             dungeonData.Rooms.Add(new Room(new Tile(wallWidth), size - new Size(wallWidth * 2)));
-            dungeonData.playerSpawn = new Tile(5, 5);
+            dungeonData.PlayerSpawn = new Tile(5, 5);
 
             return dungeonData;
         }
@@ -71,8 +71,8 @@ namespace Zongband.Game.Generation
             var size = new Size(sideX, sideY);
 
             var insideUnitCircle = Random.insideUnitCircle;
-            var x = (dungeonSize.x / 2f) + (insideUnitCircle.x * dungeonSize.x / 8f) - (size.x / 2f);
-            var y = (dungeonSize.y / 2f) + (insideUnitCircle.y * dungeonSize.y / 8f) - (size.y / 2f);
+            var x = (dungeonSize.X / 2f) + (insideUnitCircle.x * dungeonSize.X / 8f) - (size.X / 2f);
+            var y = (dungeonSize.Y / 2f) + (insideUnitCircle.y * dungeonSize.Y / 8f) - (size.Y / 2f);
             var origin = new Tile(Convert.ToInt32(x), Convert.ToInt32(y));
 
             return new Room(origin, size);
@@ -83,13 +83,13 @@ namespace Zongband.Game.Generation
             var collision = false;
             for (var i = 0; i < rooms.Length; i++)
             {
-                if (rooms[i].discarded) continue;
+                if (rooms[i].Discarded) continue;
                 for (var j = 0; j < rooms.Length; j++)
                 {
                     if (i == j) continue;
-                    if (rooms[j].discarded) continue;
+                    if (rooms[j].Discarded) continue;
                     if (!rooms[i].MoveAway(rooms[j], padding)) continue;
-                    if (rooms[i].IsOutside(dungeonSize, padding)) rooms[i].discarded = true;
+                    if (rooms[i].IsOutside(dungeonSize, padding)) rooms[i].Discarded = true;
                     collision = true;
                     break;
                 }

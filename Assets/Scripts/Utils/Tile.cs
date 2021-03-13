@@ -18,13 +18,13 @@ namespace Zongband.Utils
         public static Tile DownLeft { get; } = new Tile(-1, -1);
         public static Tile UpLeft { get; } = new Tile(-1, 1);
 
-        public int x;
-        public int y;
+        public int X;
+        public int Y;
 
         public Tile(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = y;
         }
 
         public Tile(int xy)
@@ -40,46 +40,46 @@ namespace Zongband.Utils
 
         public int GetDistance(Tile tile)
         {
-            return Mathf.Max(Mathf.Abs(x - tile.x), Mathf.Abs(y - tile.y));
+            return Mathf.Max(Mathf.Abs(X - tile.X), Mathf.Abs(Y - tile.Y));
         }
 
         public Vector3Int ToVector3Int()
         {
-            return new Vector3Int(x, y, 0);
+            return new Vector3Int(X, Y, 0);
         }
 
         public Vector3 ToWorldVector3()
         {
-            return new Vector3(x, 0, y);
+            return new Vector3(X, 0, Y);
         }
 
         public Vector3 ToWorld(float scale, Vector3 origin)
         {
-            return origin + (new Vector3(x + 0.5f, 0, y + 0.5f) * scale);
+            return origin + (new Vector3(X + 0.5f, 0, Y + 0.5f) * scale);
         }
 
         public override bool Equals(object o)
         {
             if (o is Tile tile)
             {
-                return (tile.x == x) && (tile.y == y);
+                return (tile.X == X) && (tile.Y == Y);
             }
             else return false;
         }
 
         public override int GetHashCode()
         {
-            return x ^ y;
+            return X ^ Y;
         }
 
         public static Tile operator +(Tile a, Tile b)
         {
-            return new Tile(a.x + b.x, a.y + b.y);
+            return new Tile(a.X + b.X, a.Y + b.Y);
         }
 
         public static Tile operator -(Tile a, Tile b)
         {
-            return new Tile(a.x - b.x, a.y - b.y);
+            return new Tile(a.X - b.X, a.Y - b.Y);
         }
 
         public static bool operator ==(Tile a, Tile b)
@@ -112,7 +112,7 @@ namespace Zongband.Utils
 
         public override string ToString()
         {
-            return "(" + x + ", " + y + ")";
+            return "(" + X + ", " + Y + ")";
         }
     }
 }

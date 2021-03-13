@@ -9,14 +9,14 @@ namespace Zongband.Game.Boards
     [CreateAssetMenu(fileName = "Board", menuName = "ScriptableObjects/Board")]
     public class BoardSO : ScriptableObject
     {
-        public Size size = new Size(10, 10);
-        public float scale = 1f;
+        public Size Size = new Size(10, 10);
+        public float Scale = 1f;
 
         private void OnValidate()
         {
-            size.x = Mathf.Max(size.x, 0);
-            size.y = Mathf.Max(size.y, 0);
-            if (scale <= 0) scale = 1f;
+            Size.X = Mathf.Max(Size.X, 0);
+            Size.Y = Mathf.Max(Size.Y, 0);
+            if (Scale <= 0) Scale = 1f;
         }
     }
 }

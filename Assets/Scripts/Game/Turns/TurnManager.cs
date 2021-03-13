@@ -10,8 +10,8 @@ namespace Zongband.Game.Turns
 {
     public class TurnManager : MonoBehaviour
     {
-        private readonly LinkedList<Turn> turns = new LinkedList<Turn>();
-        private bool hasStarted = false;
+        private readonly LinkedList<Turn> Turns = new LinkedList<Turn>();
+        private bool HasStarted = false;
 
         public void Add(Agent agent, bool priority)
         {
@@ -20,50 +20,50 @@ namespace Zongband.Game.Turns
 
             if (!priority)
             {
-                for (var node = turns.Last; node != null; node = node.Previous)
+                for (var node = Turns.Last; node != null; node = node.Previous)
                 {
                     if (node.Value.CompareTo(turn) <= 0)
                     {
-                        turns.AddAfter(node, turn);
+                        Turns.AddAfter(node, turn);
                         return;
                     }
                 }
             }
 
-            turns.AddFirst(turn);
+            Turns.AddFirst(turn);
         }
 
         public void Remove(Agent agent)
         {
-            var node = turns.First;
+            var node = Turns.First;
             while (node != null)
             {
                 var next = node.Next;
-                if (node.Value.agent == agent) turns.Remove(node);
+                if (node.Value.Agent == agent) Turns.Remove(node);
                 node = next;
             }
         }
 
         public void Next()
         {
-            if (turns.Count == 0) return;
+            if (Turns.Count == 0) return;
 
-            hasStarted = true;
+            HasStarted = true;
 
-            Add(turns.First.Value.agent, false);
-            turns.RemoveFirst();
+            Add(Turns.First.Value.Agent, false);
+            Turns.RemoveFirst();
         }
 
         public Agent? GetCurrent()
         {
-            if (turns.Count == 0) return null;
+            if (Turns.Count == 0) return null;
 
-            return turns.First.Value.agent;
+            return Turns.First.Value.Agent;
         }
 
         private int GetCurrentTick()
         {
-            return hasStarted ? turns.First.Value.tick : 0;
+            return HasStarted ? Turns.First.Value.Tick : 0;
         }
     }
 }

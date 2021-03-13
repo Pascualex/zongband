@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70a50649c3000514fb4482ffd9ff7de3, type: 3}
   m_Name: Wall
   m_EditorClassIdentifier: 
-  blocksGround: 1
-  blocksAir: 1
-  tileBase: {fileID: 11400000, guid: fdf7fc2c886777740bc33b5ae36d8c3d, type: 2}
+  BlocksGround: 1
+  BlocksAir: 1
+  TileBase: {fileID: 11400000, guid: fdf7fc2c886777740bc33b5ae36d8c3d, type: 2}

@@ -13,26 +13,26 @@ namespace Zongband.Game.Actions
     {
         public Entity? Entity { get; private set; }
 
-        private readonly EntitySO entitySO;
-        private readonly Tile tile;
-        private readonly Context ctx;
-        private readonly bool priority;
+        private readonly EntitySO EntitySO;
+        private readonly Tile Tile;
+        private readonly Context Ctx;
+        private readonly bool Priority;
 
         public SpawnAction(EntitySO entitySO, Tile tile, Context ctx)
         : this(entitySO, tile, ctx, false) { }
 
         public SpawnAction(EntitySO entitySO, Tile tile, Context ctx, bool priority)
         {
-            this.entitySO = entitySO;
-            this.ctx = ctx;
-            this.tile = tile;
-            this.priority = priority;
+            EntitySO = entitySO;
+            Ctx = ctx;
+            Tile = tile;
+            Priority = priority;
         }
 
         protected override bool ProcessStart()
         {
-            if (entitySO is AgentSO agentSO) Entity = Spawn(agentSO);
-            else Entity = Spawn(entitySO);
+            if (EntitySO is AgentSO agentSO) Entity = Spawn(agentSO);
+            else Entity = Spawn(EntitySO);
 
             if (!AddToBoard(Entity))
             {
@@ -49,35 +49,35 @@ namespace Zongband.Game.Actions
 
         private Agent Spawn(AgentSO agentSO)
         {
-            var parent = ctx.turnManager.transform;
-            var agent = GameObject.Instantiate(ctx.agentPrefab, parent);
+            var parent = Ctx.TurnManager.transform;
+            var agent = GameObject.Instantiate(Ctx.AgentPrefab, parent);
             agent.ApplySO(agentSO);
             return agent;
         }
 
         private Entity Spawn(EntitySO entitySO)
         {
-            var parent = ctx.board.transform;
-            var entity = GameObject.Instantiate(ctx.entityPrefab, parent);
+            var parent = Ctx.Board.transform;
+            var entity = GameObject.Instantiate(Ctx.EntityPrefab, parent);
             entity.ApplySO(entitySO);
             return entity;
         }
 
         private bool AddToBoard(Entity entity)
         {
-            if (!ctx.board.IsTileAvailable(entity, tile, false)) return false;
-            ctx.board.Add(entity, tile);
+            if (!Ctx.Board.IsTileAvailable(entity, Tile, false)) return false;
+            Ctx.Board.Add(entity, Tile);
             return true;
         }
 
         private void AddToTurnManager(Agent agent)
         {
-            ctx.turnManager.Add(agent, priority);
+            Ctx.TurnManager.Add(agent, Priority);
         }
 
         private void MoveToSpawnInWorld(Entity entity)
         {
-            var spawnPosition = entity.tile.ToWorld(ctx.board.Scale, ctx.board.transform.position);
+            var spawnPosition = entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
             entity.transform.position = spawnPosition;
         }
     }

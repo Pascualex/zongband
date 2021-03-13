@@ -12,50 +12,50 @@ namespace Zongband.Game.Generation
 {
     public class Room
     {
-        public Tile origin;
-        public Size size;
-        public Vector2 Center => new Vector2(origin.x + (size.x / 2f), origin.y + (size.y / 2f));
-        public bool discarded = false;
+        public Tile Origin;
+        public Size Size;
+        public Vector2 Center => new Vector2(Origin.X + (Size.X / 2f), Origin.Y + (Size.Y / 2f));
+        public bool Discarded = false;
 
         public Room(Tile origin, Size size)
         {
-            this.origin = origin;
-            this.size = size;
+            Origin = origin;
+            Size = size;
         }
 
         public bool Collides(Room other)
         {
-            if (!Collides(origin.x, size.x, other.origin.x, other.size.x)) return false;
-            if (!Collides(origin.y, size.y, other.origin.y, other.size.y)) return false;
+            if (!Collides(Origin.X, Size.X, other.Origin.X, other.Size.X)) return false;
+            if (!Collides(Origin.Y, Size.Y, other.Origin.Y, other.Size.Y)) return false;
             return true;
         }
 
         public bool MoveAway(Room other, int padding)
         {            
-            var left = origin.x + size.x - other.origin.x + padding;
+            var left = Origin.X + Size.X - other.Origin.X + padding;
             if (left <= 0) return false;
-            var right = other.origin.x + other.size.x - origin.x + padding;
+            var right = other.Origin.X + other.Size.X - Origin.X + padding;
             if (right <= 0) return false;
-            var up = other.origin.y + other.size.y - origin.y + padding;
+            var up = other.Origin.Y + other.Size.Y - Origin.Y + padding;
             if (up <= 0) return false;
-            var down = origin.y + size.y - other.origin.y + padding;
+            var down = Origin.Y + Size.Y - other.Origin.Y + padding;
             if (down <= 0) return false;
 
             var min = Math.Min(Math.Min(left, right), Math.Min(up, down));
 
-            if (left <= right && left <= min * 4) origin.x--;
-            else if (right <= min * 4) origin.x++;
-            if (up <= down && up <= min * 4) origin.y++;
-            else if (down <= min * 4) origin.y--;
+            if (left <= right && left <= min * 4) Origin.X--;
+            else if (right <= min * 4) Origin.X++;
+            if (up <= down && up <= min * 4) Origin.Y++;
+            else if (down <= min * 4) Origin.Y--;
 
             return true;
         }
 
         public bool IsOutside(Size dungeonSize, int padding)
         {
-            if (origin.x < padding || origin.y < padding) return true;
-            if ((origin.x + size.x + 1 - padding) >= dungeonSize.x) return true;
-            if ((origin.y + size.y + 1 - padding) >= dungeonSize.y) return true;
+            if (Origin.X < padding || Origin.Y < padding) return true;
+            if ((Origin.X + Size.X + 1 - padding) >= dungeonSize.X) return true;
+            if ((Origin.Y + Size.Y + 1 - padding) >= dungeonSize.Y) return true;
             return false;
         }
 

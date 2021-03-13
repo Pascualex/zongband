@@ -153,12 +153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3cebf3fed688649b04bd94db840f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1379493068}
-  inspectorMenu: {fileID: 1550581388}
-  healthBar: {fileID: 808159242}
-  healthStat: {fileID: 1140526323}
-  turnCDStat: {fileID: 920530164}
-  hostileTag: {fileID: 669485910}
+  GameManager: {fileID: 1379493068}
+  InspectorMenu: {fileID: 1550581388}
+  HealthBar: {fileID: 808159242}
+  HealthStat: {fileID: 1140526323}
+  TurnCDStat: {fileID: 920530164}
+  HostileTag: {fileID: 669485910}
 --- !u!224 &60741639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -283,9 +283,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1ee7e7e0869d14b87b8ebe2f03451a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManager: {fileID: 1929379173}
-  uiManager: {fileID: 1733355590}
-  gameManager: {fileID: 1379493068}
+  InputManager: {fileID: 1929379173}
+  UIManager: {fileID: 1733355590}
+  GameManager: {fileID: 1379493068}
 --- !u!4 &334443424
 Transform:
   m_ObjectHideFlags: 0
@@ -524,6 +524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Board: {fileID: 1211860784}
   RoomSphereRadius: 0.5
+  Height: 2.5
 --- !u!1 &614155110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,9 +1231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e9bfb2a69db9641ac8f9f2a0a97997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floor: {fileID: 11400000, guid: c01a94980ed34a940989672df4bbe34d, type: 2}
-  wall: {fileID: 11400000, guid: d4733fce90b3e6042b7b3784043abe54, type: 2}
-  maxIterations: 1000
+  Floor: {fileID: 11400000, guid: c01a94980ed34a940989672df4bbe34d, type: 2}
+  Wall: {fileID: 11400000, guid: d4733fce90b3e6042b7b3784043abe54, type: 2}
+  MaxIterations: 1000
 --- !u!4 &1016730619
 Transform:
   m_ObjectHideFlags: 0
@@ -1296,11 +1297,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d81bd7058195b02438d568d8f2ee7cb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraOffset: {x: 0, y: 10, z: -4}
-  fixedSpeed: 0.5
-  variableSpeed: 5
-  mainCamera: {fileID: 1687258584}
-  gameManager: {fileID: 1379493068}
+  CameraOffset: {x: 0, y: 10, z: 0}
+  FixedSpeed: 1
+  VariableSpeed: 15
+  MainCamera: {fileID: 1687258584}
+  GameManager: {fileID: 1379493068}
 --- !u!1 &1140526321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1509,8 +1510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd49414cf29b69541a672237f0c5b16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialBoardSO: {fileID: 11400000, guid: ec1ac837efd28224c961953169d49385, type: 2}
-  terrainTilemap: {fileID: 614155113}
+  InitialBoardSO: {fileID: 11400000, guid: ec1ac837efd28224c961953169d49385, type: 2}
+  TerrainTilemap: {fileID: 614155113}
 --- !u!4 &1211860785
 Transform:
   m_ObjectHideFlags: 0
@@ -1592,22 +1593,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d3cc61434e28b48a0888c892656645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAgentSO: {fileID: 11400000, guid: 18653da16b77c5447ba598004bf5f7b4, type: 2}
-  enemiesSOs:
-  - {fileID: 11400000, guid: 9ed1371c0fcf228409094b6d03a6473e, type: 2}
+  PlayerAgentSO: {fileID: 11400000, guid: 18653da16b77c5447ba598004bf5f7b4, type: 2}
+  EnemiesSOs:
   - {fileID: 11400000, guid: 8eda823a2b4c4b1448897a7ec2aea3d9, type: 2}
-  - {fileID: 11400000, guid: 78bf7d3ab23af4b4a88f64f8f86b9d55, type: 2}
+  - {fileID: 11400000, guid: 9ed1371c0fcf228409094b6d03a6473e, type: 2}
   - {fileID: 11400000, guid: d4e3689ea1285d34e8d2bf0c3e324800, type: 2}
-  boxEntitySO: {fileID: 11400000, guid: 0c048d90f6057844d8beefc3a49a025e, type: 2}
-  playerController: {fileID: 1190358108}
-  aiController: {fileID: 470883251}
-  dungeonGenerator: {fileID: 1016730618}
-  dungeonVisualizer: {fileID: 609829098}
-  turnManager: {fileID: 848178843}
-  board: {fileID: 1211860784}
-  agentPrefab: {fileID: 8907060410573984850, guid: 5fac1060013cf604aa3f4f970a126d39,
+  - {fileID: 11400000, guid: 78bf7d3ab23af4b4a88f64f8f86b9d55, type: 2}
+  BoxEntitySO: {fileID: 11400000, guid: 0c048d90f6057844d8beefc3a49a025e, type: 2}
+  PlayerController: {fileID: 1190358108}
+  AIController: {fileID: 470883251}
+  DungeonGenerator: {fileID: 1016730618}
+  DungeonVisualizer: {fileID: 609829098}
+  TurnManager: {fileID: 848178843}
+  Board: {fileID: 1211860784}
+  AgentPrefab: {fileID: 8907060410573984850, guid: 5fac1060013cf604aa3f4f970a126d39,
     type: 3}
-  entityPrefab: {fileID: 429636144554296982, guid: 2e3316ef898defd4fa0138eb9bc05222,
+  EntityPrefab: {fileID: 429636144554296982, guid: 2e3316ef898defd4fa0138eb9bc05222,
     type: 3}
 --- !u!4 &1379493069
 Transform:
@@ -1823,8 +1824,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c81ec255d1c064c854d2e0126eada7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1379493068}
-  initialCursorPrefab: {fileID: 7914889181307283872, guid: b613f723b0e3be740bfa35e9837e4ac9,
+  GameManager: {fileID: 1379493068}
+  InitialCursorPrefab: {fileID: 7914889181307283872, guid: b613f723b0e3be740bfa35e9837e4ac9,
     type: 3}
 --- !u!4 &1668387687
 Transform:
@@ -1999,8 +2000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b9ebd95a26c2f4f81dc81f0f42c65a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1379493068}
-  initialCursorPrefab: {fileID: 5770532021267404179, guid: 641216743f14e374e8ca9529a9f06749,
+  GameManager: {fileID: 1379493068}
+  InitialCursorPrefab: {fileID: 5770532021267404179, guid: 641216743f14e374e8ca9529a9f06749,
     type: 3}
 --- !u!1 &1733355588
 GameObject:
@@ -2054,11 +2055,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098f24f4edcc70a45a14e3d7669b710c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 1687258584}
-  cameraController: {fileID: 1027552321}
-  tileHighlighter: {fileID: 1668387686}
-  playerHighlighter: {fileID: 1694573085}
-  agentInspector: {fileID: 60741638}
+  MainCamera: {fileID: 1687258584}
+  CameraController: {fileID: 1027552321}
+  TileHighlighter: {fileID: 1668387686}
+  PlayerHighlighter: {fileID: 1694573085}
+  AgentInspector: {fileID: 60741638}
 --- !u!224 &1733355591
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2306,8 +2307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39681f8a9e75fe94d8c2f1367d02f64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 1733355590}
-  playerController: {fileID: 1190358108}
+  UIManager: {fileID: 1733355590}
+  PlayerController: {fileID: 1190358108}
 --- !u!114 &1929379174
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65755f9dc1bb2cd429011fab999aaa4e, type: 3}
   m_Name: ExampleFastAgent
   m_EditorClassIdentifier: 
-  gameModel: {fileID: 4644097584919031478, guid: cd7f837b5bcdd9040acf3af10456cdda,
+  GameModel: {fileID: 4644097584919031478, guid: cd7f837b5bcdd9040acf3af10456cdda,
     type: 3}
-  turnCooldown: 50
-  turnPriority: 0
-  maxHealth: 50
-  isGhost: 0
+  TurnCooldown: 50
+  TurnPriority: 0
+  MaxHealth: 100
+  Attack: 10
+  IsGhost: 0
+  IsRoamer: 1

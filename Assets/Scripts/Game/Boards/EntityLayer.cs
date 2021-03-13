@@ -10,13 +10,13 @@ namespace Zongband.Game.Boards
 {
     public class EntityLayer<EntityT> : Layer where EntityT : Entity
     {
-        private EntityT?[][] entities = new EntityT[0][];
+        private EntityT?[][] Entities = new EntityT[0][];
 
         public override void ChangeSize(Size size)
         {
             base.ChangeSize(size);
 
-            foreach (var row in entities)
+            foreach (var row in Entities)
             {
                 foreach (var entity in row)
                 {
@@ -24,10 +24,10 @@ namespace Zongband.Game.Boards
                 }
             }
 
-            entities = new EntityT[Size.y][];
-            for (var i = 0; i < Size.y; i++)
+            Entities = new EntityT[Size.Y][];
+            for (var i = 0; i < Size.Y; i++)
             {
-                entities[i] = new EntityT[Size.x];
+                Entities[i] = new EntityT[Size.X];
             }
         }
 
@@ -35,15 +35,15 @@ namespace Zongband.Game.Boards
         {
             if (!IsTileEmpty(at)) throw new ArgumentOutOfRangeException();
 
-            entity.tile = at;
-            entities[at.y][at.x] = entity;
+            entity.Tile = at;
+            Entities[at.Y][at.X] = entity;
         }
 
         public void Move(EntityT entity, Tile to)
         {
             if (!CheckEntityTile(entity)) throw new NotInTileException(entity);
 
-            Move(entity.tile, to);
+            Move(entity.Tile, to);
         }
 
         public void Move(Tile from, Tile to)
@@ -51,44 +51,44 @@ namespace Zongband.Game.Boards
             if (IsTileEmpty(from)) throw new EmptyTileException(from);
             if (!IsTileEmpty(to)) throw new NotEmptyTileException(to);
 
-            entities[to.y][to.x] = entities[from.y][from.x];
-            entities[from.y][from.x] = null;
-            entities[to.y][to.x]!.tile = to;
+            Entities[to.Y][to.X] = Entities[from.Y][from.X];
+            Entities[from.Y][from.X] = null;
+            Entities[to.Y][to.X]!.Tile = to;
         }
 
         public void Remove(EntityT entity)
         {
             if (!CheckEntityTile(entity)) throw new NotInTileException(entity);
 
-            Remove(entity.tile);
+            Remove(entity.Tile);
         }
 
         public void Remove(Tile at)
         {
             if (IsTileEmpty(at)) throw new EmptyTileException(at);
 
-            entities[at.y][at.x] = null;
+            Entities[at.Y][at.X] = null;
         }
 
         public EntityT? Get(Tile at)
         {
             if (!Size.Contains(at)) throw new ArgumentOutOfRangeException();
 
-            return entities[at.y][at.x];
+            return Entities[at.Y][at.X];
         }
 
         public bool IsTileEmpty(Tile tile)
         {
             if (!Size.Contains(tile)) throw new ArgumentOutOfRangeException();
 
-            return entities[tile.y][tile.x] == null;
+            return Entities[tile.Y][tile.X] == null;
         }
 
         public bool CheckEntityTile(EntityT entity)
         {
-            if (!Size.Contains(entity.tile)) throw new ArgumentOutOfRangeException();
+            if (!Size.Contains(entity.Tile)) throw new ArgumentOutOfRangeException();
 
-            return entities[entity.tile.y][entity.tile.x] == entity;
+            return Entities[entity.Tile.Y][entity.Tile.X] == entity;
         }
     }
 }

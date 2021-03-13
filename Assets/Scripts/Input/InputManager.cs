@@ -13,8 +13,8 @@ namespace Zongband.Input
     [RequireComponent(typeof(PlayerInput))]
     public class InputManager : MonoBehaviour
     {
-        public UIManager? uiManager;
-        public PlayerController? playerController;
+        public UIManager? UIManager;
+        public PlayerController? PlayerController;
 
         public void ProcessInput()
         {
@@ -23,49 +23,49 @@ namespace Zongband.Input
 
         public void ClearInput()
         {
-            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+            if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
 
-            playerController.Clear();
+            PlayerController.Clear();
         }
 
         private void OnMove(InputValue value)
         {
-            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+            if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
             var vector = value.Get<Vector2>();
             var direction = new Tile((int)vector.x, (int)vector.y);
-            playerController.PlayerAction = new PlayerAction(direction, true, true);
+            PlayerController.PlayerAction = new PlayerAction(direction, true, true);
         }
 
         private void OnSkipTurn(InputValue value)
         {
-            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+            if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
             var skipTurn = value.Get<float>() >= 0.5f;
-            playerController.SkipTurn = skipTurn;
+            PlayerController.SkipTurn = skipTurn;
         }
 
         private void OnMouseMove(InputValue value)
         {
-            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
+            if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
 
             var mousePosition = value.Get<Vector2>();
-            uiManager.SetMousePosition(mousePosition);
+            UIManager.SetMousePosition(mousePosition);
         }
 
         private void OnMouseClick()
         {
-            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
-            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
+            if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
+            if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
 
-            uiManager.HandleMouseClick();
-            var mouseTile = uiManager.MouseTile;
-            playerController.PlayerAction = new PlayerAction(mouseTile, false, true);
+            UIManager.HandleMouseClick();
+            var mouseTile = UIManager.MouseTile;
+            PlayerController.PlayerAction = new PlayerAction(mouseTile, false, true);
         }
 
         private void OnCtrlMouseClick()
         {
-            if (uiManager == null) throw new ArgumentNullException(nameof(uiManager));
+            if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
 
-            uiManager.HandleCtrlMouseClick();
+            UIManager.HandleCtrlMouseClick();
         }
     }
 }

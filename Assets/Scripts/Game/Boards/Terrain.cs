@@ -13,9 +13,9 @@ namespace Zongband.Game.Boards
 
         public void ApplySO(TerrainSO terrainSO)
         {
-            BlocksGround = terrainSO.blocksGround;
-            BlocksAir = terrainSO.blocksGround;
-            TileBase = terrainSO.tileBase;
+            BlocksGround = terrainSO.BlocksGround;
+            BlocksAir = terrainSO.BlocksGround;
+            TileBase = terrainSO.TileBase;
         }
     }
 }

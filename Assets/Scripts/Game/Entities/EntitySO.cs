@@ -7,6 +7,6 @@ namespace Zongband.Game.Entities
     [CreateAssetMenu(fileName = "Entity", menuName = "ScriptableObjects/Entity")]
     public class EntitySO : ScriptableObject
     {
-        public GameObject? gameModel = null;
+        public GameObject? GameModel = null;
     }
 }

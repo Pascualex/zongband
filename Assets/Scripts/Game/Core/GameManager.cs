@@ -19,124 +19,124 @@ namespace Zongband.Game.Core
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private AgentSO? playerAgentSO;
-        [SerializeField] private AgentSO[]? enemiesSOs;
-        [SerializeField] private EntitySO? boxEntitySO;
+        [SerializeField] private AgentSO? PlayerAgentSO;
+        [SerializeField] private AgentSO[]? EnemiesSOs;
+        [SerializeField] private EntitySO? BoxEntitySO;
 
-        public PlayerController? playerController;
-        public AIController? aiController;
-        public DungeonGenerator? dungeonGenerator;
-        public DungeonVisualizer? dungeonVisualizer;
-        public TurnManager? turnManager;
-        public Board? board;
-        public Agent? agentPrefab;
-        public Entity? entityPrefab;
+        public PlayerController? PlayerController;
+        public AIController? AIController;
+        public DungeonGenerator? DungeonGenerator;
+        public DungeonVisualizer? DungeonVisualizer;
+        public TurnManager? TurnManager;
+        public Board? Board;
+        public Agent? AgentPrefab;
+        public Entity? EntityPrefab;
 
         public Agent? LastPlayer { get; private set; }
 
-        private Action currentAction = new NullAction();
+        private Action CurrentAction = new NullAction();
 
         public void SetupExample1()
         {
-            if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
-            if (enemiesSOs == null) throw new ArgumentNullException(nameof(enemiesSOs));
-            if (boxEntitySO == null) throw new ArgumentNullException(nameof(boxEntitySO));
+            if (PlayerAgentSO == null) throw new ArgumentNullException(nameof(PlayerAgentSO));
+            if (EnemiesSOs == null) throw new ArgumentNullException(nameof(EnemiesSOs));
+            if (BoxEntitySO == null) throw new ArgumentNullException(nameof(BoxEntitySO));
 
-            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
-            if (dungeonGenerator == null) throw new ArgumentNullException(nameof(dungeonGenerator));
-            if (aiController == null) throw new ArgumentNullException(nameof(aiController));
-            if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
-            if (board == null) throw new ArgumentNullException(nameof(board));
-            if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
-            if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
+            if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
+            if (DungeonGenerator == null) throw new ArgumentNullException(nameof(DungeonGenerator));
+            if (AIController == null) throw new ArgumentNullException(nameof(AIController));
+            if (TurnManager == null) throw new ArgumentNullException(nameof(TurnManager));
+            if (Board == null) throw new ArgumentNullException(nameof(Board));
+            if (AgentPrefab == null) throw new ArgumentNullException(nameof(AgentPrefab));
+            if (EntityPrefab == null) throw new ArgumentNullException(nameof(EntityPrefab));
 
-            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
             var newAction = new ParallelAction();
 
-            var dungeonData = dungeonGenerator.GenerateTestDungeon(board.Size, 2);
-            board.Apply(dungeonData.ToBoardData());
+            var dungeonData = DungeonGenerator.GenerateTestDungeon(Board.Size, 2);
+            Board.Apply(dungeonData.ToBoardData());
 
             var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(playerAgentSO, dungeonData.playerSpawn, ctx, true);
+            var spawnPlayerAction = new SpawnAction(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
             playerAction.Add(spawnPlayerAction);
             playerAction.Add(new MakePlayerAction(spawnPlayerAction));
             newAction.Add(playerAction);
 
-            for (var i = 0; i < enemiesSOs.Length; i++)
-                newAction.Add(new SpawnAction(enemiesSOs[i], new Tile(3 + i, 5), ctx));
-            newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), ctx));
+            for (var i = 0; i < EnemiesSOs.Length; i++)
+                newAction.Add(new SpawnAction(EnemiesSOs[i], new Tile(3 + i, 5), ctx));
+            newAction.Add(new SpawnAction(BoxEntitySO, new Tile(3, 7), ctx));
 
-            currentAction = newAction;
+            CurrentAction = newAction;
         }
 
         public void SetupExample2()
         {
-            if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
-            if (enemiesSOs == null) throw new ArgumentNullException(nameof(enemiesSOs));
+            if (PlayerAgentSO == null) throw new ArgumentNullException(nameof(PlayerAgentSO));
+            if (EnemiesSOs == null) throw new ArgumentNullException(nameof(EnemiesSOs));
 
-            if (dungeonGenerator == null) throw new ArgumentNullException(nameof(dungeonGenerator));
-            if (dungeonVisualizer == null) throw new ArgumentNullException(nameof(dungeonVisualizer));
-            if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
-            if (board == null) throw new ArgumentNullException(nameof(board));
-            if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
-            if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
+            if (DungeonGenerator == null) throw new ArgumentNullException(nameof(DungeonGenerator));
+            if (DungeonVisualizer == null) throw new ArgumentNullException(nameof(DungeonVisualizer));
+            if (TurnManager == null) throw new ArgumentNullException(nameof(TurnManager));
+            if (Board == null) throw new ArgumentNullException(nameof(Board));
+            if (AgentPrefab == null) throw new ArgumentNullException(nameof(AgentPrefab));
+            if (EntityPrefab == null) throw new ArgumentNullException(nameof(EntityPrefab));
 
-            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
             var newAction = new ParallelAction();
 
-            var dungeonData = dungeonGenerator.GenerateDungeon(board.Size, 20, 4, 8, 4);
-            dungeonVisualizer.DungeonData = dungeonData;
+            var dungeonData = DungeonGenerator.GenerateDungeon(Board.Size, 20, 4, 8, 4);
+            DungeonVisualizer.DungeonData = dungeonData;
             if (dungeonData == null) throw new NullReferenceException();
 
-            board.Apply(dungeonData.ToBoardData());
+            Board.Apply(dungeonData.ToBoardData());
 
             var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(playerAgentSO, dungeonData.playerSpawn, ctx, true);
+            var spawnPlayerAction = new SpawnAction(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
             playerAction.Add(spawnPlayerAction);
             playerAction.Add(new MakePlayerAction(spawnPlayerAction));
             newAction.Add(playerAction);
 
-            if (enemiesSOs.Length > 0)
+            if (EnemiesSOs.Length > 0)
             {
-                foreach (var spawn in dungeonData.enemiesSpawn)
+                foreach (var spawn in dungeonData.EnemiesSpawn)
                 {
-                    var enemy = enemiesSOs[Random.Range(0, enemiesSOs.Length)];
+                    var enemy = EnemiesSOs[Random.Range(0, EnemiesSOs.Length)];
                     newAction.Add(new SpawnAction(enemy, spawn, ctx));
                 }
             }
 
-            currentAction = newAction;
+            CurrentAction = newAction;
         }
 
         public void GameLoop()
         {
-            if (currentAction.IsCompleted) currentAction = ProcessTurns();
-            else currentAction.Process();
+            if (CurrentAction.IsCompleted) CurrentAction = ProcessTurns();
+            else CurrentAction.Process();
         }
 
         public Action ProcessTurns()
         {
-            if (playerController == null) throw new ArgumentNullException(nameof(playerController));
-            if (aiController == null) throw new ArgumentNullException(nameof(aiController));
-            if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
-            if (board == null) throw new ArgumentNullException(nameof(board));
-            if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
-            if (entityPrefab == null) throw new ArgumentNullException(nameof(entityPrefab));
+            if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
+            if (AIController == null) throw new ArgumentNullException(nameof(AIController));
+            if (TurnManager == null) throw new ArgumentNullException(nameof(TurnManager));
+            if (Board == null) throw new ArgumentNullException(nameof(Board));
+            if (AgentPrefab == null) throw new ArgumentNullException(nameof(AgentPrefab));
+            if (EntityPrefab == null) throw new ArgumentNullException(nameof(EntityPrefab));
 
-            var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
+            var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
 
             var turnAction = new ParallelAction();
             var processedAgents = new HashSet<Agent>();
             Agent? agent;
-            while (((agent = turnManager.GetCurrent()) != null) && !processedAgents.Contains(agent))
+            while (((agent = TurnManager.GetCurrent()) != null) && !processedAgents.Contains(agent))
             {
                 Action? agentAction;
-                if (agent.isPlayer)
+                if (agent.IsPlayer)
                 {
                     LastPlayer = agent;
-                    agentAction = playerController.ProduceAction(agent, ctx);
+                    agentAction = PlayerController.ProduceAction(agent, ctx);
                 }
-                else agentAction = aiController.ProduceAction(agent, ctx);
+                else agentAction = AIController.ProduceAction(agent, ctx);
 
                 if (agentAction == null) break;
 
@@ -145,7 +145,7 @@ namespace Zongband.Game.Core
                 if (!agentAction.IsCompleted) turnAction.Add(agentAction);
 
                 processedAgents.Add(agent);
-                turnManager.Next();
+                TurnManager.Next();
 
                 if (!(agentAction is MovementAction) && !(agentAction is NullAction)) break;
             }

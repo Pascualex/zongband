@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc66d6232febc794f87f0dddcb88b750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameModelContainer: {fileID: 8964013729389180920}
-  defaultGameModel: {fileID: 4644097584919031478, guid: 0903e1f3a0a805046bc3856919c565b2,
+  GameModelContainer: {fileID: 8964013729389180920}
+  DefaultGameModel: {fileID: 4644097584919031478, guid: 0903e1f3a0a805046bc3856919c565b2,
     type: 3}
-  gameModel: {fileID: 5633123612049005511}
+  GameModel: {fileID: 5633123612049005511}
 --- !u!1 &8269358662496135209
 GameObject:
   m_ObjectHideFlags: 0

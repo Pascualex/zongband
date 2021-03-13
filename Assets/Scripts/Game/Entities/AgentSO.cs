@@ -7,19 +7,19 @@ namespace Zongband.Game.Entities
     [CreateAssetMenu(fileName = "Agent", menuName = "ScriptableObjects/Agent")]
     public class AgentSO : EntitySO
     {
-        public int turnCooldown = 100;
-        public int turnPriority = 0;
-        public int maxHealth = 100;
-        public int attack = 10;
-        public bool isGhost = false;
-        public bool isRoamer = true;
+        public int TurnCooldown = 100;
+        public int TurnPriority = 0;
+        public int MaxHealth = 100;
+        public int Attack = 10;
+        public bool IsGhost = false;
+        public bool IsRoamer = true;
 
         private void OnValidate()
         {
-            turnCooldown = Mathf.Max(turnCooldown, 1);
-            turnPriority = Mathf.Max(turnPriority, 0);
-            maxHealth = Mathf.Max(maxHealth, 1);
-            attack = Mathf.Max(attack, 0);
+            TurnCooldown = Mathf.Max(TurnCooldown, 1);
+            TurnPriority = Mathf.Max(TurnPriority, 0);
+            MaxHealth = Mathf.Max(MaxHealth, 1);
+            Attack = Mathf.Max(Attack, 0);
         }
     }
 }
