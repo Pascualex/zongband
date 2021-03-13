@@ -479,6 +479,51 @@ Transform:
   m_Father: {fileID: 1379493069}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &609829096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609829097}
+  - component: {fileID: 609829098}
+  m_Layer: 0
+  m_Name: DungeonVisualizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &609829097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609829096}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1016730619}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &609829098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609829096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9035bd9fe4374604c92b5f790d6ccf1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Board: {fileID: 1211860784}
+  RoomSphereRadius: 0.5
 --- !u!1 &614155110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,6 +1232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: {fileID: 11400000, guid: c01a94980ed34a940989672df4bbe34d, type: 2}
   wall: {fileID: 11400000, guid: d4733fce90b3e6042b7b3784043abe54, type: 2}
+  maxIterations: 1000
 --- !u!4 &1016730619
 Transform:
   m_ObjectHideFlags: 0
@@ -1197,7 +1243,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 609829097}
   m_Father: {fileID: 1379493069}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1545,18 +1592,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d3cc61434e28b48a0888c892656645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSO: {fileID: 11400000, guid: ec1ac837efd28224c961953169d49385, type: 2}
-  floorTerrainSO: {fileID: 11400000, guid: c01a94980ed34a940989672df4bbe34d, type: 2}
-  wallTerrainSO: {fileID: 11400000, guid: d4733fce90b3e6042b7b3784043abe54, type: 2}
   playerAgentSO: {fileID: 11400000, guid: 18653da16b77c5447ba598004bf5f7b4, type: 2}
-  fastAgentSO: {fileID: 11400000, guid: 9ed1371c0fcf228409094b6d03a6473e, type: 2}
-  normalAgentSO: {fileID: 11400000, guid: 8eda823a2b4c4b1448897a7ec2aea3d9, type: 2}
-  slowAgentSO: {fileID: 11400000, guid: d4e3689ea1285d34e8d2bf0c3e324800, type: 2}
-  notRoamerAgentSO: {fileID: 11400000, guid: 78bf7d3ab23af4b4a88f64f8f86b9d55, type: 2}
+  enemiesSOs:
+  - {fileID: 11400000, guid: 9ed1371c0fcf228409094b6d03a6473e, type: 2}
+  - {fileID: 11400000, guid: 8eda823a2b4c4b1448897a7ec2aea3d9, type: 2}
+  - {fileID: 11400000, guid: 78bf7d3ab23af4b4a88f64f8f86b9d55, type: 2}
+  - {fileID: 11400000, guid: d4e3689ea1285d34e8d2bf0c3e324800, type: 2}
   boxEntitySO: {fileID: 11400000, guid: 0c048d90f6057844d8beefc3a49a025e, type: 2}
   playerController: {fileID: 1190358108}
   aiController: {fileID: 470883251}
   dungeonGenerator: {fileID: 1016730618}
+  dungeonVisualizer: {fileID: 609829098}
   turnManager: {fileID: 848178843}
   board: {fileID: 1211860784}
   agentPrefab: {fileID: 8907060410573984850, guid: 5fac1060013cf604aa3f4f970a126d39,

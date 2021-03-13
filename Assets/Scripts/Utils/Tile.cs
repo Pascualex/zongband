@@ -27,6 +27,12 @@ namespace Zongband.Utils
             this.y = y;
         }
 
+        public Tile(int xy)
+        : this(xy, xy) { }
+
+        public Tile(Vector2 vector2)
+        : this((int)vector2.x, (int)vector2.y) { }
+
         public int GetDistance()
         {
             return GetDistance(Zero);

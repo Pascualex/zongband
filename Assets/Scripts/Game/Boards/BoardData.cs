@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 using Zongband.Utils;
 
@@ -10,7 +11,6 @@ namespace Zongband.Game.Boards
     public class BoardData
     {
         public readonly Size size;
-        private Tile playerSpawn = Tile.Zero;
 
         private readonly TerrainSO[][] terrainsSOs;
 
@@ -74,16 +74,6 @@ namespace Zongband.Game.Boards
 
                 lower += Tile.One;
                 higher -= Tile.One;
-            }
-        }
-
-        public Tile PlayerSpawn
-        {
-            get => playerSpawn;
-            set
-            {
-                if (!size.Contains(value)) throw new ArgumentOutOfRangeException();
-                playerSpawn = value;
             }
         }
     }

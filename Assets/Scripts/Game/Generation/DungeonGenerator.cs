@@ -14,15 +14,12 @@ namespace Zongband.Game.Generation
     {
         [SerializeField] private TerrainSO? floor;
         [SerializeField] private TerrainSO? wall;
+        [SerializeField] private int maxIterations;
 
-        private int maxIterations = 10000;
-
-        public BoardData? GenerateDungeon(Size size, int rooms, int minSide, int maxSide, int padding)
+        public DungeonData? GenerateDungeon(Size size, int rooms, int minSide, int maxSide, int padding)
         {
             if (floor == null) throw new ArgumentNullException(nameof(floor));
             if (wall == null) throw new ArgumentNullException(nameof(wall));
-
-            var boardData = new BoardData(size, wall);
 
             var roomList = GenerateRooms(rooms, size, minSide, maxSide);
             var iterations = 0;
@@ -30,32 +27,34 @@ namespace Zongband.Game.Generation
             Debug.Log("Dungeon generated in " + (iterations + 1) + " iterations");
             if (iterations >= maxIterations) Debug.LogWarning("Iteration limit reached");
 
+            var dungeonData = new DungeonData(size, floor, wall);
             var playerSpawnPlaced = false;
             foreach (var room in roomList)
             {
                 if (room.discarded) continue;
-                boardData.Fill(room.origin, room.size, floor);
+                dungeonData.Rooms.Add(room);
                 if (!playerSpawnPlaced)
                 {
-                    boardData.PlayerSpawn = room.origin;
+                    dungeonData.playerSpawn = room.origin;
                     playerSpawnPlaced = true;
                 }
+                else dungeonData.enemiesSpawn.Add(room.origin);
             }
 
-            return boardData;
+            return dungeonData;
         }
 
-        public BoardData? GenerateTestDungeon(Size size, int wallWidth)
+        public DungeonData GenerateTestDungeon(Size size, int wallWidth)
         {
             if (floor == null) throw new ArgumentNullException(nameof(floor));
             if (wall == null) throw new ArgumentNullException(nameof(wall));
 
-            var boardData = new BoardData(size, floor);
+            var dungeonData = new DungeonData(size, floor, wall);
 
-            boardData.Box(Tile.Zero, size, wall, wallWidth);
-            boardData.PlayerSpawn = new Tile(5, 5);
+            dungeonData.Rooms.Add(new Room(new Tile(wallWidth), size - new Size(wallWidth * 2)));
+            dungeonData.playerSpawn = new Tile(5, 5);
 
-            return boardData;
+            return dungeonData;
         }
 
         private Room[] GenerateRooms(int quantity, Size dungeonSize, int minSide, int maxSide)
@@ -82,7 +81,6 @@ namespace Zongband.Game.Generation
         private bool ExpandRooms(Room[] rooms, Size dungeonSize, int padding)
         {
             var collision = false;
-
             for (var i = 0; i < rooms.Length; i++)
             {
                 if (rooms[i].discarded) continue;

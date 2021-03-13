@@ -12,22 +12,21 @@ using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-using Action=Zongband.Game.Actions.Action;
+using Random = UnityEngine.Random;
+using Action = Zongband.Game.Actions.Action;
 
 namespace Zongband.Game.Core
 {
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private AgentSO? playerAgentSO;
-        [SerializeField] private AgentSO? fastAgentSO;
-        [SerializeField] private AgentSO? normalAgentSO;
-        [SerializeField] private AgentSO? slowAgentSO;
-        [SerializeField] private AgentSO? notRoamerAgentSO;
+        [SerializeField] private AgentSO[]? enemiesSOs;
         [SerializeField] private EntitySO? boxEntitySO;
 
         public PlayerController? playerController;
         public AIController? aiController;
         public DungeonGenerator? dungeonGenerator;
+        public DungeonVisualizer? dungeonVisualizer;
         public TurnManager? turnManager;
         public Board? board;
         public Agent? agentPrefab;
@@ -40,10 +39,7 @@ namespace Zongband.Game.Core
         public void SetupExample1()
         {
             if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
-            if (fastAgentSO == null) throw new ArgumentNullException(nameof(fastAgentSO));
-            if (normalAgentSO == null) throw new ArgumentNullException(nameof(normalAgentSO));
-            if (slowAgentSO == null) throw new ArgumentNullException(nameof(slowAgentSO));
-            if (notRoamerAgentSO == null) throw new ArgumentNullException(nameof(notRoamerAgentSO));
+            if (enemiesSOs == null) throw new ArgumentNullException(nameof(enemiesSOs));
             if (boxEntitySO == null) throw new ArgumentNullException(nameof(boxEntitySO));
 
             if (playerController == null) throw new ArgumentNullException(nameof(playerController));
@@ -57,23 +53,17 @@ namespace Zongband.Game.Core
             var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
             var newAction = new ParallelAction();
 
-            var boardData = dungeonGenerator.GenerateTestDungeon(board.Size, 2);
-            if (boardData == null) throw new NullReferenceException();
-            board.Apply(boardData);
+            var dungeonData = dungeonGenerator.GenerateTestDungeon(board.Size, 2);
+            board.Apply(dungeonData.ToBoardData());
 
             var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(playerAgentSO, new Tile(3, 3), ctx, true);
+            var spawnPlayerAction = new SpawnAction(playerAgentSO, dungeonData.playerSpawn, ctx, true);
             playerAction.Add(spawnPlayerAction);
             playerAction.Add(new MakePlayerAction(spawnPlayerAction));
             newAction.Add(playerAction);
 
-            // newAction.Add(new SpawnAction(fastAgentSO, new Tile(3, 5), ctx));
-            newAction.Add(new SpawnAction(normalAgentSO, new Tile(4, 5), ctx));
-            newAction.Add(new SpawnAction(normalAgentSO, new Tile(5, 5), ctx));
-            newAction.Add(new SpawnAction(slowAgentSO, new Tile(6, 5), ctx));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(9, 5), ctx));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(10, 6), ctx));
-            newAction.Add(new SpawnAction(notRoamerAgentSO, new Tile(11, 5), ctx));
+            for (var i = 0; i < enemiesSOs.Length; i++)
+                newAction.Add(new SpawnAction(enemiesSOs[i], new Tile(3 + i, 5), ctx));
             newAction.Add(new SpawnAction(boxEntitySO, new Tile(3, 7), ctx));
 
             currentAction = newAction;
@@ -82,8 +72,10 @@ namespace Zongband.Game.Core
         public void SetupExample2()
         {
             if (playerAgentSO == null) throw new ArgumentNullException(nameof(playerAgentSO));
+            if (enemiesSOs == null) throw new ArgumentNullException(nameof(enemiesSOs));
 
             if (dungeonGenerator == null) throw new ArgumentNullException(nameof(dungeonGenerator));
+            if (dungeonVisualizer == null) throw new ArgumentNullException(nameof(dungeonVisualizer));
             if (turnManager == null) throw new ArgumentNullException(nameof(turnManager));
             if (board == null) throw new ArgumentNullException(nameof(board));
             if (agentPrefab == null) throw new ArgumentNullException(nameof(agentPrefab));
@@ -92,16 +84,26 @@ namespace Zongband.Game.Core
             var ctx = new Action.Context(turnManager, board, agentPrefab, entityPrefab);
             var newAction = new ParallelAction();
 
-            var boardData = dungeonGenerator.GenerateDungeon(board.Size, 200, 4, 20, 2);
-            if (boardData == null) throw new NullReferenceException();
+            var dungeonData = dungeonGenerator.GenerateDungeon(board.Size, 20, 4, 8, 4);
+            dungeonVisualizer.DungeonData = dungeonData;
+            if (dungeonData == null) throw new NullReferenceException();
 
-            board.Apply(boardData);
+            board.Apply(dungeonData.ToBoardData());
 
             var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(playerAgentSO, boardData.PlayerSpawn, ctx, true);
+            var spawnPlayerAction = new SpawnAction(playerAgentSO, dungeonData.playerSpawn, ctx, true);
             playerAction.Add(spawnPlayerAction);
             playerAction.Add(new MakePlayerAction(spawnPlayerAction));
             newAction.Add(playerAction);
+
+            if (enemiesSOs.Length > 0)
+            {
+                foreach (var spawn in dungeonData.enemiesSpawn)
+                {
+                    var enemy = enemiesSOs[Random.Range(0, enemiesSOs.Length)];
+                    newAction.Add(new SpawnAction(enemy, spawn, ctx));
+                }
+            }
 
             currentAction = newAction;
         }

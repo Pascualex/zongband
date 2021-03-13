@@ -19,6 +19,9 @@ namespace Zongband.Utils
             this.y = y;
         }
 
+        public Size(int xy)
+        : this(xy, xy) { }
+
         public bool Contains(Tile tile)
         {
             return Checker.Range(tile.x, x) && Checker.Range(tile.y, y);
