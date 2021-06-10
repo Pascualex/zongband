@@ -48,7 +48,7 @@ namespace Zongband.Utils
             return new Vector3Int(X, Y, 0);
         }
 
-        public Vector3 ToWorldVector3()
+        public Vector3 ToWorld()
         {
             return new Vector3(X, 0, Y);
         }

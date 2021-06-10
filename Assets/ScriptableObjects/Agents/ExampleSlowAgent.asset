@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameModel: {fileID: 4644097584919031478, guid: a8465489bd2f1da4d8970a38aff5087d,
     type: 3}
+  Name: Troll
   TurnCooldown: 200
   TurnPriority: 0
   MaxHealth: 200

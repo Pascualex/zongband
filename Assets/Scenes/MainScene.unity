@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameManager: {fileID: 1379493068}
   InspectorMenu: {fileID: 1550581388}
+  Name: {fileID: 1798990587}
   HealthBar: {fileID: 808159242}
   HealthStat: {fileID: 1140526323}
   TurnCDStat: {fileID: 920530164}
@@ -1297,9 +1298,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d81bd7058195b02438d568d8f2ee7cb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraOffset: {x: 0, y: 10, z: 0}
-  FixedSpeed: 1
-  VariableSpeed: 15
+  CameraOffset: {x: 0, y: 10, z: -4}
+  FixedSpeed: 0.5
+  VariableSpeed: 5
   MainCamera: {fileID: 1687258584}
   GameManager: {fileID: 1379493068}
 --- !u!1 &1140526321

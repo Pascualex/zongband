@@ -53,7 +53,7 @@ namespace Zongband.Game.Core
             var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
             var newAction = new ParallelAction();
 
-            var dungeonData = DungeonGenerator.GenerateTestDungeon(Board.Size, 2);
+            var dungeonData = DungeonGenerator.GenerateTestDungeon(Board.Size, 3);
             Board.Apply(dungeonData.ToBoardData());
 
             var playerAction = new SequentialAction();
@@ -63,8 +63,8 @@ namespace Zongband.Game.Core
             newAction.Add(playerAction);
 
             for (var i = 0; i < EnemiesSOs.Length; i++)
-                newAction.Add(new SpawnAction(EnemiesSOs[i], new Tile(3 + i, 5), ctx));
-            newAction.Add(new SpawnAction(BoxEntitySO, new Tile(3, 7), ctx));
+                newAction.Add(new SpawnAction(EnemiesSOs[i], new Tile(3 + i, 7), ctx));
+            newAction.Add(new SpawnAction(BoxEntitySO, new Tile(3, 9), ctx));
 
             CurrentAction = newAction;
         }
@@ -114,7 +114,7 @@ namespace Zongband.Game.Core
             else CurrentAction.Process();
         }
 
-        public Action ProcessTurns()
+        private Action ProcessTurns()
         {
             if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
             if (AIController == null) throw new ArgumentNullException(nameof(AIController));
@@ -127,7 +127,7 @@ namespace Zongband.Game.Core
 
             var turnAction = new ParallelAction();
             var processedAgents = new HashSet<Agent>();
-            Agent? agent;
+            Agent? agent;                               
             while (((agent = TurnManager.GetCurrent()) != null) && !processedAgents.Contains(agent))
             {
                 Action? agentAction;

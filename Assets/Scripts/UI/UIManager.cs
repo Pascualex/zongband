@@ -40,12 +40,17 @@ namespace Zongband.UI
             UpdateMouseTile();
         }
 
-        public void HandleMouseClick()
+        public void HandleMouseLeftClick()
+        {
+
+        }
+        
+        public void HandleMouseRightClick()
         {
 
         }
 
-        public void HandleCtrlMouseClick()
+        public void HandleCtrlMouseLeftClick()
         {
             if (AgentInspector == null) throw new ArgumentNullException(nameof(AgentInspector));
 

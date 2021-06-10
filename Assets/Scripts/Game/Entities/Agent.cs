@@ -9,6 +9,7 @@ namespace Zongband.Game.Entities
     {
         public bool IsPlayer = false;
         
+        public string Name { get; private set; } = "Example name";
         public int TurnCooldown { get; private set; } = 100;
         public int TurnPriority { get; private set; } = 0;
         public int MaxHealth { get; private set; } = 100;
@@ -26,6 +27,7 @@ namespace Zongband.Game.Entities
         {
             base.ApplySO(agentSO);
 
+            Name = agentSO.Name;
             TurnCooldown = agentSO.TurnCooldown;
             TurnPriority = agentSO.TurnPriority;
             MaxHealth = agentSO.MaxHealth;

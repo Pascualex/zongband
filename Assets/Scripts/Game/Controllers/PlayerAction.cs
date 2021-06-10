@@ -11,6 +11,7 @@ namespace Zongband.Game.Controllers
         public readonly Tile Tile;
         public readonly bool Relative;
         public readonly bool CanAttack;
+
         public PlayerAction(Tile tile, bool relative, bool canAttack)
         {
             Tile = tile;

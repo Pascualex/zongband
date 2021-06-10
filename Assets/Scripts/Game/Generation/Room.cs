@@ -6,7 +6,7 @@ using System;
 using Zongband.Game.Boards;
 using Zongband.Utils;
 
-using Random=UnityEngine.Random;
+using Random = UnityEngine.Random;
 
 namespace Zongband.Game.Generation
 {
@@ -15,7 +15,6 @@ namespace Zongband.Game.Generation
         public Tile Origin;
         public Size Size;
         public Vector2 Center => new Vector2(Origin.X + (Size.X / 2f), Origin.Y + (Size.Y / 2f));
-        public bool Discarded = false;
 
         public Room(Tile origin, Size size)
         {
@@ -31,7 +30,7 @@ namespace Zongband.Game.Generation
         }
 
         public bool MoveAway(Room other, int padding)
-        {            
+        {
             var left = Origin.X + Size.X - other.Origin.X + padding;
             if (left <= 0) return false;
             var right = other.Origin.X + other.Size.X - Origin.X + padding;

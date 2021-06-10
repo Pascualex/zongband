@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameModel: {fileID: 4644097584919031478, guid: 526e57f7b0e1f6a4e85ebae02df36384,
     type: 3}
+  Name: Player
   TurnCooldown: 100
   TurnPriority: 0
   MaxHealth: 100

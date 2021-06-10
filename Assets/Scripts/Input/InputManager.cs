@@ -51,21 +51,28 @@ namespace Zongband.Input
             UIManager.SetMousePosition(mousePosition);
         }
 
-        private void OnMouseClick()
+        private void OnMouseLeftClick()
         {
             if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
             if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
 
-            UIManager.HandleMouseClick();
+            UIManager.HandleMouseLeftClick();
             var mouseTile = UIManager.MouseTile;
             PlayerController.PlayerAction = new PlayerAction(mouseTile, false, true);
         }
 
-        private void OnCtrlMouseClick()
+        private void OnMouseRightClick()
         {
             if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
 
-            UIManager.HandleCtrlMouseClick();
+            UIManager.HandleCtrlMouseLeftClick();
+        }
+
+        private void OnCtrlMouseLeftClick()
+        {
+            if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
+
+            UIManager.HandleCtrlMouseLeftClick();
         }
     }
 }

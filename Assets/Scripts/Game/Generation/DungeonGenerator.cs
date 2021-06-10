@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 using Zongband.Game.Boards;
 using Zongband.Utils;
@@ -28,11 +29,10 @@ namespace Zongband.Game.Generation
             if (iterations >= MaxIterations) Debug.LogWarning("Iteration limit reached");
 
             var dungeonData = new DungeonData(size, Floor, Wall);
+            dungeonData.Rooms.AddRange(roomList);
             var playerSpawnPlaced = false;
             foreach (var room in roomList)
             {
-                if (room.Discarded) continue;
-                dungeonData.Rooms.Add(room);
                 if (!playerSpawnPlaced)
                 {
                     dungeonData.PlayerSpawn = room.Origin;
@@ -40,6 +40,9 @@ namespace Zongband.Game.Generation
                 }
                 else dungeonData.EnemiesSpawn.Add(room.Origin);
             }
+
+            var connections = ConnectRooms(roomList);
+            dungeonData.Connections.AddRange(connections);
 
             return dungeonData;
         }
@@ -57,10 +60,10 @@ namespace Zongband.Game.Generation
             return dungeonData;
         }
 
-        private Room[] GenerateRooms(int quantity, Size dungeonSize, int minSide, int maxSide)
+        private List<Room> GenerateRooms(int quantity, Size dungeonSize, int minSide, int maxSide)
         {
-            var rooms = new Room[quantity];
-            for (var i = 0; i < rooms.Length; i++) rooms[i] = GenerateRoom(dungeonSize, minSide, maxSide);
+            var rooms = new List<Room>(quantity);
+            for (var i = 0; i <quantity; i++) rooms.Add(GenerateRoom(dungeonSize, minSide, maxSide));
             return rooms;
         }
 
@@ -78,23 +81,26 @@ namespace Zongband.Game.Generation
             return new Room(origin, size);
         }
 
-        private bool ExpandRooms(Room[] rooms, Size dungeonSize, int padding)
+        private bool ExpandRooms(List<Room> rooms, Size dungeonSize, int padding)
         {
             var collision = false;
-            for (var i = 0; i < rooms.Length; i++)
+            foreach (var roomA in rooms)
             {
-                if (rooms[i].Discarded) continue;
-                for (var j = 0; j < rooms.Length; j++)
+                foreach (var roomB in rooms)
                 {
-                    if (i == j) continue;
-                    if (rooms[j].Discarded) continue;
-                    if (!rooms[i].MoveAway(rooms[j], padding)) continue;
-                    if (rooms[i].IsOutside(dungeonSize, padding)) rooms[i].Discarded = true;
+                    if (roomA == roomB) continue;
+                    if (!roomA.MoveAway(roomB, padding)) continue;
                     collision = true;
                     break;
                 }
             }
+            rooms.RemoveAll(room => room.IsOutside(dungeonSize, padding));
             return collision;
+        }
+
+        private List<Tuple<Room, Room>> ConnectRooms(List<Room> rooms)
+        {
+            return new List<Tuple<Room, Room>>();
         }
     }
 }

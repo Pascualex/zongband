@@ -42,7 +42,7 @@ namespace Zongband.Game.Actions
             }
 
             if (Entity is Agent agent) AddToTurnManager(agent);
-            MoveToSpawnInWorld(Entity);
+            MoveToSpawn(Entity);
 
             return true;
         }
@@ -75,7 +75,7 @@ namespace Zongband.Game.Actions
             Ctx.TurnManager.Add(agent, Priority);
         }
 
-        private void MoveToSpawnInWorld(Entity entity)
+        private void MoveToSpawn(Entity entity)
         {
             var spawnPosition = entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
             entity.transform.position = spawnPosition;

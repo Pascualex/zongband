@@ -19,7 +19,6 @@ namespace Zongband.Core
         {
             if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
 
-            //gameManager.SetupExample1();
             GameManager.SetupExample2();
         }
 

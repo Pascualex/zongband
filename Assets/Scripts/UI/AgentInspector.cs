@@ -17,6 +17,7 @@ namespace Zongband.UI
 
         [SerializeField] private GameManager? GameManager;
         [SerializeField] private Image? InspectorMenu;
+        [SerializeField] private TextMeshProUGUI? Name;
         [SerializeField] private Slider? HealthBar;
         [SerializeField] private TextMeshProUGUI? HealthStat;
         [SerializeField] private TextMeshProUGUI? TurnCDStat;
@@ -47,6 +48,7 @@ namespace Zongband.UI
             if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
             if (GameManager.Board == null) throw new ArgumentNullException(nameof(GameManager.Board));
             if (InspectorMenu == null) throw new ArgumentNullException(nameof(InspectorMenu));
+            if (Name == null) throw new ArgumentNullException(nameof(Name));
             if (HealthBar == null) throw new ArgumentNullException(nameof(HealthBar));
             if (HealthStat == null) throw new ArgumentNullException(nameof(HealthStat));
             if (TurnCDStat == null) throw new ArgumentNullException(nameof(TurnCDStat));
@@ -57,6 +59,7 @@ namespace Zongband.UI
             if (agent == null || !agent) agent = GameManager.Board.GetAgent(MouseTile);
             if (agent != null)
             {
+                Name.text = agent.Name;
                 HealthBar.maxValue = agent.MaxHealth;
                 HealthBar.value = agent.CurrentHealth;
                 HealthStat.text = agent.CurrentHealth + " / " + agent.MaxHealth;

@@ -26,7 +26,7 @@ namespace Zongband.Game.Actions
             if (!Attacker || !Target) return true;
 
             var tileDirection = Target.Tile - Attacker.Tile;
-            var direction = tileDirection.ToWorldVector3();
+            var direction = tileDirection.ToWorld();
             Attacker.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
 
             var animatorComponent = Attacker.GetComponent<EntityAnimator>();

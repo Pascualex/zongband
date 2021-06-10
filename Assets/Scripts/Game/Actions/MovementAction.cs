@@ -59,7 +59,7 @@ namespace Zongband.Game.Actions
         private void FaceTowardsDirection(Tile oldTile)
         {
             var tileDirection = Entity.Tile - oldTile;
-            var direction = tileDirection.ToWorldVector3();
+            var direction = tileDirection.ToWorld();
             Entity.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 

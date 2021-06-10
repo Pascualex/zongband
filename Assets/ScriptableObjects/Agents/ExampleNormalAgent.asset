@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameModel: {fileID: 4644097584919031478, guid: 09fb2cc6317f02340a0aef7cd65e0de0,
     type: 3}
+  Name: Goblin
   TurnCooldown: 100
   TurnPriority: 0
   MaxHealth: 100

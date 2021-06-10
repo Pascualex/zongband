@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameModel: {fileID: 4644097584919031478, guid: 199a0ab347590da4f9d75d2fe888f781,
     type: 3}
+  Name: Gargoyle
   TurnCooldown: 100
   TurnPriority: 0
   MaxHealth: 100

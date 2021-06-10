@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "MouseClick",
+                    "name": "MouseLeftClick",
                     "type": "Button",
                     "id": "bf4ba8ed-490a-4dd5-8ae1-8362e50ed57a",
                     "expectedControlType": "Button",
@@ -38,7 +38,15 @@
                     "interactions": ""
                 },
                 {
-                    "name": "CtrlMouseClick",
+                    "name": "MouseRightClick",
+                    "type": "Button",
+                    "id": "6efc4491-fdab-451c-8adf-418ee09fb9ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "CtrlMouseLeftClick",
                     "type": "Button",
                     "id": "67d6dca1-39f8-432f-96b9-155d49032d0c",
                     "expectedControlType": "Button",
@@ -126,12 +134,12 @@
                 },
                 {
                     "name": "",
-                    "id": "2d06844c-74ee-49e7-b05e-3b9f9ed21bed",
+                    "id": "673ce3c0-ed9c-4867-b9f6-da101271fd46",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "MouseClick",
+                    "action": "MouseLeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -142,7 +150,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CtrlMouseClick",
+                    "action": "CtrlMouseLeftClick",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -153,7 +161,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "CtrlMouseClick",
+                    "action": "CtrlMouseLeftClick",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -164,9 +172,20 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "CtrlMouseClick",
+                    "action": "CtrlMouseLeftClick",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6c55a6e1-970a-4961-946b-d23dc5005e9e",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "MouseRightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
