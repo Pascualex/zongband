@@ -25,6 +25,7 @@ namespace Zongband.Game.Controllers
         public void Clear()
         {
             PlayerAction = null;
+            SkipTurn = false;
         }
 
         private Action? ProduceMovementOrAttack(Agent agent, Action.Context ctx)

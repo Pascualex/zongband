@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65755f9dc1bb2cd429011fab999aaa4e, type: 3}
-  m_Name: ExamplePlayerAgent
+  m_Name: ExampleGhostAgent
   m_EditorClassIdentifier: 
-  GameModel: {fileID: 4644097584919031478, guid: 526e57f7b0e1f6a4e85ebae02df36384,
+  GameModel: {fileID: 4644097584919031478, guid: bad292f71827a624690dc3362dbc46a8,
     type: 3}
-  Name: Player
+  Name: Ghost
   TurnCooldown: 100
   TurnPriority: 0
   MaxHealth: 100
