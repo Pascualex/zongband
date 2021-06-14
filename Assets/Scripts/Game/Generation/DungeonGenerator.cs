@@ -35,10 +35,10 @@ namespace Zongband.Game.Generation
             {
                 if (!playerSpawnPlaced)
                 {
-                    dungeonData.PlayerSpawn = room.Origin;
+                    dungeonData.PlayerSpawn = new Tile(room.Center);
                     playerSpawnPlaced = true;
                 }
-                else dungeonData.EnemiesSpawn.Add(room.Origin);
+                else dungeonData.EnemiesSpawn.Add(new Tile(room.Center));
             }
 
             var connections = ConnectRooms(roomList);
@@ -98,9 +98,41 @@ namespace Zongband.Game.Generation
             return collision;
         }
 
+        // TODO: improve efficiency
         private List<Tuple<Room, Room>> ConnectRooms(List<Room> rooms)
         {
-            return new List<Tuple<Room, Room>>();
+            var notConnected = new LinkedList<Room>(rooms);
+            var connected = new LinkedList<Room>();
+
+            connected.AddLast(notConnected.Last.Value);
+            notConnected.RemoveLast();
+
+            var connections = new List<Tuple<Room, Room>>();
+
+            while (notConnected.Count > 0)
+            {
+                Tuple<Room, Room>? minPair = null;
+                var minDistance = int.MaxValue;
+
+                foreach (var roomA in connected)
+                {
+                    foreach (var roomB in notConnected)
+                    {
+                        var distance = roomA.GetDistance(roomB);
+                        if (distance < minDistance)
+                        {
+                            minPair = new Tuple<Room, Room>(roomA, roomB);
+                            minDistance = distance;
+                        }
+                    }
+                }
+
+                connections.Add(minPair!);
+                connected.AddLast(minPair!.Item2);
+                notConnected.Remove(minPair!.Item2);
+            }
+
+            return connections;
         }
     }
 }

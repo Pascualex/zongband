@@ -58,11 +58,24 @@ namespace Zongband.Game.Generation
             return false;
         }
 
+        public int GetDistance(Room other)
+        {
+            var distanceH = GetDistance(Origin.X, Size.X, other.Origin.X, other.Size.X);
+            var distanceV = GetDistance(Origin.Y, Size.Y, other.Origin.Y, other.Size.Y);
+            return distanceH + distanceV;
+        }
+
         private bool Collides(int originA, int sizeA, int originB, int sizeB)
         {
             if (originA < originB) return (originA + sizeA) >= originB;
             else if (originB < originA) return (originB + sizeB) >= originA;
             else return true;
+        }
+
+        private int GetDistance(int originA, int sizeA, int originB, int sizeB)
+        {
+            if (originA < originB) return Math.Max(originB - (originA + sizeA), 0);
+            else return Math.Max(originA - (originB + sizeB), 0);
         }
     }
 }
