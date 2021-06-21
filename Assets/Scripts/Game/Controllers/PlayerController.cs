@@ -44,7 +44,7 @@ namespace Zongband.Game.Controllers
             var targetAgent = ctx.Board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {
-                return new AttackCommand(agent, targetAgent, ctx);
+                return new ShootCommand(agent, targetAgent, ctx);
             }
 
             return null;
