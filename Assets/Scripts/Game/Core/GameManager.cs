@@ -33,7 +33,7 @@ namespace Zongband.Game.Core
 
         public Agent? LastPlayer { get; private set; }
 
-        private Command CurrentCommand = new NullCommand();
+        private Command MainCommand = new NullCommand();
 
         public void SetupExample1()
         {
@@ -56,16 +56,17 @@ namespace Zongband.Game.Core
             Board.Apply(dungeonData.ToBoardData());
 
             var playerCommand = new SequentialCommand();
-            var spawnPlayerCommand = new SpawnCommand(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
+            var playerSpawn = dungeonData.PlayerSpawn;
+            var spawnPlayerCommand = new SpawnCommand(PlayerAgentSO, playerSpawn, ctx, true);
             playerCommand.Add(spawnPlayerCommand);
-            playerCommand.Add(new MakePlayerCommand(spawnPlayerCommand));
+            playerCommand.Add(new ControlCommand(spawnPlayerCommand.Agent, true));
             newCommand.Add(playerCommand);
 
             for (var i = 0; i < EnemiesSOs.Length; i++)
                 newCommand.Add(new SpawnCommand(EnemiesSOs[i], new Tile(3 + i, 7), ctx));
-            newCommand.Add(new SpawnCommand(BoxEntitySO, new Tile(3, 9), ctx));
+            newCommand.Add(new CreateCommand(BoxEntitySO, new Tile(3, 9), ctx));
 
-            CurrentCommand = newCommand;
+            MainCommand = newCommand;
         }
 
         public void SetupExample2()
@@ -90,9 +91,10 @@ namespace Zongband.Game.Core
             Board.Apply(dungeonData.ToBoardData());
 
             var playerCommand = new SequentialCommand();
-            var spawnPlayerCommand = new SpawnCommand(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
+            var playerSpawn = dungeonData.PlayerSpawn;
+            var spawnPlayerCommand = new SpawnCommand(PlayerAgentSO, playerSpawn, ctx, true);
             playerCommand.Add(spawnPlayerCommand);
-            playerCommand.Add(new MakePlayerCommand(spawnPlayerCommand));
+            playerCommand.Add(new ControlCommand(spawnPlayerCommand.Agent, true));
             newCommand.Add(playerCommand);
 
             if (EnemiesSOs.Length > 0)
@@ -104,13 +106,13 @@ namespace Zongband.Game.Core
                 }
             }
 
-            CurrentCommand = newCommand;
+            MainCommand = newCommand;
         }
 
         public void GameLoop()
         {
-            if (CurrentCommand.IsCompleted) CurrentCommand = ProcessTurns();
-            else CurrentCommand.Execute();
+            if (MainCommand.IsCompleted) MainCommand = ProcessTurns();
+            else MainCommand.Execute();
         }
 
         private Command ProcessTurns()
@@ -146,7 +148,7 @@ namespace Zongband.Game.Core
                 processedAgents.Add(agent);
                 TurnManager.Next();
 
-                if (!(agentCommand is MovementCommand) && !(agentCommand is NullCommand)) break;
+                if (!(agentCommand is MoveCommand) && !(agentCommand is NullCommand)) break;
             }
 
             return turnCommand;

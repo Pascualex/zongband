@@ -39,7 +39,7 @@ namespace Zongband.Game.Controllers
             var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.Tile);
             var instant = distance > 1;
             var isTileAvailable = ctx.Board.IsTileAvailable(agent, tile, relative);
-            if (isTileAvailable) return new MovementCommand(agent, tile, relative, ctx, instant);
+            if (isTileAvailable) return new MoveCommand(agent, tile, relative, ctx, instant);
 
             var targetAgent = ctx.Board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)

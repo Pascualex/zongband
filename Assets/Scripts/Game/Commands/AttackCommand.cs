@@ -3,6 +3,7 @@
 using UnityEngine;
 
 using Zongband.Game.Entities;
+using Zongband.Utils;
 
 namespace Zongband.Game.Commands
 {
@@ -23,7 +24,11 @@ namespace Zongband.Game.Commands
 
         protected override bool ExecuteStart()
         {
-            if (!Attacker || !Target) return true;
+            if (!Attacker.IsAlive || !Target.IsAlive)
+            {
+                Debug.LogError(Warnings.AgentNotAlive);
+                return true;
+            }
 
             var tileDirection = Target.Tile - Attacker.Tile;
             var direction = tileDirection.ToWorld();
@@ -43,7 +48,11 @@ namespace Zongband.Game.Commands
 
         protected override bool ExecuteUpdate()
         {
-            if (!Attacker || !Target) return true;
+            if (!Attacker.IsAlive || (!Target.IsAlive && !IsDamageDealt))
+            {
+                Debug.LogError(Warnings.AgentNotAlive);
+                return true;
+            }
 
             if (AnimationState == null || AnimationState.IsCompleted)
             {

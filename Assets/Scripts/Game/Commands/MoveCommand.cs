@@ -8,7 +8,7 @@ using Zongband.Utils;
 
 namespace Zongband.Game.Commands
 {
-    public class MovementCommand : Command
+    public class MoveCommand : Command
     {
         private const float AnimationFixedSpeed = 1f;
         private const float AnimationVariableSpeed = 15f;
@@ -19,10 +19,10 @@ namespace Zongband.Game.Commands
         private readonly Context Ctx;
         private readonly bool Instant;
 
-        public MovementCommand(Entity entity, Tile tile, bool relative, Context ctx)
+        public MoveCommand(Entity entity, Tile tile, bool relative, Context ctx)
         : this(entity, tile, relative, ctx, false) { }
 
-        public MovementCommand(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
+        public MoveCommand(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
         {
             Entity = entity;
             Tile = tile;
@@ -33,7 +33,11 @@ namespace Zongband.Game.Commands
 
         protected override bool ExecuteStart()
         {
-            if (!Entity) return true;
+            if (!Entity.IsAlive)
+            {
+                Debug.LogError(Warnings.AgentNotAlive);
+                return true;
+            }
 
             var oldTile = Entity.Tile;
 
@@ -51,7 +55,11 @@ namespace Zongband.Game.Commands
 
         protected override bool ExecuteUpdate()
         {
-            if (!Entity) return true;
+            if (!Entity.IsAlive)
+            {
+                Debug.LogError(Warnings.AgentNotAlive);
+                return true;
+            }
 
             return MoveTowardsTarget();
         }

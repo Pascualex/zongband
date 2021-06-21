@@ -11,38 +11,36 @@ namespace Zongband.Game.Commands
 {
     public class SpawnCommand : Command
     {
-        public Entity? Entity { get; private set; }
+        public Agent Agent { get; private set; }
 
-        private readonly EntitySO EntitySO;
         private readonly Tile Tile;
         private readonly Context Ctx;
         private readonly bool Priority;
 
-        public SpawnCommand(EntitySO entitySO, Tile tile, Context ctx)
-        : this(entitySO, tile, ctx, false) { }
+        public SpawnCommand(AgentSO agentSO, Tile tile, Context ctx)
+        : this(agentSO, tile, ctx, false) { }
 
-        public SpawnCommand(EntitySO entitySO, Tile tile, Context ctx, bool priority)
+        public SpawnCommand(AgentSO agentSO, Tile tile, Context ctx, bool priority)
         {
-            EntitySO = entitySO;
             Ctx = ctx;
             Tile = tile;
             Priority = priority;
+
+            Agent = Spawn(agentSO);
         }
 
         protected override bool ExecuteStart()
         {
-            if (EntitySO is AgentSO agentSO) Entity = Spawn(agentSO);
-            else Entity = Spawn(EntitySO);
-
-            if (!AddToBoard(Entity))
+            if (!AddToBoard(Agent))
             {
-                GameObject.Destroy(Entity);
-                Entity = null;
+                GameObject.Destroy(Agent);
                 return true;
             }
 
-            if (Entity is Agent agent) AddToTurnManager(agent);
-            MoveToSpawn(Entity);
+            AddToTurnManager(Agent);
+            MoveToSpawn(Agent);
+            Agent.gameObject.SetActive(true);
+            Agent.OnSpawn();
 
             return true;
         }
@@ -52,21 +50,14 @@ namespace Zongband.Game.Commands
             var parent = Ctx.TurnManager.transform;
             var agent = GameObject.Instantiate(Ctx.AgentPrefab, parent);
             agent.ApplySO(agentSO);
+            agent.gameObject.SetActive(false);
             return agent;
         }
 
-        private Entity Spawn(EntitySO entitySO)
+        private bool AddToBoard(Agent agent)
         {
-            var parent = Ctx.Board.transform;
-            var entity = GameObject.Instantiate(Ctx.EntityPrefab, parent);
-            entity.ApplySO(entitySO);
-            return entity;
-        }
-
-        private bool AddToBoard(Entity entity)
-        {
-            if (!Ctx.Board.IsTileAvailable(entity, Tile, false)) return false;
-            Ctx.Board.Add(entity, Tile);
+            if (!Ctx.Board.IsTileAvailable(agent, Tile, false)) return false;
+            Ctx.Board.Add(agent, Tile);
             return true;
         }
 
@@ -75,10 +66,10 @@ namespace Zongband.Game.Commands
             Ctx.TurnManager.Add(agent, Priority);
         }
 
-        private void MoveToSpawn(Entity entity)
+        private void MoveToSpawn(Agent agent)
         {
-            var spawnPosition = entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
-            entity.transform.position = spawnPosition;
+            var spawnPosition = agent.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
+            agent.transform.position = spawnPosition;
         }
     }
 }

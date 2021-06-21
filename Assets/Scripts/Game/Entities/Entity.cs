@@ -10,10 +10,13 @@ namespace Zongband.Game.Entities
     public class Entity : MonoBehaviour
     {
         public Tile Tile = Tile.MinusOne;
+        public bool IsAlive => IsSpawned && !IsDestroyed;
 
         public Transform? GameModelContainer;
         [SerializeField] private GameObject? DefaultGameModel;
         [SerializeField] private GameObject? GameModel;
+        private bool IsSpawned = false;
+        private bool IsDestroyed = false;
 
         private void Awake()
         {
@@ -24,6 +27,16 @@ namespace Zongband.Game.Entities
 
             GameModel = Instantiate(DefaultGameModel, GameModelContainer);
             GameModel.name = "GameModel";
+        }
+
+        private void OnDestroy()
+        {
+            IsDestroyed = true;
+        }
+
+        public void OnSpawn()
+        {
+            IsSpawned = true;
         }
 
         public void ApplySO(EntitySO entitySO)

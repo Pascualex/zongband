@@ -20,8 +20,6 @@ namespace Zongband.Game.Turns
 
         public int CompareTo(Turn other)
         {
-            if (other == null) throw new ArgumentNullException(nameof(other));
-
             if (other.Tick != Tick) return Tick.CompareTo(other.Tick);
             var otherTP = other.Agent.TurnPriority;
             if (otherTP != Agent.TurnPriority) return -Agent.TurnPriority.CompareTo(otherTP);

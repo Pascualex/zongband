@@ -38,8 +38,7 @@ namespace Zongband.UI
 
             var highlight = false;
             var lastPlayer = GameManager.LastPlayer;
-            // TODO: check if dead
-            if (lastPlayer != null && lastPlayer.IsPlayer)
+            if (lastPlayer != null && lastPlayer.IsAlive && lastPlayer.IsPlayer)
             {
                 var gameModelContainer = lastPlayer.GameModelContainer;
                 if (gameModelContainer == null) throw new ArgumentNullException(nameof(gameModelContainer));

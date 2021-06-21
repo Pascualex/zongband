@@ -56,7 +56,7 @@ namespace Zongband.UI
 
             var inspect = false;
             var agent = FixedAgent;
-            if (agent == null || !agent) agent = GameManager.Board.GetAgent(MouseTile);
+            if (agent == null || !agent.IsAlive) agent = GameManager.Board.GetAgent(MouseTile);
             if (agent != null)
             {
                 Name.text = agent.Name;

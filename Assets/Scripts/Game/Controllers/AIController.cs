@@ -53,7 +53,7 @@ namespace Zongband.Game.Controllers
 
             if (selectedDirection == Tile.Zero) return new NullCommand();
 
-            return new MovementCommand(agent, selectedDirection, true, ctx);
+            return new MoveCommand(agent, selectedDirection, true, ctx);
         }
     }
 }
