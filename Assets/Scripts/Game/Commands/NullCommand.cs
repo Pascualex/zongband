@@ -2,16 +2,16 @@
 
 using UnityEngine;
 
-namespace Zongband.Game.Actions
+namespace Zongband.Game.Commands
 {
-    public class NullAction : Action
+    public class NullCommand : Command
     {
-        public NullAction()
+        public NullCommand()
         {
             IsCompleted = true;
         }
 
-        protected override bool ProcessStart()
+        protected override bool ExecuteStart()
         {
             return true;
         }

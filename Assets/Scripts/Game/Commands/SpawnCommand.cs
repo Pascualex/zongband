@@ -7,9 +7,9 @@ using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-namespace Zongband.Game.Actions
+namespace Zongband.Game.Commands
 {
-    public class SpawnAction : Action
+    public class SpawnCommand : Command
     {
         public Entity? Entity { get; private set; }
 
@@ -18,10 +18,10 @@ namespace Zongband.Game.Actions
         private readonly Context Ctx;
         private readonly bool Priority;
 
-        public SpawnAction(EntitySO entitySO, Tile tile, Context ctx)
+        public SpawnCommand(EntitySO entitySO, Tile tile, Context ctx)
         : this(entitySO, tile, ctx, false) { }
 
-        public SpawnAction(EntitySO entitySO, Tile tile, Context ctx, bool priority)
+        public SpawnCommand(EntitySO entitySO, Tile tile, Context ctx, bool priority)
         {
             EntitySO = entitySO;
             Ctx = ctx;
@@ -29,7 +29,7 @@ namespace Zongband.Game.Actions
             Priority = priority;
         }
 
-        protected override bool ProcessStart()
+        protected override bool ExecuteStart()
         {
             if (EntitySO is AgentSO agentSO) Entity = Spawn(agentSO);
             else Entity = Spawn(EntitySO);

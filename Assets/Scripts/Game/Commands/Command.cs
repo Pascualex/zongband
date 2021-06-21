@@ -6,31 +6,31 @@ using Zongband.Game.Turns;
 using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 
-namespace Zongband.Game.Actions
+namespace Zongband.Game.Commands
 {
-    public abstract class Action
+    public abstract class Command
     {
         public bool IsCompleted { get; protected set; } = false;
         
         private bool HasStarted = false;
 
-        public void Process()
+        public void Execute()
         {
             if (IsCompleted) return;
             if (!HasStarted) 
             {
-                IsCompleted = ProcessStart();
+                IsCompleted = ExecuteStart();
                 HasStarted = true;
             }
-            else IsCompleted = ProcessUpdate();
+            else IsCompleted = ExecuteUpdate();
         }
 
-        protected virtual bool ProcessStart()
+        protected virtual bool ExecuteStart()
         {
             return false;
         }
 
-        protected virtual bool ProcessUpdate()
+        protected virtual bool ExecuteUpdate()
         {
             return true;
         }

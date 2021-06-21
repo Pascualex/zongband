@@ -4,9 +4,9 @@ using UnityEngine;
 
 using Zongband.Game.Entities;
 
-namespace Zongband.Game.Actions
+namespace Zongband.Game.Commands
 {
-    public class AttackAction : Action
+    public class AttackCommand : Command
     {
         private readonly Agent Attacker;
         private readonly Agent Target;
@@ -14,14 +14,14 @@ namespace Zongband.Game.Actions
         private EntityAnimator.AnimationState? AnimationState;
         private bool IsDamageDealt = false;
 
-        public AttackAction(Agent attacker, Agent target, Context ctx)
+        public AttackCommand(Agent attacker, Agent target, Context ctx)
         {
             Attacker = attacker;
             Target = target;
             Ctx = ctx;
         }
 
-        protected override bool ProcessStart()
+        protected override bool ExecuteStart()
         {
             if (!Attacker || !Target) return true;
 
@@ -41,7 +41,7 @@ namespace Zongband.Game.Actions
             return false;
         }
 
-        protected override bool ProcessUpdate()
+        protected override bool ExecuteUpdate()
         {
             if (!Attacker || !Target) return true;
 

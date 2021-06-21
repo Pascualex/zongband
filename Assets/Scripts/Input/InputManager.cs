@@ -33,7 +33,7 @@ namespace Zongband.Input
             if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
             var vector = value.Get<Vector2>();
             var direction = new Tile((int)vector.x, (int)vector.y);
-            PlayerController.PlayerAction = new PlayerAction(direction, true, true);
+            PlayerController.PlayerCommand = new PlayerCommand(direction, true, true);
         }
 
         private void OnSkipTurn(InputValue value)
@@ -58,7 +58,7 @@ namespace Zongband.Input
 
             UIManager.HandleMouseLeftClick();
             var mouseTile = UIManager.MouseTile;
-            PlayerController.PlayerAction = new PlayerAction(mouseTile, false, true);
+            PlayerController.PlayerCommand = new PlayerCommand(mouseTile, false, true);
         }
 
         private void OnMouseRightClick()

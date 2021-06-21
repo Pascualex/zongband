@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-using Zongband.Game.Actions;
+using Zongband.Game.Commands;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
@@ -10,41 +10,41 @@ namespace Zongband.Game.Controllers
 {
     public class PlayerController : Controller
     {
-        public PlayerAction? PlayerAction { private get; set; }
+        public PlayerCommand? PlayerCommand { private get; set; }
         public bool SkipTurn { private get; set; } = false;
 
-        public override Action? ProduceAction(Agent agent, Action.Context ctx)
+        public override Command? ProduceCommand(Agent agent, Command.Context ctx)
         {
-            var agentAction = ProduceMovementOrAttack(agent, ctx);
-            if (agentAction == null && SkipTurn) agentAction = new NullAction();
+            var agentCommand = ProduceMovementOrAttack(agent, ctx);
+            if (agentCommand == null && SkipTurn) agentCommand = new NullCommand();
 
             Clear();
-            return agentAction;
+            return agentCommand;
         }
 
         public void Clear()
         {
-            PlayerAction = null;
+            PlayerCommand = null;
             SkipTurn = false;
         }
 
-        private Action? ProduceMovementOrAttack(Agent agent, Action.Context ctx)
+        private Command? ProduceMovementOrAttack(Agent agent, Command.Context ctx)
         {
-            if (PlayerAction == null) return null;
+            if (PlayerCommand == null) return null;
 
-            var tile = PlayerAction.Tile;
-            var relative = PlayerAction.Relative;
-            var canAttack = PlayerAction.CanAttack;
+            var tile = PlayerCommand.Tile;
+            var relative = PlayerCommand.Relative;
+            var canAttack = PlayerCommand.CanAttack;
 
             var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.Tile);
             var instant = distance > 1;
             var isTileAvailable = ctx.Board.IsTileAvailable(agent, tile, relative);
-            if (isTileAvailable) return new MovementAction(agent, tile, relative, ctx, instant);
+            if (isTileAvailable) return new MovementCommand(agent, tile, relative, ctx, instant);
 
             var targetAgent = ctx.Board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {
-                return new AttackAction(agent, targetAgent, ctx);
+                return new AttackCommand(agent, targetAgent, ctx);
             }
 
             return null;

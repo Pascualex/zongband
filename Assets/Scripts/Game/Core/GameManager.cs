@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 using Zongband.Game.Controllers;
-using Zongband.Game.Actions;
+using Zongband.Game.Commands;
 using Zongband.Game.Generation;
 using Zongband.Game.Turns;
 using Zongband.Game.Boards;
@@ -13,7 +13,6 @@ using Zongband.Game.Entities;
 using Zongband.Utils;
 
 using Random = UnityEngine.Random;
-using Action = Zongband.Game.Actions.Action;
 
 namespace Zongband.Game.Core
 {
@@ -34,7 +33,7 @@ namespace Zongband.Game.Core
 
         public Agent? LastPlayer { get; private set; }
 
-        private Action CurrentAction = new NullAction();
+        private Command CurrentCommand = new NullCommand();
 
         public void SetupExample1()
         {
@@ -50,23 +49,23 @@ namespace Zongband.Game.Core
             if (AgentPrefab == null) throw new ArgumentNullException(nameof(AgentPrefab));
             if (EntityPrefab == null) throw new ArgumentNullException(nameof(EntityPrefab));
 
-            var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
-            var newAction = new ParallelAction();
+            var ctx = new Command.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
+            var newCommand = new ParallelCommand();
 
             var dungeonData = DungeonGenerator.GenerateTestDungeon(Board.Size, 3);
             Board.Apply(dungeonData.ToBoardData());
 
-            var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
-            playerAction.Add(spawnPlayerAction);
-            playerAction.Add(new MakePlayerAction(spawnPlayerAction));
-            newAction.Add(playerAction);
+            var playerCommand = new SequentialCommand();
+            var spawnPlayerCommand = new SpawnCommand(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
+            playerCommand.Add(spawnPlayerCommand);
+            playerCommand.Add(new MakePlayerCommand(spawnPlayerCommand));
+            newCommand.Add(playerCommand);
 
             for (var i = 0; i < EnemiesSOs.Length; i++)
-                newAction.Add(new SpawnAction(EnemiesSOs[i], new Tile(3 + i, 7), ctx));
-            newAction.Add(new SpawnAction(BoxEntitySO, new Tile(3, 9), ctx));
+                newCommand.Add(new SpawnCommand(EnemiesSOs[i], new Tile(3 + i, 7), ctx));
+            newCommand.Add(new SpawnCommand(BoxEntitySO, new Tile(3, 9), ctx));
 
-            CurrentAction = newAction;
+            CurrentCommand = newCommand;
         }
 
         public void SetupExample2()
@@ -81,8 +80,8 @@ namespace Zongband.Game.Core
             if (AgentPrefab == null) throw new ArgumentNullException(nameof(AgentPrefab));
             if (EntityPrefab == null) throw new ArgumentNullException(nameof(EntityPrefab));
 
-            var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
-            var newAction = new ParallelAction();
+            var ctx = new Command.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
+            var newCommand = new ParallelCommand();
 
             var dungeonData = DungeonGenerator.GenerateDungeon(Board.Size, 20, 4, 8, 4);
             DungeonVisualizer.DungeonData = dungeonData;
@@ -90,31 +89,31 @@ namespace Zongband.Game.Core
 
             Board.Apply(dungeonData.ToBoardData());
 
-            var playerAction = new SequentialAction();
-            var spawnPlayerAction = new SpawnAction(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
-            playerAction.Add(spawnPlayerAction);
-            playerAction.Add(new MakePlayerAction(spawnPlayerAction));
-            newAction.Add(playerAction);
+            var playerCommand = new SequentialCommand();
+            var spawnPlayerCommand = new SpawnCommand(PlayerAgentSO, dungeonData.PlayerSpawn, ctx, true);
+            playerCommand.Add(spawnPlayerCommand);
+            playerCommand.Add(new MakePlayerCommand(spawnPlayerCommand));
+            newCommand.Add(playerCommand);
 
             if (EnemiesSOs.Length > 0)
             {
                 foreach (var spawn in dungeonData.EnemiesSpawn)
                 {
                     var enemy = EnemiesSOs[Random.Range(0, EnemiesSOs.Length)];
-                    newAction.Add(new SpawnAction(enemy, spawn, ctx));
+                    newCommand.Add(new SpawnCommand(enemy, spawn, ctx));
                 }
             }
 
-            CurrentAction = newAction;
+            CurrentCommand = newCommand;
         }
 
         public void GameLoop()
         {
-            if (CurrentAction.IsCompleted) CurrentAction = ProcessTurns();
-            else CurrentAction.Process();
+            if (CurrentCommand.IsCompleted) CurrentCommand = ProcessTurns();
+            else CurrentCommand.Execute();
         }
 
-        private Action ProcessTurns()
+        private Command ProcessTurns()
         {
             if (PlayerController == null) throw new ArgumentNullException(nameof(PlayerController));
             if (AIController == null) throw new ArgumentNullException(nameof(AIController));
@@ -123,34 +122,34 @@ namespace Zongband.Game.Core
             if (AgentPrefab == null) throw new ArgumentNullException(nameof(AgentPrefab));
             if (EntityPrefab == null) throw new ArgumentNullException(nameof(EntityPrefab));
 
-            var ctx = new Action.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
+            var ctx = new Command.Context(TurnManager, Board, AgentPrefab, EntityPrefab);
 
-            var turnAction = new ParallelAction();
+            var turnCommand = new ParallelCommand();
             var processedAgents = new HashSet<Agent>();
             Agent? agent;                               
             while (((agent = TurnManager.GetCurrent()) != null) && !processedAgents.Contains(agent))
             {
-                Action? agentAction;
+                Command? agentCommand;
                 if (agent.IsPlayer)
                 {
                     LastPlayer = agent;
-                    agentAction = PlayerController.ProduceAction(agent, ctx);
+                    agentCommand = PlayerController.ProduceCommand(agent, ctx);
                 }
-                else agentAction = AIController.ProduceAction(agent, ctx);
+                else agentCommand = AIController.ProduceCommand(agent, ctx);
 
-                if (agentAction == null) break;
+                if (agentCommand == null) break;
 
-                agentAction.Process();
+                agentCommand.Execute();
 
-                if (!agentAction.IsCompleted) turnAction.Add(agentAction);
+                if (!agentCommand.IsCompleted) turnCommand.Add(agentCommand);
 
                 processedAgents.Add(agent);
                 TurnManager.Next();
 
-                if (!(agentAction is MovementAction) && !(agentAction is NullAction)) break;
+                if (!(agentCommand is MovementCommand) && !(agentCommand is NullCommand)) break;
             }
 
-            return turnAction;
+            return turnCommand;
         }
     }
 }

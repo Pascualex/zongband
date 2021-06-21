@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-using Zongband.Game.Actions;
+using Zongband.Game.Commands;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
@@ -10,14 +10,14 @@ namespace Zongband.Game.Controllers
 {
     public class AIController : Controller
     {
-        public override Action? ProduceAction(Agent agent, Action.Context ctx)
+        public override Command? ProduceCommand(Agent agent, Command.Context ctx)
         {
-            var action = AttackAdjacent(agent, ctx);
-            if (action != null) return action;
+            var command = AttackAdjacent(agent, ctx);
+            if (command != null) return command;
             return ProduceRandomMovement(agent, ctx);
         }
 
-        private Action? AttackAdjacent(Agent agent, Action.Context ctx)
+        private Command? AttackAdjacent(Agent agent, Command.Context ctx)
         {
             var directions = Tile.RandomizedDirections();
             Agent? selectedTarget = null;
@@ -33,12 +33,12 @@ namespace Zongband.Game.Controllers
 
             if (selectedTarget == null) return null;
 
-            return new AttackAction(agent, selectedTarget, ctx);
+            return new AttackCommand(agent, selectedTarget, ctx);
         }
 
-        private Action ProduceRandomMovement(Agent agent, Action.Context ctx)
+        private Command ProduceRandomMovement(Agent agent, Command.Context ctx)
         {
-            if (!agent.IsRoamer) return new NullAction();
+            if (!agent.IsRoamer) return new NullCommand();
 
             var directions = Tile.RandomizedDirections();
             var selectedDirection = Tile.Zero;
@@ -51,9 +51,9 @@ namespace Zongband.Game.Controllers
                 }
             }
 
-            if (selectedDirection == Tile.Zero) return new NullAction();
+            if (selectedDirection == Tile.Zero) return new NullCommand();
 
-            return new MovementAction(agent, selectedDirection, true, ctx);
+            return new MovementCommand(agent, selectedDirection, true, ctx);
         }
     }
 }

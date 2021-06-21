@@ -6,9 +6,9 @@ using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-namespace Zongband.Game.Actions
+namespace Zongband.Game.Commands
 {
-    public class MovementAction : Action
+    public class MovementCommand : Command
     {
         private const float AnimationFixedSpeed = 1f;
         private const float AnimationVariableSpeed = 15f;
@@ -19,10 +19,10 @@ namespace Zongband.Game.Actions
         private readonly Context Ctx;
         private readonly bool Instant;
 
-        public MovementAction(Entity entity, Tile tile, bool relative, Context ctx)
+        public MovementCommand(Entity entity, Tile tile, bool relative, Context ctx)
         : this(entity, tile, relative, ctx, false) { }
 
-        public MovementAction(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
+        public MovementCommand(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
         {
             Entity = entity;
             Tile = tile;
@@ -31,7 +31,7 @@ namespace Zongband.Game.Actions
             Instant = instant;
         }
 
-        protected override bool ProcessStart()
+        protected override bool ExecuteStart()
         {
             if (!Entity) return true;
 
@@ -49,7 +49,7 @@ namespace Zongband.Game.Actions
             return false;
         }
 
-        protected override bool ProcessUpdate()
+        protected override bool ExecuteUpdate()
         {
             if (!Entity) return true;
 

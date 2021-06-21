@@ -2,13 +2,13 @@
 
 using UnityEngine;
 
-using Zongband.Game.Actions;
+using Zongband.Game.Commands;
 using Zongband.Game.Entities;
 
 namespace Zongband.Game.Controllers
 {
     public abstract class Controller : MonoBehaviour
     {
-        public abstract Action? ProduceAction(Agent agent, Action.Context ctx);
+        public abstract Command? ProduceCommand(Agent agent, Command.Context ctx);
     }
 }
