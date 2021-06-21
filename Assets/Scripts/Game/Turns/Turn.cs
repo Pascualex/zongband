@@ -22,10 +22,10 @@ namespace Zongband.Game.Turns
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
 
-            if (other.Tick != Tick) return Tick - other.Tick;
-            var priorityDifference = other.Agent.TurnPriority - Agent.TurnPriority;
-            if (priorityDifference != 0) return priorityDifference;
-            return Agent.TurnCooldown - other.Agent.TurnCooldown;
+            if (other.Tick != Tick) return Tick.CompareTo(other.Tick);
+            var otherTP = other.Agent.TurnPriority;
+            if (otherTP != Agent.TurnPriority) return -Agent.TurnPriority.CompareTo(otherTP);
+            return Agent.TurnCooldown.CompareTo(other.Agent.TurnCooldown);
         }
     }
 }

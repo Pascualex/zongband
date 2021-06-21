@@ -19,7 +19,7 @@ namespace Zongband.Game.Generation
 
         public DungeonData? GenerateDungeon(Size size, int rooms, int minSide, int maxSide, int padding)
         {
-            Random.InitState(2);
+            Random.InitState(4);
             if (Floor == null) throw new ArgumentNullException(nameof(Floor));
             if (Wall == null) throw new ArgumentNullException(nameof(Wall));
 

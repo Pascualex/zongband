@@ -19,5 +19,5 @@ MonoBehaviour:
   TurnPriority: 0
   MaxHealth: 100
   Attack: 25
-  IsGhost: 1
+  IsGhost: 0
   IsRoamer: 1
