@@ -6,13 +6,13 @@ using Zongband.Utils;
 
 namespace Zongband.Game.Controllers
 {
-    public class PlayerCommand
+    public class PlayerAction
     {
         public readonly Tile Tile;
         public readonly bool Relative;
         public readonly bool CanAttack;
 
-        public PlayerCommand(Tile tile, bool relative, bool canAttack)
+        public PlayerAction(Tile tile, bool relative, bool canAttack)
         {
             Tile = tile;
             Relative = relative;

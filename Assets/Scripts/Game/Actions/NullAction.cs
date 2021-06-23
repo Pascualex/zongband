@@ -2,11 +2,11 @@
 
 using UnityEngine;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public class NullCommand : Command
+    public class NullAction : Action
     {
-        public NullCommand()
+        public NullAction()
         {
             IsCompleted = true;
         }

@@ -5,14 +5,14 @@ using UnityEngine;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public class ControlCommand : Command
+    public class ControlAction : Action
     {
         private readonly Agent Agent;
         private readonly bool IsPlayer;
 
-        public ControlCommand(Agent agent, bool isPlayer)
+        public ControlAction(Agent agent, bool isPlayer)
         {
             Agent = agent;
             IsPlayer = isPlayer;

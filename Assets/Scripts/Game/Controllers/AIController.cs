@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-using Zongband.Game.Commands;
+using Zongband.Game.Actions;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
@@ -10,14 +10,14 @@ namespace Zongband.Game.Controllers
 {
     public class AIController : Controller
     {
-        public override Command? ProduceCommand(Agent agent, Command.Context ctx)
+        public override Action? ProduceAction(Agent agent, Action.Context ctx)
         {
-            var command = AttackAdjacent(agent, ctx);
-            if (command != null) return command;
+            var action = AttackAdjacent(agent, ctx);
+            if (action != null) return action;
             return ProduceRandomMovement(agent, ctx);
         }
 
-        private Command? AttackAdjacent(Agent agent, Command.Context ctx)
+        private Action? AttackAdjacent(Agent agent, Action.Context ctx)
         {
             var directions = Tile.RandomizedDirections();
             Agent? selectedTarget = null;
@@ -33,12 +33,12 @@ namespace Zongband.Game.Controllers
 
             if (selectedTarget == null) return null;
 
-            return new AttackCommand(agent, selectedTarget, ctx);
+            return new AttackAction(agent, selectedTarget, ctx);
         }
 
-        private Command ProduceRandomMovement(Agent agent, Command.Context ctx)
+        private Action ProduceRandomMovement(Agent agent, Action.Context ctx)
         {
-            if (!agent.IsRoamer) return new NullCommand();
+            if (!agent.IsRoamer) return new NullAction();
 
             var directions = Tile.RandomizedDirections();
             var selectedDirection = Tile.Zero;
@@ -51,9 +51,9 @@ namespace Zongband.Game.Controllers
                 }
             }
 
-            if (selectedDirection == Tile.Zero) return new NullCommand();
+            if (selectedDirection == Tile.Zero) return new NullAction();
 
-            return new MoveCommand(agent, selectedDirection, true, ctx);
+            return new MoveAction(agent, selectedDirection, true, ctx);
         }
     }
 }

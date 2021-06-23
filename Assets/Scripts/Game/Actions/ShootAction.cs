@@ -6,9 +6,9 @@ using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public class ShootCommand : Command
+    public class ShootAction : Action
     {
         private const float AnimationFixedSpeed = 1f;
         private const float AnimationVariableSpeed = 15f;
@@ -20,23 +20,23 @@ namespace Zongband.Game.Commands
         private readonly Context Ctx;
         private GameObject? Projectile;
 
-        public ShootCommand(Tile start, Tile finish, Context ctx)
+        public ShootAction(Tile start, Tile finish, Context ctx)
         : this(start, finish, null, null, ctx)
         { }
 
-        public ShootCommand(Agent caster, Tile finish, Context ctx)
+        public ShootAction(Agent caster, Tile finish, Context ctx)
         : this(Tile.Zero, finish, caster, null, ctx)
         { }
 
-        public ShootCommand(Tile start, Agent target, Context ctx)
+        public ShootAction(Tile start, Agent target, Context ctx)
         : this(start, Tile.Zero, null, target, ctx)
         { }
 
-        public ShootCommand(Agent caster, Agent target, Context ctx)
+        public ShootAction(Agent caster, Agent target, Context ctx)
         : this(Tile.Zero, Tile.Zero, caster, target, ctx)
         { }
 
-        private ShootCommand(Tile start, Tile finish, Agent? caster, Agent? target, Context ctx)
+        private ShootAction(Tile start, Tile finish, Agent? caster, Agent? target, Context ctx)
         {
             Start = start;
             Finish = finish;

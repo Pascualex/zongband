@@ -5,9 +5,9 @@ using UnityEngine;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public class AttackCommand : Command
+    public class AttackAction : Action
     {
         private readonly Agent Attacker;
         private readonly Agent Target;
@@ -15,7 +15,7 @@ namespace Zongband.Game.Commands
         private EntityAnimator.AnimationState? AnimationState;
         private bool IsDamageDealt = false;
 
-        public AttackCommand(Agent attacker, Agent target, Context ctx)
+        public AttackAction(Agent attacker, Agent target, Context ctx)
         {
             Attacker = attacker;
             Target = target;

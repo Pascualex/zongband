@@ -3,11 +3,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public class ParallelCommand : CombinedCommand
+    public class ParallelAction : CombinedAction
     {
-        private readonly LinkedList<Command> Commands = new LinkedList<Command>();
+        private readonly LinkedList<Action> Actions = new LinkedList<Action>();
 
         protected override bool ExecuteStart()
         {
@@ -21,21 +21,21 @@ namespace Zongband.Game.Commands
 
         private bool ProcessAll()
         {
-            var node = Commands.First;
+            var node = Actions.First;
             while (node != null)
             {
                 var next = node.Next;
                 node.Value.Execute();
-                if (node.Value.IsCompleted) Commands.Remove(node);
+                if (node.Value.IsCompleted) Actions.Remove(node);
                 node = next;
             }
-            return Commands.Count == 0;
+            return Actions.Count == 0;
         }
 
-        public override void Add(Command command)
+        public override void Add(Action action)
         {
-            base.Add(command);
-            if (!command.IsCompleted) Commands.AddLast(command);
+            base.Add(action);
+            if (!action.IsCompleted) Actions.AddLast(action);
         }
     }
 }

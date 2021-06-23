@@ -6,9 +6,9 @@ using Zongband.Game.Turns;
 using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public abstract class Command
+    public abstract class Action
     {
         public bool IsCompleted { get; protected set; } = false;
         

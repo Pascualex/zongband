@@ -6,16 +6,16 @@ using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
-namespace Zongband.Game.Commands
+namespace Zongband.Game.Actions
 {
-    public class CreateCommand : Command
+    public class CreateAction : Action
     {
         public Entity Entity { get; private set; }
 
         private readonly Tile Tile;
         private readonly Context Ctx;
 
-        public CreateCommand(EntitySO entitySO, Tile tile, Context ctx)
+        public CreateAction(EntitySO entitySO, Tile tile, Context ctx)
         {
             Ctx = ctx;
             Tile = tile;
