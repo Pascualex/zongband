@@ -22,7 +22,7 @@ namespace Zongband.Game.Actions
         {
             if (!Agent.IsAlive)
             {
-                Debug.LogError(Warnings.AgentNotAlive);
+                Debug.LogWarning(Warnings.AgentNotAlive);
                 return true;
             }
 

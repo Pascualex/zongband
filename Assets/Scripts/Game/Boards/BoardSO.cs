@@ -14,8 +14,8 @@ namespace Zongband.Game.Boards
 
         private void OnValidate()
         {
-            Size.X = Mathf.Max(Size.X, 0);
-            Size.Y = Mathf.Max(Size.Y, 0);
+            Size.X = Mathf.Max(0, Size.X);
+            Size.Y = Mathf.Max(0, Size.Y);
             if (Scale <= 0) Scale = 1f;
         }
     }

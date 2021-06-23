@@ -33,7 +33,7 @@ namespace Zongband.Game.Controllers
 
             if (selectedTarget == null) return null;
 
-            return new AttackAction(agent, selectedTarget, ctx);
+            return new NullAction();
         }
 
         private Action ProduceRandomMovement(Agent agent, Action.Context ctx)

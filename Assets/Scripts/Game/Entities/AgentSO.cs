@@ -18,10 +18,10 @@ namespace Zongband.Game.Entities
         private void OnValidate()
         {
             Name = Name.Length <= 16 ? Name : Name.Substring(0, 16);
-            TurnCooldown = Mathf.Max(TurnCooldown, 1);
-            TurnPriority = Mathf.Max(TurnPriority, 0);
-            MaxHealth = Mathf.Max(MaxHealth, 1);
-            Attack = Mathf.Max(Attack, 0);
+            TurnCooldown = Mathf.Max(1, TurnCooldown);
+            TurnPriority = Mathf.Max(0, TurnPriority);
+            MaxHealth = Mathf.Max(1, MaxHealth);
+            Attack = Mathf.Max(0, Attack);
         }
     }
 }

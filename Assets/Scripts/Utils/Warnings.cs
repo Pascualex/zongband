@@ -11,6 +11,9 @@ namespace Zongband.Utils
         public const string AgentNotAlive =
             "Action was not executed because an agent is not alive";
 
+        public const string ParameterIsNull =
+            "Action was not executed because a parameter is unset";
+
         public static string TileWarning(Tile tile)
         {
             return "In tile at tile " + tile;

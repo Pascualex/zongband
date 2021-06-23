@@ -20,7 +20,7 @@ namespace Zongband.Game.Core
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private AgentSO? PlayerAgentSO;
-        [SerializeField] private AgentSO[]? EnemiesSOs;
+        [SerializeField] private AgentSO?[] EnemiesSOs = new AgentSO[0];
         [SerializeField] private EntitySO? BoxEntitySO;
 
         public PlayerController? PlayerController;
@@ -64,7 +64,11 @@ namespace Zongband.Game.Core
             newAction.Add(playerAction);
 
             for (var i = 0; i < EnemiesSOs.Length; i++)
-                newAction.Add(new SpawnAction(EnemiesSOs[i], new Tile(3 + i, 7), ctx));
+            {
+                var enemySO = EnemiesSOs[i];
+                if (enemySO == null) continue;
+                newAction.Add(new SpawnAction(enemySO, new Tile(3 + i, 7), ctx));
+            }
             newAction.Add(new CreateAction(BoxEntitySO, new Tile(3, 9), ctx));
 
             MainAction = newAction;
@@ -102,8 +106,9 @@ namespace Zongband.Game.Core
             {
                 foreach (var spawn in dungeonData.EnemiesSpawn)
                 {
-                    var enemy = EnemiesSOs[Random.Range(0, EnemiesSOs.Length)];
-                    newAction.Add(new SpawnAction(enemy, spawn, ctx));
+                    var enemySO = EnemiesSOs[Random.Range(0, EnemiesSOs.Length)];
+                    if (enemySO == null) continue;
+                    newAction.Add(new SpawnAction(enemySO, spawn, ctx));
                 }
             }
 

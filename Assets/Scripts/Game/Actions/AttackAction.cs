@@ -1,6 +1,7 @@
 #nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Game.Entities;
 using Zongband.Utils;
@@ -11,72 +12,57 @@ namespace Zongband.Game.Actions
     {
         private readonly Agent Attacker;
         private readonly Agent Target;
+        private readonly Parameters Prms;
         private readonly Context Ctx;
-        private EntityAnimator.AnimationState? AnimationState;
-        private bool IsDamageDealt = false;
 
-        public AttackAction(Agent attacker, Agent target, Context ctx)
+        public AttackAction(Agent attacker, Agent target, Parameters prms, Context ctx)
         {
             Attacker = attacker;
             Target = target;
+            Prms = prms;
             Ctx = ctx;
         }
 
         protected override bool ExecuteStart()
         {
-            if (!Attacker.IsAlive || !Target.IsAlive)
+            if (!Target.IsAlive)
             {
-                Debug.LogError(Warnings.AgentNotAlive);
+                Debug.LogWarning(Warnings.AgentNotAlive);
                 return true;
             }
 
-            var tileDirection = Target.Tile - Attacker.Tile;
-            var direction = tileDirection.ToWorld();
-            Attacker.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-
-            var animatorComponent = Attacker.GetComponent<EntityAnimator>();
-            if (animatorComponent == null)
-            {
-                Damage();
-                return true;
-            }
-
-            AnimationState = animatorComponent.Attack();
-
-            return false;
-        }
-
-        protected override bool ExecuteUpdate()
-        {
-            if (!Attacker.IsAlive || (!Target.IsAlive && !IsDamageDealt))
-            {
-                Debug.LogError(Warnings.AgentNotAlive);
-                return true;
-            }
-
-            if (AnimationState == null || AnimationState.IsCompleted)
-            {
-                if (!IsDamageDealt) Damage();
-                return true;
-            }
-
-            if (AnimationState.IsReady && !IsDamageDealt)
-            {
-                Damage();
-                IsDamageDealt = true;
-            }
-
-            return false;
+            Damage();
+            CheckTargetDeath();
+            return true;
         }
 
         private void Damage()
         {
-            Target.Damage(Attacker.Attack);
+            var damage = (double)Prms.BaseDamage;
+            damage += Attacker.Attack * Prms.AttackMultiplier;
+            Target.Damage((int)Math.Round(damage));
+        }
+
+        private void CheckTargetDeath()
+        {
             if (Target.CurrentHealth == 0)
             {
                 Ctx.Board.Remove(Target);
                 Ctx.TurnManager.Remove(Target);
                 GameObject.Destroy(Target.gameObject);
+            }
+        }
+
+        [Serializable]
+        public class Parameters
+        {
+            public int BaseDamage = 0;
+            public float AttackMultiplier = 0;
+
+            public void OnValidate()
+            {
+                BaseDamage = Math.Max(0, BaseDamage);
+                AttackMultiplier = Math.Max(0f, AttackMultiplier);
             }
         }
     }

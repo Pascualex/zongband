@@ -35,7 +35,7 @@ namespace Zongband.Game.Actions
         {
             if (!Entity.IsAlive)
             {
-                Debug.LogError(Warnings.AgentNotAlive);
+                Debug.LogWarning(Warnings.AgentNotAlive);
                 return true;
             }
 
@@ -57,7 +57,7 @@ namespace Zongband.Game.Actions
         {
             if (!Entity.IsAlive)
             {
-                Debug.LogError(Warnings.AgentNotAlive);
+                Debug.LogWarning(Warnings.AgentNotAlive);
                 return true;
             }
 

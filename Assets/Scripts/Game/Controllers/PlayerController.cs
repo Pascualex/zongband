@@ -2,9 +2,9 @@
 
 using UnityEngine;
 
+using Zongband.Game.Abilities;
 using Zongband.Game.Actions;
 using Zongband.Game.Entities;
-using Zongband.Utils;
 
 namespace Zongband.Game.Controllers
 {
@@ -12,6 +12,7 @@ namespace Zongband.Game.Controllers
     {
         public PlayerAction? PlayerAction { private get; set; }
         public bool SkipTurn { private get; set; } = false;
+        public AbilitySO? AbilitySO;
 
         public override Action? ProduceAction(Agent agent, Action.Context ctx)
         {
@@ -44,7 +45,8 @@ namespace Zongband.Game.Controllers
             var targetAgent = ctx.Board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
             {
-                return new ShootAction(agent, targetAgent, ctx);
+                if (AbilitySO == null) return null;
+                return AbilitySO.CreateAction(agent, targetAgent, ctx);
             }
 
             return null;
