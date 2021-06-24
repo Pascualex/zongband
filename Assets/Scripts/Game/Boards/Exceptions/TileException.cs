@@ -10,6 +10,6 @@ namespace Zongband.Game.Boards
     public class TileException : Exception
     {
         public TileException(Tile tile)
-        : base(Warnings.TileWarning(tile)) { }
+        : base(Warnings.Tile(tile)) { }
     }
 }

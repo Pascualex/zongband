@@ -11,24 +11,24 @@ namespace Zongband.Game.Abilities
     public class AbilitySO : ScriptableObject
     {
         public int ManaCost = 10;
-        public EffectDefinition[] EffectsDefinitions = new EffectDefinition[0];
+        public Effect[] Effects = new Effect[0];
 
         public Action CreateAction(Agent caster, Agent target, Action.Context ctx)
         {
             var action = new SequentialAction();
 
-            foreach (var effectDefinition in EffectsDefinitions)
-                action.Add(effectDefinition.CreateAction(caster, target, ctx));
+            foreach (var effect in Effects)
+                action.Add(effect.CreateAction(caster, target, ctx));
 
             return action;
         }
 
         private void OnValidate()
         {
-            foreach (var effectDefinition in EffectsDefinitions)
+            foreach (var effect in Effects)
             {
-                effectDefinition.ClearOld();
-                effectDefinition.OnValidate();
+                effect.ClearOld();
+                effect.OnValidate();
             }
         }
     }

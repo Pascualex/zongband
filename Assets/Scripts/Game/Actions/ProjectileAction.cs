@@ -120,23 +120,10 @@ namespace Zongband.Game.Actions
         [Serializable]
         public class Parameters
         {
-            public float FixedSpeed;
-            public float VariableSpeed;
-            public bool Inverted;
-            public GameObject? ProjectilePrefab;
-
-            public Parameters()
-            {
-                Clear();
-            }
-
-            public void Clear()
-            {
-                FixedSpeed = 1f;
-                VariableSpeed = 15f;
-                Inverted = false;
-                ProjectilePrefab = null;
-            }
+            public float FixedSpeed = 0f;
+            public float VariableSpeed = 0f;
+            public bool Inverted = false;
+            public GameObject? ProjectilePrefab = null;
 
             public void OnValidate()
             {
