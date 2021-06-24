@@ -27,10 +27,8 @@ namespace Zongband.Game.Abilities
         {
             foreach (var effectDefinition in EffectsDefinitions)
             {
-                if (effectDefinition.Type == EffectDefinition.EffectType.Attack)
-                    effectDefinition.AttackPrms.OnValidate();
-                else if (effectDefinition.Type == EffectDefinition.EffectType.Projectile)
-                    effectDefinition.ProjectilePrms.OnValidate();
+                effectDefinition.ClearOld();
+                effectDefinition.OnValidate();
             }
         }
     }

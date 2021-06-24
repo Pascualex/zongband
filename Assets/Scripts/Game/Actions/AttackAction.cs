@@ -56,8 +56,19 @@ namespace Zongband.Game.Actions
         [Serializable]
         public class Parameters
         {
-            public int BaseDamage = 0;
-            public float AttackMultiplier = 0;
+            public int BaseDamage;
+            public float AttackMultiplier;
+
+            public Parameters()
+            {
+                Clear();
+            }
+
+            public void Clear()
+            {
+                BaseDamage = 0;
+                AttackMultiplier = 0f;
+            }
 
             public void OnValidate()
             {
