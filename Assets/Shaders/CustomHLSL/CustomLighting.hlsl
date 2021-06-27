@@ -26,7 +26,6 @@ void MainLight_float(float3 WorldPos, out float3 Direction, out float3 Color, ou
     Light mainLight = GetMainLight(shadowCoord);
     Direction = mainLight.direction;
     Color = mainLight.color;
-    mainLigth
 
 	#if !defined(_MAIN_LIGHT_SHADOWS) || defined(_RECEIVE_SHADOWS_OFF)
         ShadowAtten = 1.0h;
