@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6658499214b3b3b499cf3ee3c315a901, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  ManaCost: 80
+  Effects:
+  - Type: 0
+    Target: 0
+    AttackPrms:
+      BaseDamage: 50
+      AttackMultiplier: 0
+    HealPrms:
+      BaseHeal: 0
+    ProjectilePrms:
+      FixedSpeed: 0
+      VariableSpeed: 0
+      ProjectilePrefab: {fileID: 0}
+    Effects: []
+  - Type: 2
+    Target: 1
+    AttackPrms:
+      BaseDamage: 0
+      AttackMultiplier: 0
+    HealPrms:
+      BaseHeal: 0
+    ProjectilePrms:
+      FixedSpeed: 3
+      VariableSpeed: 5
+      ProjectilePrefab: {fileID: 5770532021267404179, guid: 5084656ea045fb54aa613a558b96c708,
+        type: 3}
+    Effects: []
+  - Type: 1
+    Target: 0
+    AttackPrms:
+      BaseDamage: 0
+      AttackMultiplier: 0
+    HealPrms:
+      BaseHeal: 40
+    ProjectilePrms:
+      FixedSpeed: 0
+      VariableSpeed: 0
+      ProjectilePrefab: {fileID: 0}
+    Effects: []

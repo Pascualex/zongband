@@ -32,9 +32,23 @@ namespace ZongbandEditor
             EditorGUI.indentLevel += 1;
             var effectType = GetEffectType(property);
             if (effectType == EffectType.Attack)
+            {
+                DrawField(Type, "Target", position, property);
+                position.y += RowHeight;
                 DrawSubfields(Type, "AttackPrms", position, property);
+            }
+            else if (effectType == EffectType.Heal)
+            {
+                DrawField(Type, "Target", position, property);
+                position.y += RowHeight;
+                DrawSubfields(Type, "HealPrms", position, property);
+            }
             else if (effectType == EffectType.Projectile)
+            {
+                DrawField(Type, "Target", position, property);
+                position.y += RowHeight;
                 DrawSubfields(Type, "ProjectilePrms", position, property);
+            }
             else if (effectType == EffectType.Sequential || effectType == EffectType.Parallel)
             {
                 position.y += 5;
@@ -48,9 +62,11 @@ namespace ZongbandEditor
             if (!property.isExpanded) return RowHeight;
             var effectType = GetEffectType(property);
             if (effectType == EffectType.Attack)
-                return (1 + GetSubfieldsCount(Type, "AttackPrms")) * RowHeight;
+                return (2 + GetSubfieldsCount(Type, "AttackPrms")) * RowHeight;
+            else if (effectType == EffectType.Heal)
+                return (2 + GetSubfieldsCount(Type, "HealPrms")) * RowHeight;
             else if (effectType == EffectType.Projectile)
-                return (1 + GetSubfieldsCount(Type, "ProjectilePrms")) * RowHeight;
+                return (2 + GetSubfieldsCount(Type, "ProjectilePrms")) * RowHeight;
             else if (effectType == EffectType.Sequential || effectType == EffectType.Parallel)
                 return RowHeight + GetFieldHeight(Type, "Effects", property) + 10;
             else return 1;

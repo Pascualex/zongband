@@ -15,44 +15,52 @@ MonoBehaviour:
   ManaCost: 10
   Effects:
   - Type: 2
+    Target: 1
     AttackPrms:
       BaseDamage: 0
       AttackMultiplier: 0
+    HealPrms:
+      BaseHeal: 0
     ProjectilePrms:
-      FixedSpeed: 0
+      FixedSpeed: 0.1
       VariableSpeed: 0
-      Inverted: 0
       ProjectilePrefab: {fileID: 0}
     Effects:
     - Type: 1
+      Target: 1
       AttackPrms:
         BaseDamage: 0
         AttackMultiplier: 0
+      HealPrms:
+        BaseHeal: 0
       ProjectilePrms:
         FixedSpeed: 0.1
         VariableSpeed: 5
-        Inverted: 0
         ProjectilePrefab: {fileID: 5770532021267404179, guid: 5084656ea045fb54aa613a558b96c708,
           type: 3}
       Effects: []
     - Type: 1
+      Target: 1
       AttackPrms:
         BaseDamage: 0
         AttackMultiplier: 0
+      HealPrms:
+        BaseHeal: 0
       ProjectilePrms:
         FixedSpeed: 0.1
         VariableSpeed: 0.5
-        Inverted: 1
         ProjectilePrefab: {fileID: 5770532021267404179, guid: 5084656ea045fb54aa613a558b96c708,
           type: 3}
       Effects: []
     - Type: 0
+      Target: 1
       AttackPrms:
         BaseDamage: 1000
         AttackMultiplier: 0
+      HealPrms:
+        BaseHeal: 0
       ProjectilePrms:
         FixedSpeed: 0
         VariableSpeed: 0
-        Inverted: 0
         ProjectilePrefab: {fileID: 0}
       Effects: []

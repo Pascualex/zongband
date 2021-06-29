@@ -8,6 +8,7 @@ namespace Zongband.Game.Abilities
     public enum EffectType
     {
         Attack,
+        Heal,
         Projectile,
         Sequential,
         Parallel,

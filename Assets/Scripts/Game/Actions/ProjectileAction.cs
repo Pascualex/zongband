@@ -53,15 +53,10 @@ namespace Zongband.Game.Actions
                 return true;
             }
 
+            if (Caster != null && Caster == Target) return true;
+
             if (Caster != null) Start = Caster.Tile;
             if (Target != null) Finish = Target.Tile;
-
-            if (Prms.Inverted)
-            {
-                var aux = Start;
-                Start = Finish;
-                Finish = aux;
-            }
 
             if (!CreateProjectile())
             {
@@ -74,9 +69,6 @@ namespace Zongband.Game.Actions
 
         protected override bool ExecuteUpdate()
         {
-            if (!Prms.Inverted && Target != null && Target.IsAlive) Finish = Target.Tile;
-            if (Prms.Inverted && Caster != null && Caster.IsAlive) Finish = Caster.Tile;
-
             var completed = MoveTowardsTarget();
             if (completed) DestroyProjectile();
             return completed;
@@ -122,7 +114,6 @@ namespace Zongband.Game.Actions
         {
             public float FixedSpeed = 0f;
             public float VariableSpeed = 0f;
-            public bool Inverted = false;
             public GameObject? ProjectilePrefab = null;
 
             public void OnValidate()

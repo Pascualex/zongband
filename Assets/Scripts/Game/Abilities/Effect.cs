@@ -16,16 +16,23 @@ namespace Zongband.Game.Abilities
     {
         public EffectType Type = EffectType.Attack;
         private EffectType? OldType = null;
+        public TargetType Target = TargetType.MainTarget;
         public AttackAction.Parameters AttackPrms = new AttackAction.Parameters();
+        public HealAction.Parameters HealPrms = new HealAction.Parameters();
         public ProjectileAction.Parameters ProjectilePrms = new ProjectileAction.Parameters();
         public List<Effect> Effects = new List<Effect>();
 
         public Action CreateAction(Agent caster, Agent target, Action.Context ctx)
         {
+            var aCaster = Target == TargetType.MainTarget ? caster : target;
+            var aTarget = Target == TargetType.MainTarget ? target : caster;
+
             if (Type == EffectType.Attack)
-                return new AttackAction(caster, target, AttackPrms, ctx);
+                return new AttackAction(aCaster, aTarget, AttackPrms, ctx);
+            else if (Type == EffectType.Heal)
+                return new HealAction(aCaster, aTarget, HealPrms, ctx);
             else if (Type == EffectType.Projectile)
-                return new ProjectileAction(caster, target, ProjectilePrms, ctx);
+                return new ProjectileAction(aCaster, aTarget, ProjectilePrms, ctx);
             else if (Type == EffectType.Sequential || Type == EffectType.Parallel)
             {
                 CombinedAction action;
@@ -41,6 +48,7 @@ namespace Zongband.Game.Abilities
         public void OnValidate()
         {
             if (Type == EffectType.Attack) AttackPrms.OnValidate();
+            else if (Type == EffectType.Heal) HealPrms.OnValidate();
             else if (Type == EffectType.Projectile) ProjectilePrms.OnValidate();
             else if (Type == EffectType.Sequential || Type == EffectType.Parallel)
                 foreach (var effect in Effects) effect.OnValidate();
@@ -55,12 +63,16 @@ namespace Zongband.Game.Abilities
             {
                 if (OldType == EffectType.Attack)
                     AttackPrms = new AttackAction.Parameters();
+                else if (OldType == EffectType.Heal)
+                    HealPrms = new HealAction.Parameters();
                 else if (OldType == EffectType.Projectile)
                     ProjectilePrms = new ProjectileAction.Parameters();
                 else if (OldType == EffectType.Sequential && Type != EffectType.Parallel)
                     Effects.Clear();
                 else if (OldType == EffectType.Parallel && Type != EffectType.Sequential)
                     Effects.Clear();
+                else if (Type == EffectType.Sequential || Type == EffectType.Parallel)
+                    Target = TargetType.MainTarget;
             }
             OldType = Type;
         }
