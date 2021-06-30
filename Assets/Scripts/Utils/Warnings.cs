@@ -14,6 +14,8 @@ namespace Zongband.Utils
             "Action was not executed because a parameter is unset";
         public const string RowsFull =
             "Rows could not advance because they exceed the maximum height";
+        public const string AlreadyExecuted =
+            "Action was not added because the combined action was already executed";
 
         public static string Tile(Tile tile)
         {

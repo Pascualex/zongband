@@ -10,6 +10,8 @@ namespace Zongband.Game.Controllers
 {
     public class AIController : Controller
     {
+        public MoveAction.Parameters DefaultMovement = new MoveAction.Parameters();
+
         public override Action? ProduceAction(Agent agent, Action.Context ctx)
         {
             var action = AttackAdjacent(agent, ctx);
@@ -53,7 +55,7 @@ namespace Zongband.Game.Controllers
 
             if (selectedDirection == Tile.Zero) return new NullAction();
 
-            return new MoveAction(agent, selectedDirection, true, ctx);
+            return new MoveAction(agent, selectedDirection, true, DefaultMovement, ctx);
         }
     }
 }

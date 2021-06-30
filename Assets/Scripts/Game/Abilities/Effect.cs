@@ -30,7 +30,7 @@ namespace Zongband.Game.Abilities
             if (Type == EffectType.Attack)
                 return new AttackAction(aCaster, aTarget, AttackPrms, ctx);
             else if (Type == EffectType.Heal)
-                return new HealAction(aCaster, aTarget, HealPrms, ctx);
+                return new HealAction(aCaster, aTarget, HealPrms);
             else if (Type == EffectType.Projectile)
                 return new ProjectileAction(aCaster, aTarget, ProjectilePrms, ctx);
             else if (Type == EffectType.Sequential || Type == EffectType.Parallel)

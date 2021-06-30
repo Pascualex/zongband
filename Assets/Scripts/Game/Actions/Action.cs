@@ -5,22 +5,21 @@ using UnityEngine;
 using Zongband.Game.Turns;
 using Zongband.Game.Boards;
 using Zongband.Game.Entities;
+using Zongband.Utils;
 
 namespace Zongband.Game.Actions
 {
     public abstract class Action
     {
+        private bool StartExecuted = false;
         public bool IsCompleted { get; protected set; } = false;
-        
-        private bool HasStarted = false;
 
         public void Execute()
         {
-            if (IsCompleted) return;
-            if (!HasStarted) 
+            if (!StartExecuted) 
             {
                 IsCompleted = ExecuteStart();
-                HasStarted = true;
+                StartExecuted = true;
             }
             else IsCompleted = ExecuteUpdate();
         }
@@ -33,6 +32,13 @@ namespace Zongband.Game.Actions
         protected virtual bool ExecuteUpdate()
         {
             return true;
+        }
+
+        protected bool CheckAlive(Entity entity)
+        {
+            var isAlive = entity.IsAlive;
+            if (!isAlive) Debug.LogWarning(Warnings.AgentNotAlive);
+            return isAlive;
         }
 
         public class Context

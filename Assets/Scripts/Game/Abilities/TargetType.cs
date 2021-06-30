@@ -7,7 +7,7 @@ namespace Zongband.Game.Abilities
 {
     public enum TargetType
     {
-        Caster,
         MainTarget,
+        Caster,
     }
 }

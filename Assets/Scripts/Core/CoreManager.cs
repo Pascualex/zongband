@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 using Zongband.Input;
 using Zongband.UI;
@@ -19,6 +20,9 @@ namespace Zongband.Core
         {
             if (GameManager == null) throw new ArgumentNullException(nameof(GameManager));
 
+            DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
+            DOTween.defaultUpdateType = UpdateType.Manual;
+
             GameManager.SetupExample2();
         }
 
@@ -29,6 +33,7 @@ namespace Zongband.Core
             if (UIManager == null) throw new ArgumentNullException(nameof(UIManager));
 
             InputManager.ProcessInput();
+            DOTween.ManualUpdate(Time.deltaTime, Time.unscaledDeltaTime);
             GameManager.GameLoop();
             UIManager.Refresh();
             InputManager.ClearInput();

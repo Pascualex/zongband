@@ -134,3 +134,6 @@ Temporary Items
 
 # TextMesh Pro files
 [Aa]ssets/TextMesh*Pro/
+
+# DOTween files
+[Aa]ssets/Plugins

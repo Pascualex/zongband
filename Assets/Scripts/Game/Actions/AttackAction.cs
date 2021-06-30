@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 
 using Zongband.Game.Entities;
-using Zongband.Utils;
 
 namespace Zongband.Game.Actions
 {
@@ -25,11 +24,7 @@ namespace Zongband.Game.Actions
 
         protected override bool ExecuteStart()
         {
-            if (!Target.IsAlive)
-            {
-                Debug.LogWarning(Warnings.AgentNotAlive);
-                return true;
-            }
+            if (!CheckAlive(Target)) return true;
 
             Damage();
             CheckTargetDeath();

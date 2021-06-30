@@ -34,7 +34,6 @@ namespace Zongband.Game.Actions
             MoveToSpawn(Entity);
             Entity.gameObject.SetActive(true);
             Entity.OnSpawn();
-
             return true;
         }
 

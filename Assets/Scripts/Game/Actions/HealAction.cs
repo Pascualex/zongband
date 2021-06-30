@@ -4,32 +4,25 @@ using UnityEngine;
 using System;
 
 using Zongband.Game.Entities;
-using Zongband.Utils;
 
 namespace Zongband.Game.Actions
 {
     public class HealAction : Action
     {
-        private readonly Agent Attacker;
+        private readonly Agent Healer;
         private readonly Agent Target;
         private readonly Parameters Prms;
-        private readonly Context Ctx;
 
-        public HealAction(Agent attacker, Agent target, Parameters prms, Context ctx)
+        public HealAction(Agent healer, Agent target, Parameters prms)
         {
-            Attacker = attacker;
+            Healer = healer;
             Target = target;
             Prms = prms;
-            Ctx = ctx;
         }
 
         protected override bool ExecuteStart()
         {
-            if (!Target.IsAlive)
-            {
-                Debug.LogWarning(Warnings.AgentNotAlive);
-                return true;
-            }
+            if (!CheckAlive(Target)) return true;
 
             Heal();
             return true;

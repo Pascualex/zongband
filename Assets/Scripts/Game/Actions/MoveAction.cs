@@ -1,8 +1,9 @@
 #nullable enable
 
 using UnityEngine;
+using DG.Tweening;
+using System;
 
-using Zongband.Game.Boards;
 using Zongband.Game.Entities;
 using Zongband.Utils;
 
@@ -10,65 +11,41 @@ namespace Zongband.Game.Actions
 {
     public class MoveAction : Action
     {
-        private const float AnimationFixedSpeed = 1f;
-        private const float AnimationVariableSpeed = 15f;
-
         private readonly Entity Entity;
         private readonly Tile Tile;
         private readonly bool Relative;
         private readonly Context Ctx;
-        private readonly bool Instant;
+        private readonly Parameters Prms;
+        private Tweener? Tweener = null;
 
-        public MoveAction(Entity entity, Tile tile, bool relative, Context ctx)
-        : this(entity, tile, relative, ctx, false) { }
-
-        public MoveAction(Entity entity, Tile tile, bool relative, Context ctx, bool instant)
+        public MoveAction(Entity entity, Tile tile, bool relative, Parameters prms, Context ctx)
         {
             Entity = entity;
             Tile = tile;
             Relative = relative;
             Ctx = ctx;
-            Instant = instant;
+            Prms = prms;
         }
 
         protected override bool ExecuteStart()
         {
-            if (!Entity.IsAlive)
-            {
-                Debug.LogWarning(Warnings.AgentNotAlive);
-                return true;
-            }
+            if (!CheckAlive(Entity)) return true;
 
             var oldTile = Entity.Tile;
-
             if (!MoveInBoard()) return true;
             FaceTowardsDirection(oldTile);
 
-            if (Instant)
-            {
-                MoveToTargetInWorld();
-                return true;
-            }
+            if (Prms.Duration <= 0f) MoveToTarget();
+            else Tweener = TweenToTarget();
 
-            return false;
+            return Tweener == null;
         }
 
         protected override bool ExecuteUpdate()
         {
-            if (!Entity.IsAlive)
-            {
-                Debug.LogWarning(Warnings.AgentNotAlive);
-                return true;
-            }
+            if (Tweener == null) return true;
 
-            return MoveTowardsTarget();
-        }
-
-        private void FaceTowardsDirection(Tile oldTile)
-        {
-            var tileDirection = Entity.Tile - oldTile;
-            var direction = tileDirection.ToWorld();
-            Entity.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            return !Tweener.IsActive();
         }
 
         private bool MoveInBoard()
@@ -78,23 +55,35 @@ namespace Zongband.Game.Actions
             return true;
         }
 
-        private void MoveToTargetInWorld()
+        private void FaceTowardsDirection(Tile oldTile)
+        {
+            var tileDirection = Entity.Tile - oldTile;
+            var direction = tileDirection.ToWorld();
+            Entity.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        private void MoveToTarget()
         {
             var targetPosition = Entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
             Entity.transform.position = targetPosition;
         }
 
-        private bool MoveTowardsTarget()
+        private Tweener TweenToTarget()
         {
             var targetPosition = Entity.Tile.ToWorld(Ctx.Board.Scale, Ctx.Board.transform.position);
+            return Entity.transform.DOMove(targetPosition, Prms.Duration).SetEase(Prms.Ease);
+        }
 
-            var transform = Entity.transform;
-            var remainingDistance = Vector3.Distance(transform.position, targetPosition);
-            var variableDistance = remainingDistance * AnimationVariableSpeed;
-            var distance = (variableDistance + AnimationFixedSpeed) * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, distance);
+        [Serializable]
+        public class Parameters
+        {
+            public float Duration = 1f;
+            public Ease Ease = Ease.Unset;
 
-            return transform.position == targetPosition;
+            public void OnValidate()
+            {
+                Duration = Math.Max(0f, Duration);
+            }
         }
     }
 }

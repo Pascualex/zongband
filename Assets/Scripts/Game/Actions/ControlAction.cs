@@ -20,11 +20,7 @@ namespace Zongband.Game.Actions
 
         protected override bool ExecuteStart()
         {
-            if (!Agent.IsAlive)
-            {
-                Debug.LogWarning(Warnings.AgentNotAlive);
-                return true;
-            }
+            if (!CheckAlive(Agent)) return true;
 
             Agent.IsPlayer = IsPlayer;
             return true;

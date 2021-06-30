@@ -1,10 +1,13 @@
 ﻿#nullable enable
 
 using UnityEngine;
+using System;
 
 using Zongband.Game.Abilities;
 using Zongband.Game.Actions;
 using Zongband.Game.Entities;
+
+using Action = Zongband.Game.Actions.Action;
 
 namespace Zongband.Game.Controllers
 {
@@ -12,7 +15,13 @@ namespace Zongband.Game.Controllers
     {
         public PlayerAction? PlayerAction { private get; set; }
         public bool SkipTurn { private get; set; } = false;
+        public MoveAction.Parameters DefaultMovement = new MoveAction.Parameters();
         public AbilitySO? AbilitySO;
+
+        private void Awake()
+        {
+            if (PlayerAction == null) throw new ArgumentNullException(nameof(PlayerAction));
+        }
 
         public override Action? ProduceAction(Agent agent, Action.Context ctx)
         {
@@ -37,10 +46,8 @@ namespace Zongband.Game.Controllers
             var relative = PlayerAction.Relative;
             var canAttack = PlayerAction.CanAttack;
 
-            var distance = relative ? tile.GetDistance() : tile.GetDistance(agent.Tile);
-            var instant = distance > 1;
             var isTileAvailable = ctx.Board.IsTileAvailable(agent, tile, relative);
-            if (isTileAvailable) return new MoveAction(agent, tile, relative, ctx, instant);
+            if (isTileAvailable) return new MoveAction(agent, tile, relative, DefaultMovement, ctx);
 
             var targetAgent = ctx.Board.GetAgent(agent, tile, relative);
             if (canAttack && targetAgent != agent && targetAgent != null)
